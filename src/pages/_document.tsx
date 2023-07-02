@@ -1,13 +1,19 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import Document, { Head, Html, Main, NextScript } from "next/document";
+import React from "react";
 
-export default function Document() {
+function Doc() {
   return (
-    <Html lang="en">
-      <Head />
+    <Html>
+      <Head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="windows-touch-icon" href="/icon.png" />
+      </Head>
       <body>
         <Main />
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }
+
+export default Doc;
