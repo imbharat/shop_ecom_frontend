@@ -1,9 +1,9 @@
 .options {
     display: flex;
-    margin-left: 0.5rem;
+    margin-left: 0.25rem;
     font-weight: 600;
     padding: 0.3rem;
-    line-height: 1.2rem;
+    line-height: 1.5rem;
     white-space: nowrap;
 }
 .options:hover {

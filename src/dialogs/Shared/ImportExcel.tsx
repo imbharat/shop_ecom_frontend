@@ -14,6 +14,11 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+import {
+  BulkAddProducts,
+  BulkSellProducts,
+  ImportExcelData,
+} from "@/types/Types";
 
 const GREY = "#CCC";
 const GREY_LIGHT = "rgba(255, 255, 255, 0.4)";
@@ -95,20 +100,30 @@ const AllowedDelimiters = [
   { text: "Tab", name: "tab", value: "    " },
 ];
 
-function ImportFromExcel<T>({
+function ImportExcel<T = BulkAddProducts | BulkSellProducts>({
+  name,
   submitUrl,
-  initialValues,
+  initialValues = {
+    data: [],
+    errors: [],
+  },
   successCallback,
 }: {
+  name: string;
   submitUrl: string;
-  initialValues: T;
+  initialValues?: ImportExcelData<T>;
   successCallback: () => void;
 }) {
+  let allKeyPresent = false;
+  const columns = Object.keys(initialValues?.data[0]!);
   const [fileMeta, setFileMeta] = useState({
     file_type: "csv",
     delimiter: ",",
   });
-  const { submitForm, setValueExplicitly } = useForm(initialValues, submitUrl);
+  const { values, submitForm, setValueExplicitly } = useForm(
+    initialValues,
+    submitUrl
+  );
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(
@@ -122,10 +137,30 @@ function ImportFromExcel<T>({
     });
   };
 
+  const verifyValidCSV = (row: any, parser: any) => {
+    if (!allKeyPresent) {
+      parser.pause();
+      const headers = Object.keys(row.data);
+      const missing_columns = columns.filter(
+        (req_col) => headers.indexOf(req_col) < 0
+      );
+      if (!missing_columns.length && headers.length === columns.length) {
+        allKeyPresent = true;
+        parser.resume();
+      } else {
+        setValueExplicitly("errors", [
+          ...values.errors,
+          "Invalid CSV (one or more required fields missing)",
+        ]);
+        parser.abort();
+      }
+    }
+  };
+
   return (
     <BaseDialog
       submitForm={submitForm}
-      name={`Import from Excel`}
+      name={name}
       successCallback={successCallback}
     >
       <Grid
@@ -211,10 +246,13 @@ function ImportFromExcel<T>({
             delimiter={fileMeta["delimiter"]}
             config={{
               header: true,
-              dynamicTyping: true,
+              dynamicTyping: false,
               skipEmptyLines: true,
+              columns: columns,
+              // step: verifyValidCSV,
             }}
             onUploadAccepted={(results: any) => {
+              debugger;
               setValueExplicitly("data", results?.data);
               setZoneHover(false);
             }}
@@ -284,4 +322,4 @@ function ImportFromExcel<T>({
   );
 }
 
-export default ImportFromExcel;
+export default ImportExcel;

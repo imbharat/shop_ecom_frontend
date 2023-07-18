@@ -1,5 +1,12 @@
 .options {
     display: flex;
-    margin: auto 1rem auto 0.8rem;
+    margin-left: 0.25rem;
     font-weight: 600;
+    padding: 0.3rem;
+    line-height: 1.5rem;
+    white-space: nowrap;
+}
+.options:hover {
+    cursor: pointer;
+    border-radius: 0.2rem;
 }

@@ -1,9 +1,11 @@
-import React from 'react'
+import dynamic from "next/dynamic";
+
+const CustomersList = dynamic(
+  () => import("@/components/CustomersList/CustomersList")
+);
 
 function Customers() {
-  return (
-    <div className="m-auto">Customers</div>
-  )
+  return <CustomersList />;
 }
 
-export default Customers
+export default Customers;

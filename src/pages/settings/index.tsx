@@ -1,9 +1,8 @@
-import React from 'react'
+import GlobalSettings from "@/components/GlobalSettings/GlobalSettings";
+import React from "react";
 
 function Settings() {
-  return (
-    <div className="m-auto">Settings</div>
-  )
+  return <GlobalSettings />;
 }
 
-export default Settings
+export default Settings;

@@ -1,14 +1,12 @@
 import { useState, useCallback } from "react";
 import {
-  PlusCircleIcon,
-  PencilSquareIcon,
-  TrashIcon,
   ArrowUpOnSquareIcon,
+  DocumentMagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 
-import styles from "./LocationsList.module.css";
+import styles from "./OrdersList.module.css";
+import { useRouter } from "next/router";
 import {
-  GridRowEditStopParams,
   GridSelectionModel,
   GridSortModel,
   GridToolbarColumnsButton,
@@ -18,54 +16,53 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { ODataGridColDef, FilterParameters } from "o-data-grid";
-import AddEditLocation from "@/dialogs/Location/AddEditLocation";
 import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import { ODATA_URL } from "@/custom-hooks/useAxios";
-import { deleteById, downloadToExcel } from "@/services/shared.service";
-import { ExportToExcel } from "@/utils/UtilFunctions";
+import {
+  ExportToExcel,
+  NumberFieldFilterOperators,
+} from "@/utils/UtilFunctions";
+import { downloadToExcel } from "@/services/shared.service";
 
 const getFormattedDate = (date: string) => new Date(date).toDateString();
 
 let columns: ODataGridColDef[] = [
   {
-    field: "locations.location_name",
-    headerName: "Name",
+    field: "orders.order_id",
+    headerName: "Invoice",
+    valueFormatter: (params) =>
+      `IN${"0".repeat(10 - params.value.toString().length)}${params.value}`,
+    headerClassName: "grid-header",
+    type: "number",
+    filterOperators: NumberFieldFilterOperators(),
+    align: "left",
+    headerAlign: "left",
+  },
+  {
+    field: "customers.customer_name",
+    headerName: "Customer",
     editable: true,
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.address",
-    headerName: "Address",
-    editable: true,
+    field: "orders.net",
+    headerName: "Net",
     headerClassName: "grid-header",
-    type: "string",
+    cellClassName: (params) => (params.value > 0 ? "profit" : "loss"),
+    type: "number",
+    filterOperators: NumberFieldFilterOperators(),
   },
   {
-    field: "locations.city",
-    headerName: "City",
-    editable: true,
+    field: "orders.quantity",
+    headerName: "Quantity",
     headerClassName: "grid-header",
-    type: "string",
+    type: "number",
+    filterOperators: NumberFieldFilterOperators(),
   },
   {
-    field: "locations.pincode",
-    headerName: "Pincode",
-    editable: true,
-    headerClassName: "grid-header",
-    type: "string",
-  },
-  {
-    field: "locations.state",
-    headerName: "State",
-    editable: true,
-    headerClassName: "grid-header",
-    type: "string",
-  },
-  {
-    field: "locations.country",
-    headerName: "Country",
-    editable: true,
+    field: "orders.type",
+    headerName: "Type",
     headerClassName: "grid-header",
     type: "string",
   },
@@ -82,14 +79,14 @@ let columns: ODataGridColDef[] = [
     type: "string",
   },
   {
-    field: "locations.created_at",
+    field: "orders.created_at",
     headerName: "Created On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
     type: "date",
   },
   {
-    field: "locations.updated_at",
+    field: "orders.updated_at",
     headerName: "Updated On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
@@ -108,40 +105,33 @@ columns = columns.map((col) => {
 });
 
 const columnVisibilityModel = {
-  "locations.location_name": true,
-  "locations.address": false,
-  "locations.city": true,
-  "locations.pincode": true,
-  "locations.state": true,
-  "locations.country": { xs: false, md: true },
+  "orders.order_id": true,
+  "customers.customer_name": true,
+  "orders.net": true,
+  "orders.quantity": false,
+  "orders.type": { xs: false, md: true },
   "users_created_by.user_name": { xs: false, xl: true },
   "users_modified_by.user_name": false,
-  "locations.created_at": { xs: false, sm: true },
-  "locations.updated_at": false,
+  "orders.created_at": { xs: false, sm: true },
+  "orders.updated_at": false,
 };
 
-const alwaysSelect = ["locations.location_id"];
+const alwaysSelect = ["orders.order_id"];
 
-const component = "Locations";
+const component = "Orders";
 
-function LocationsList() {
+function OrdersList() {
+  const router = useRouter();
   const [selectedRows, setSelectedRows] = useState<GridSelectionModel>([]);
-  const [cols, setCols] = useState(columns);
+  const [cols] = useState(columns);
   const [currentFilter, setCurrentFilter] = useState<string>("");
   const [currentSorting, setCurrentSorting] = useState<string>("");
 
-  const deleteLocation = async () => {
+  const viewDetails = async () => {
     const id = selectedRows as unknown as number;
-    const result = await deleteById("locations", id);
-    if (result?.data?.count === 1) {
-      refreshGrid();
-    }
-  };
-
-  const refreshGrid = () => setCols((prev) => [...prev]);
-
-  const saveChanges = async (params: GridRowEditStopParams) => {
-    const { location_id, result, ...location } = params.row;
+    router.push(`/orders/${id}`, undefined, {
+      shallow: true,
+    });
   };
 
   const exportToExcel = async () => {
@@ -175,10 +165,6 @@ function LocationsList() {
         >
           {selectedRows.length === 0 && (
             <>
-              <span className={styles.options}>
-                <PlusCircleIcon className="w-5" />
-                <AddEditLocation isEdit={false} successCallback={refreshGrid} />
-              </span>
               <span className={styles.options} onClick={exportToExcel}>
                 <ArrowUpOnSquareIcon className="w-5" />
                 Export to Excel
@@ -187,13 +173,9 @@ function LocationsList() {
           )}
           {selectedRows.length === 1 && (
             <>
-              <span className={styles.options}>
-                <PencilSquareIcon className="w-5" />
-                <AddEditLocation isEdit={true} successCallback={refreshGrid} />
-              </span>
-              <span className={styles.options} onClick={deleteLocation}>
-                <TrashIcon className="w-5" />
-                Delete Location
+              <span className={styles.options} onClick={viewDetails}>
+                <DocumentMagnifyingGlassIcon className="w-5" />
+                View Details
               </span>
             </>
           )}
@@ -229,18 +211,17 @@ function LocationsList() {
   return (
     <CommonDataGrid
       header={component}
-      url={`${ODATA_URL}/locations`}
+      url={`${ODATA_URL}/orders`}
       columns={cols}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}
       setSelectedRows={setSelectedRows}
       CustomToolbar={CustomToolbar}
       columnVisibilityModel={columnVisibilityModel}
-      saveChanges={saveChanges}
       onFilterSubmit={onFilterSubmit}
       onSortingChange={onSortingChange}
     />
   );
 }
 
-export default LocationsList;
+export default OrdersList;

@@ -7,8 +7,10 @@ import {
   MapPinIcon,
   Cog6ToothIcon,
   ChartBarIcon,
+  NewspaperIcon,
   ArchiveBoxArrowDownIcon,
   DevicePhoneMobileIcon,
+  CreditCardIcon,
 } from "@heroicons/react/24/outline";
 
 export type NavItem = {
@@ -38,10 +40,16 @@ export const MenuItems: NavItem[] = [
     mobileView: true,
   },
   {
+    label: "Sales",
+    href: "/sales",
+    icon: <CreditCardIcon className="w-6 h-6" />,
+    mobileView: true,
+  },
+  {
     label: "Orders",
     href: "/orders",
-    icon: <DevicePhoneMobileIcon className="w-6 h-6" />,
-    mobileView: true,
+    icon: <NewspaperIcon className="w-6 h-6" />,
+    mobileView: false,
   },
   {
     label: "Vendors",
@@ -61,28 +69,28 @@ export const MenuItems: NavItem[] = [
     icon: <MapPinIcon className="w-6 h-6" />,
     mobileView: true,
   },
-  {
-    label: "Settings",
-    href: "/settings",
-    icon: <Cog6ToothIcon className="w-6 h-6" />,
-    mobileView: false,
-  },
-  {
-    label: "Reports",
-    href: "/reports",
-    icon: <ChartBarIcon className="w-6 h-6" />,
-    mobileView: false,
-  },
-  {
-    label: "Scheduler",
-    href: "/scheduler",
-    icon: <CalendarIcon className="w-6 h-6" />,
-    mobileView: false,
-  },
-  {
-    label: "Archive",
-    href: "/archive",
-    icon: <ArchiveBoxArrowDownIcon className="w-6 h-6" />,
-    mobileView: false,
-  },
+  // {
+  //   label: "Settings",
+  //   href: "/settings",
+  //   icon: <Cog6ToothIcon className="w-6 h-6" />,
+  //   mobileView: false,
+  // },
+  // {
+  //   label: "Reports",
+  //   href: "/reports",
+  //   icon: <ChartBarIcon className="w-6 h-6" />,
+  //   mobileView: false,
+  // },
+  // {
+  //   label: "Scheduler",
+  //   href: "/scheduler",
+  //   icon: <CalendarIcon className="w-6 h-6" />,
+  //   mobileView: false,
+  // },
+  // {
+  //   label: "Archive",
+  //   href: "/archive",
+  //   icon: <ArchiveBoxArrowDownIcon className="w-6 h-6" />,
+  //   mobileView: false,
+  // },
 ];

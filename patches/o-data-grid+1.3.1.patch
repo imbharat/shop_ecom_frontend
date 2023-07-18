@@ -1,0 +1,97 @@
+diff --git a/node_modules/o-data-grid/build/o-data-grid-esm.js b/node_modules/o-data-grid/build/o-data-grid-esm.js
+index b174ce2..112e9a1 100644
+--- a/node_modules/o-data-grid/build/o-data-grid-esm.js
++++ b/node_modules/o-data-grid/build/o-data-grid-esm.js
+@@ -262,7 +262,26 @@ const FilterInputs = ({ clauseId, field, onFieldChange, op, onOpChange, value, o
+                 jsx(Grid, Object.assign({ item: true, xs: 12, md: true }, { children: jsx(Autocomplete, Object.assign({ size: "small" }, builderProps.autocompleteProps, { options: (_b = (_a = fieldDef.collectionFields) === null || _a === void 0 ? void 0 : _a.map(c => ({ label: c.label, field: c.field }))) !== null && _b !== void 0 ? _b : [], renderInput: (params) => jsx(TextField, Object.assign({ label: getLocaleText("collectionField", builderProps.localeText) }, builderProps.textFieldProps, params)), value: { label: (_c = fieldDef.colField) === null || _c === void 0 ? void 0 : _c.label, field: collectionField }, onChange: (_, val) => onCollectionFieldChange(field, collectionField, op, val.field), disableClearable: true, isOptionEqualToValue: (option, value) => option.field === value.field })) })), fieldDef.renderCustomFilter ?
+                 fieldDef.renderCustomFilter(value, onValueChange)
+                 :
+-                    jsx(Grid, Object.assign({ item: true, xs: 12, md: true }, { children: jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-op` }, { children: "Operation" })), jsxs(Select, Object.assign({}, builderProps.selectProps, { value: op, onChange: (e) => onOpChange(e.target.value), labelId: `${clauseId}_label-op`, label: "Operation" }, { children: [jsx(MenuItem, Object.assign({ value: "eq", disabled: !fieldDef.ops.includes("eq") }, { children: getLocaleText("opEq", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "ne", disabled: !fieldDef.ops.includes("ne") }, { children: getLocaleText("opNe", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "gt", disabled: !fieldDef.ops.includes("gt") }, { children: getLocaleText("opGt", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "lt", disabled: !fieldDef.ops.includes("lt") }, { children: getLocaleText("opLt", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "ge", disabled: !fieldDef.ops.includes("ge") }, { children: getLocaleText("opGe", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "le", disabled: !fieldDef.ops.includes("le") }, { children: getLocaleText("opLe", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "contains", disabled: !fieldDef.ops.includes("contains") }, { children: getLocaleText("opContains", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "null", disabled: !fieldDef.ops.includes("null") }, { children: getLocaleText("opNull", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "notnull", disabled: !fieldDef.ops.includes("notnull") }, { children: getLocaleText("opNotNull", builderProps.localeText) }))] }))] })) })), !fieldDef.renderCustomFilter &&
++                    jsx(Grid, Object.assign({ item: true, xs: 12, md: true }, { children: jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-op` }, { children: "Operation" })), jsxs(Select, Object.assign({}, builderProps.selectProps, { value: op, onChange: (e) => onOpChange(e.target.value), labelId: `${clauseId}_label-op`, label: "Operation" }, { children: [
++                        (fieldDef.ops.includes("eq") && jsx(MenuItem, Object.assign({ value: "eq" }, 
++                            { children: getLocaleText("opEq", builderProps.localeText) }))), 
++                        (fieldDef.ops.includes("ne") && jsx(MenuItem, Object.assign({ value: "ne" }, 
++                            { children: getLocaleText("opNe", builderProps.localeText) }))), 
++                        (fieldDef.ops.includes("gt") && jsx(MenuItem, Object.assign({ value: "gt" }, 
++                            { children: getLocaleText("opGt", builderProps.localeText) }))), 
++                        (fieldDef.ops.includes("lt") && jsx(MenuItem, Object.assign({ value: "lt" }, 
++                            { children: getLocaleText("opLt", builderProps.localeText) }))), 
++                        (fieldDef.ops.includes("ge") && jsx(MenuItem, Object.assign({ value: "ge" }, 
++                            { children: getLocaleText("opGe", builderProps.localeText) }))), 
++                        (fieldDef.ops.includes("le") && jsx(MenuItem, Object.assign({ value: "le" }, 
++                            { children: getLocaleText("opLe", builderProps.localeText) }))), 
++                        (fieldDef.ops.includes("contains") && jsx(MenuItem, Object.assign({ value: "contains" }, 
++                            { children: getLocaleText("opContains", builderProps.localeText) }))), 
++                        (fieldDef.ops.includes("null") && jsx(MenuItem, Object.assign({ value: "null" }, 
++                            { children: getLocaleText("opNull", builderProps.localeText) }))), 
++                        (fieldDef.ops.includes("notnull") && jsx(MenuItem, Object.assign({ value: "notnull" }, 
++                            { children: getLocaleText("opNotNull", builderProps.localeText) }))),
++                    ] }))] })) })), !fieldDef.renderCustomFilter &&
+                 jsx(Grid, Object.assign({ item: true, xs: true }, { children: op !== "null" && op !== "notnull" &&
+                         (fieldDef.renderCustomInput ? fieldDef.renderCustomInput(value, onValueChange) :
+                             jsxs(Fragment, { children: [fieldDef.type === "date" &&
+@@ -270,7 +289,7 @@ const FilterInputs = ({ clauseId, field, onFieldChange, op, onOpChange, value, o
+                                         jsx(LocalizationProvider, Object.assign({ dateAdapter: dateAdapter }, builderProps.localizationProviderProps, { children: jsx(DateTimePicker, Object.assign({ label: getLocaleText("value", builderProps.localeText) }, fieldDef.dateTimePickerProps, { value: value !== null && value !== void 0 ? value : "", renderInput: (params) => jsx(TextField, Object.assign({ fullWidth: true, size: "small" }, builderProps.textFieldProps, fieldDef.textFieldProps, params)), onChange: (date) => onValueChange(new dateAdapter().toISO(date)) })) })), fieldDef.type === "boolean" &&
+                                         jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, (_d = fieldDef.selectProps) === null || _d === void 0 ? void 0 : _d.formControlProps, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-bool-value` }, { children: (_f = (_e = fieldDef.selectProps) === null || _e === void 0 ? void 0 : _e.label) !== null && _f !== void 0 ? _f : getLocaleText("value", builderProps.localeText) })), jsxs(Select, Object.assign({ label: (_h = (_g = fieldDef.selectProps) === null || _g === void 0 ? void 0 : _g.label) !== null && _h !== void 0 ? _h : getLocaleText("value", builderProps.localeText) }, builderProps.selectProps, (_j = fieldDef.selectProps) === null || _j === void 0 ? void 0 : _j.selectProps, { value: value !== null && value !== void 0 ? value : true, onChange: (e) => onValueChange(e.target.value), labelId: `${clauseId}_label-bool-value` }, { children: [jsx(MenuItem, Object.assign({ value: "true" }, { children: "Yes" })), jsx(MenuItem, Object.assign({ value: "false" }, { children: "No" })), fieldDef.nullable && jsx(MenuItem, Object.assign({ value: "null" }, { children: "Unknown" }))] }))] })), fieldDef.type === "singleSelect" && fieldDef.valueOptions &&
+                                         jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, (_k = fieldDef.selectProps) === null || _k === void 0 ? void 0 : _k.formControlProps, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-select-value` }, { children: (_m = (_l = fieldDef.selectProps) === null || _l === void 0 ? void 0 : _l.label) !== null && _m !== void 0 ? _m : getLocaleText("value", builderProps.localeText) })), jsx(Select, Object.assign({ label: (_p = (_o = fieldDef.selectProps) === null || _o === void 0 ? void 0 : _o.label) !== null && _p !== void 0 ? _p : getLocaleText("value", builderProps.localeText), value: value !== null && value !== void 0 ? value : "", onChange: (e) => onValueChange(e.target.value), labelId: `${clauseId}_label-select-value` }, { children: fieldDef.valueOptions.map((o, i) => (jsx(MenuItem, Object.assign({ value: o.value }, { children: o.label }), `${clauseId}_${field}_select_${i}`))) }))] })), (!fieldDef.type || fieldDef.type === "string" || fieldDef.type === "number") &&
+-                                        jsx(TextField, Object.assign({ size: "small", fullWidth: true, label: getLocaleText("value", builderProps.localeText) }, builderProps.textFieldProps, fieldDef.textFieldProps, { value: value !== null && value !== void 0 ? value : "", onChange: (e) => onValueChange(fieldDef.type === "number" ? parseFloat(e.target.value) : e.target.value), type: fieldDef.type === "number" ? "number" : "text" }))] })) }))] }));
++                                        jsx(TextField, Object.assign({ required: true, size: "small", fullWidth: true, label: getLocaleText("value", builderProps.localeText) }, builderProps.textFieldProps, fieldDef.textFieldProps, { value: value !== null && value !== void 0 ? value : "", onChange: (e) => onValueChange(fieldDef.type === "number" ? parseFloat(e.target.value) : e.target.value), type: fieldDef.type === "number" ? "number" : "text" }))] })) }))] }));
+ };
+ var FilterInputs$1 = React.memo(FilterInputs);
+ 
+@@ -487,11 +506,17 @@ const defaultTranslators = {
+             return `contains(tolower(${field}), tolower('${escapeODataString(value)}'))`;
+         }
+     },
+-    "null": ({ field }) => {
+-        return `${field} eq null`;
++    "null": ({ schema, field }) => {
++        if(schema.type === "string")
++            return `(${field} eq null or ${field} eq '')`;
++        else
++            return `${field} eq null`;
+     },
+-    "notnull": ({ field }) => {
+-        return `${field} ne null`;
++    "notnull": ({ schema, field }) => {
++        if(schema.type === "string")
++            return `(${field} ne null or ${field} ne '')`;
++        else
++            return `${field} ne null`;
+     },
+     "default": ({ schema, field, op, value }) => {
+         if (schema.type === "date") {
+@@ -794,9 +819,9 @@ const FilterRoot = ({ props }) => {
+                     jsx(Popover, Object.assign({ anchorEl: anchor, open: anchor !== null, anchorOrigin: { vertical: "bottom", horizontal: "left" }, onClose: () => setAnchor(null), transitionDuration: 100 }, { children: jsx(Paper, { children: jsx(MenuList, Object.assign({ id: "search-menu" }, { children: props.searchMenuItems.map((item, i) => (jsx(MenuItem, Object.assign({ onClick: item.onClick }, { children: item.label }), `searchMenu_${i}`))) })) }) }))] })) }));
+ };
+ 
+-const FilterBuilder = (props) => {
++const FilterBuilder = React.memo((props) => {
+     return (jsx(RecoilRoot, Object.assign({ override: true }, { children: jsx(FilterRoot, { props: props }) })));
+-};
++});
+ 
+ const defaultPageSize = 10;
+ 
+@@ -985,7 +1010,7 @@ const ODataGridBase = (props) => {
+             // i.e. { Person: { name: "John" } } becomes { "Person/name": "John" }
+             // keep the original object in the "result" property so that it can still be accessed via strong typing
+             const rows = data.value.map((v) => (Object.assign({ result: v }, Flatten(v, "/"))));
+-            if (data["@odata.count"]) {
++            if (data["@odata.count"] || data["@odata.count"] === 0) {
+                 setRowCount(data["@odata.count"]);
+             }
+             setRows(rows);
+diff --git a/node_modules/o-data-grid/build/o-data-grid.d.ts b/node_modules/o-data-grid/build/o-data-grid.d.ts
+index dfbec7e..99c537a 100644
+--- a/node_modules/o-data-grid/build/o-data-grid.d.ts
++++ b/node_modules/o-data-grid/build/o-data-grid.d.ts
+@@ -111,7 +111,7 @@ declare type FilterTranslatorParams<TDate> = {
+     value: any;
+ };
+ declare type Connective = "and" | "or";
+-declare type Operation = "eq" | "ne" | "gt" | "lt" | "ge" | "le" | "contains" | "null" | "notnull";
++export declare type Operation = "eq" | "ne" | "gt" | "lt" | "ge" | "le" | "contains" | "null" | "notnull";
+ declare type CollectionOperation = "any" | "all" | "count";
+ declare type Clause = {
+     id: string;

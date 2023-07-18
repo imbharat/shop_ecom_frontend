@@ -1,0 +1,4 @@
+.tabs button{
+    text-transform: none;
+    color: var(--primary-color);
+}

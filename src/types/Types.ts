@@ -1,3 +1,16 @@
+type VendorCustomerLocationCommon = {
+  address: string;
+  city: string;
+  pincode: number;
+  state: string;
+  country: string;
+};
+
+type VendorCustomerCommon = VendorCustomerLocationCommon & {
+  email: string;
+  phone: string;
+};
+
 export type User = {
   user_id: number;
   user_name: string;
@@ -12,21 +25,78 @@ export type User = {
 
 export type ProductInputFields = {
   product_name: string;
-  price: number;
+  cost_price: number;
   type: string;
   vendor: string;
   location: string;
-  qc: string;
+  physical_qc: string;
+  screen_qc: string;
+  ram: string;
+  storage: string;
   barcode: string;
 };
 
-export type ProductFromCSV = {
+export type ImportExcelData<T> = {
+  data: T[];
+  errors: string[];
+};
+
+export type BulkAddProducts = {
   product_name: string;
-  price: number;
+  cost_price: number;
   barcode: string;
   imei: string;
   vendor: string;
 };
+
+export type BulkSellProducts = {
+  product_id: number;
+  product_name: string;
+  imei: string;
+  barcode: string;
+  cost_price: number;
+  sell_price: number;
+  customer_name: string;
+  location: string;
+};
+
+export type BulkMoveProducts = {
+  product_id: number;
+  product_name: string;
+  imei: string;
+  barcode: string;
+  location: string;
+};
+
+export type SellProducts = {
+  customer_name: string;
+  products: {
+    product_id: number;
+    cost_price: number;
+    sell_price: number;
+  }[];
+};
+
+export type UserInputFields = {
+  user_name: string;
+  first_name: string;
+  last_name: string;
+  display_name: string;
+  email: string;
+  phone: string;
+};
+
+export type CustomerInputFields = {
+  customer_name: string;
+} & VendorCustomerCommon;
+
+export type VendorInputFields = {
+  vendor_name: string;
+} & VendorCustomerCommon;
+
+export type LocationInputFields = {
+  location_name: string;
+} & VendorCustomerLocationCommon;
 
 export type AppData = {
   locations: {

@@ -88,6 +88,7 @@ function SideNav({
           return (
             <li
               key={index}
+              title={item.label}
               className={classNames({
                 "text-black-100 internal-link flex": true, //colors
                 "transition-colors duration-300": true, //animation

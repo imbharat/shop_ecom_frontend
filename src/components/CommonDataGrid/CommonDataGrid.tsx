@@ -1,38 +1,95 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React from "react";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import {
   ODataGrid,
   ODataGridColDef,
   ODataColumnVisibilityModel,
+  FilterParameters,
+  ExternalBuilderProps,
 } from "o-data-grid";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import PreventSSR from "../PreventSSR/PreventSSR";
-import { GridRowEditStopParams, GridSelectionModel } from "@mui/x-data-grid";
+import {
+  GridCallbackDetails,
+  GridRowEditStopParams,
+  GridSelectionModel,
+  GridSortModel,
+} from "@mui/x-data-grid";
+
+const filterBuilderProps: ExternalBuilderProps<any> = {
+  textFieldProps: {
+    size: "small",
+    style: {
+      background: "var(--form-input-color)",
+    },
+    inputProps: {
+      style: {
+        fontFamily: "system-ui",
+      },
+    },
+    InputLabelProps: {
+      style: {
+        fontFamily: "system-ui",
+      },
+    },
+  },
+  selectProps: {
+    size: "small",
+    style: {
+      background: "var(--form-input-color)",
+    },
+    inputProps: {
+      style: {
+        fontFamily: "system-ui",
+      },
+    },
+    SelectDisplayProps: {
+      style: {
+        fontFamily: "system-ui",
+      },
+    },
+  },
+  localizationProviderProps: {
+    dateAdapter: AdapterDayjs,
+    adapterLocale: "en-gb",
+  },
+  onSubmit: (params: FilterParameters) => {},
+};
 
 type Props = {
   url: string;
   columns: ODataGridColDef[];
+  header: string;
   selectedRows: GridSelectionModel;
   alwaysSelect: string[];
-  setSelectedRows: Dispatch<SetStateAction<GridSelectionModel>>;
+  onFilterSubmit: (params: FilterParameters) => void;
+  setSelectedRows: (selectedRows: GridSelectionModel) => void;
   CustomToolbar: () => JSX.Element;
   columnVisibilityModel: ODataColumnVisibilityModel;
-  saveChanges: (params: GridRowEditStopParams) => void;
+  onSortingChange: (model: GridSortModel) => void;
+  saveChanges?: (params: GridRowEditStopParams) => void;
 };
 
 function CommonDataGrid({
   url,
   columns,
+  header,
   alwaysSelect,
   saveChanges,
+  onFilterSubmit,
   selectedRows,
   CustomToolbar,
   setSelectedRows,
+  onSortingChange,
   columnVisibilityModel,
 }: Props) {
   const rowSelection = (selectionModel: GridSelectionModel) => {
     setSelectedRows(selectionModel);
   };
+
+  // adding prop on same object instead of shallow copy, to prevent re-render of filter builder
+  filterBuilderProps.onSubmit = onFilterSubmit;
+
   return (
     <div className="grid-container">
       <h3
@@ -41,7 +98,7 @@ function CommonDataGrid({
           borderBottom: "0.15rem solid var(--primary-color)",
         }}
       >
-        Products
+        {header}
       </h3>
       <PreventSSR>
         <ODataGrid
@@ -49,9 +106,8 @@ function CommonDataGrid({
           checkboxSelection
           disableColumnMenu
           editMode="row"
-          density="compact"
           sx={{ overflowX: "auto" }}
-          getRowId={(row) => row.product_id}
+          getRowId={(row) => row[alwaysSelect[0]]}
           columns={columns}
           defaultPageSize={10}
           rowsPerPageOptions={[10, 25, 50, 100]}
@@ -60,47 +116,11 @@ function CommonDataGrid({
           alwaysSelect={alwaysSelect}
           columnVisibilityModel={columnVisibilityModel}
           onRowEditStop={saveChanges}
+          onSortModelChange={onSortingChange}
           components={{
             Toolbar: CustomToolbar,
           }}
-          filterBuilderProps={{
-            textFieldProps: {
-              size: "small",
-              style: {
-                background: "var(--form-input-color)",
-              },
-              inputProps: {
-                style: {
-                  fontFamily: "system-ui",
-                },
-              },
-              InputLabelProps: {
-                style: {
-                  fontFamily: "system-ui",
-                },
-              },
-            },
-            selectProps: {
-              size: "small",
-              style: {
-                background: "var(--form-input-color)",
-              },
-              inputProps: {
-                style: {
-                  fontFamily: "system-ui",
-                },
-              },
-              SelectDisplayProps: {
-                style: {
-                  fontFamily: "system-ui",
-                },
-              },
-            },
-            localizationProviderProps: {
-              dateAdapter: AdapterDayjs,
-              adapterLocale: "en-gb",
-            },
-          }}
+          filterBuilderProps={filterBuilderProps}
         />
       </PreventSSR>
     </div>

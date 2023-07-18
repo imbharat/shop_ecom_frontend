@@ -6,7 +6,7 @@ import {
   ArrowUpOnSquareIcon,
 } from "@heroicons/react/24/solid";
 
-import styles from "./LocationsList.module.css";
+import styles from "./CustomersList.module.css";
 import {
   GridRowEditStopParams,
   GridSelectionModel,
@@ -18,7 +18,7 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { ODataGridColDef, FilterParameters } from "o-data-grid";
-import AddEditLocation from "@/dialogs/Location/AddEditLocation";
+import AddEditCustomer from "@/dialogs/Customer/AddEditCustomer";
 import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import { ODATA_URL } from "@/custom-hooks/useAxios";
 import { deleteById, downloadToExcel } from "@/services/shared.service";
@@ -28,43 +28,57 @@ const getFormattedDate = (date: string) => new Date(date).toDateString();
 
 let columns: ODataGridColDef[] = [
   {
-    field: "locations.location_name",
+    field: "customers.customer_name",
     headerName: "Name",
     editable: true,
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.address",
+    field: "customers.address",
     headerName: "Address",
     editable: true,
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.city",
+    field: "customers.city",
     headerName: "City",
     editable: true,
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.pincode",
+    field: "customers.pincode",
     headerName: "Pincode",
     editable: true,
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.state",
+    field: "customers.state",
     headerName: "State",
     editable: true,
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.country",
+    field: "customers.country",
     headerName: "Country",
+    editable: true,
+    headerClassName: "grid-header",
+    type: "string",
+  },
+  {
+    field: "customers.email",
+    headerName: "Email",
+    editable: true,
+    headerClassName: "grid-header",
+    type: "string",
+  },
+  {
+    field: "customers.phone",
+    headerName: "Phone",
     editable: true,
     headerClassName: "grid-header",
     type: "string",
@@ -82,14 +96,14 @@ let columns: ODataGridColDef[] = [
     type: "string",
   },
   {
-    field: "locations.created_at",
+    field: "customers.created_at",
     headerName: "Created On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
     type: "date",
   },
   {
-    field: "locations.updated_at",
+    field: "customers.updated_at",
     headerName: "Updated On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
@@ -108,31 +122,33 @@ columns = columns.map((col) => {
 });
 
 const columnVisibilityModel = {
-  "locations.location_name": true,
-  "locations.address": false,
-  "locations.city": true,
-  "locations.pincode": true,
-  "locations.state": true,
-  "locations.country": { xs: false, md: true },
+  "customers.customer_name": true,
+  "customers.address": false,
+  "customers.city": true,
+  "customers.pincode": true,
+  "customers.state": true,
+  "customers.country": { xs: false, md: true },
+  "customers.email": { xs: false, xl: true },
+  "customers.phone": { xs: false, md: true },
   "users_created_by.user_name": { xs: false, xl: true },
   "users_modified_by.user_name": false,
-  "locations.created_at": { xs: false, sm: true },
-  "locations.updated_at": false,
+  "customers.created_at": { xs: false, sm: true },
+  "customers.updated_at": false,
 };
 
-const alwaysSelect = ["locations.location_id"];
+const alwaysSelect = ["customers.customer_id"];
 
-const component = "Locations";
+const component = "Customers";
 
-function LocationsList() {
+function CustomersList() {
   const [selectedRows, setSelectedRows] = useState<GridSelectionModel>([]);
   const [cols, setCols] = useState(columns);
   const [currentFilter, setCurrentFilter] = useState<string>("");
   const [currentSorting, setCurrentSorting] = useState<string>("");
 
-  const deleteLocation = async () => {
+  const deleteCustomer = async () => {
     const id = selectedRows as unknown as number;
-    const result = await deleteById("locations", id);
+    const result = await deleteById("customers", id);
     if (result?.data?.count === 1) {
       refreshGrid();
     }
@@ -141,7 +157,7 @@ function LocationsList() {
   const refreshGrid = () => setCols((prev) => [...prev]);
 
   const saveChanges = async (params: GridRowEditStopParams) => {
-    const { location_id, result, ...location } = params.row;
+    const { customer_id, result, ...customer } = params.row;
   };
 
   const exportToExcel = async () => {
@@ -177,7 +193,7 @@ function LocationsList() {
             <>
               <span className={styles.options}>
                 <PlusCircleIcon className="w-5" />
-                <AddEditLocation isEdit={false} successCallback={refreshGrid} />
+                <AddEditCustomer isEdit={false} successCallback={refreshGrid} />
               </span>
               <span className={styles.options} onClick={exportToExcel}>
                 <ArrowUpOnSquareIcon className="w-5" />
@@ -189,11 +205,11 @@ function LocationsList() {
             <>
               <span className={styles.options}>
                 <PencilSquareIcon className="w-5" />
-                <AddEditLocation isEdit={true} successCallback={refreshGrid} />
+                <AddEditCustomer isEdit={true} successCallback={refreshGrid} />
               </span>
-              <span className={styles.options} onClick={deleteLocation}>
+              <span className={styles.options} onClick={deleteCustomer}>
                 <TrashIcon className="w-5" />
-                Delete Location
+                Delete Customer
               </span>
             </>
           )}
@@ -229,7 +245,7 @@ function LocationsList() {
   return (
     <CommonDataGrid
       header={component}
-      url={`${ODATA_URL}/locations`}
+      url={`${ODATA_URL}/customers`}
       columns={cols}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}
@@ -243,4 +259,4 @@ function LocationsList() {
   );
 }
 
-export default LocationsList;
+export default CustomersList;

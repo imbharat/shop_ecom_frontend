@@ -1,14 +1,10 @@
 import { useState, useCallback } from "react";
 import {
-  PlusCircleIcon,
-  PencilSquareIcon,
-  TrashIcon,
+  ArrowUturnLeftIcon,
   ArrowUpOnSquareIcon,
 } from "@heroicons/react/24/solid";
-
-import styles from "./LocationsList.module.css";
+import styles from "./SalesList.module.css";
 import {
-  GridRowEditStopParams,
   GridSelectionModel,
   GridSortModel,
   GridToolbarColumnsButton,
@@ -18,79 +14,130 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { ODataGridColDef, FilterParameters } from "o-data-grid";
-import AddEditLocation from "@/dialogs/Location/AddEditLocation";
 import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import { ODATA_URL } from "@/custom-hooks/useAxios";
-import { deleteById, downloadToExcel } from "@/services/shared.service";
-import { ExportToExcel } from "@/utils/UtilFunctions";
+import { downloadToExcel } from "@/services/shared.service";
+import {
+  ExportToExcel,
+  NumberFieldFilterOperators,
+} from "@/utils/UtilFunctions";
 
 const getFormattedDate = (date: string) => new Date(date).toDateString();
 
 let columns: ODataGridColDef[] = [
   {
-    field: "locations.location_name",
+    field: "orders.order_id",
+    headerName: "Invoice",
+    valueFormatter: (params) =>
+      `IN${"0".repeat(10 - params.value.toString().length)}${params.value}`,
+    headerClassName: "grid-header",
+    type: "number",
+    filterOperators: NumberFieldFilterOperators(),
+    align: "left",
+    headerAlign: "left",
+  },
+  {
+    field: "products.product_name",
     headerName: "Name",
-    editable: true,
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.address",
-    headerName: "Address",
-    editable: true,
+    field: "customers.customer_name",
+    headerName: "Customer",
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.city",
-    headerName: "City",
-    editable: true,
+    field: "products.cost_price",
+    headerName: "Cost Price",
+    headerClassName: "grid-header",
+    type: "number",
+    filterOperators: NumberFieldFilterOperators(),
+  },
+  {
+    field: "products.sell_price",
+    headerName: "Sell Price",
+    headerClassName: "grid-header",
+    type: "number",
+    filterOperators: NumberFieldFilterOperators(),
+  },
+  {
+    field: "profit.loss.ui.field",
+    headerName: "Profit/Loss",
+    valueGetter: (params) =>
+      params?.row["products.sell_price"] - params?.row["products.cost_price"] ||
+      "",
+    headerClassName: "grid-header",
+    cellClassName: (params) => (params.value > 0 ? "profit" : "loss"),
+    type: "number",
+    select: "''",
+    filterable: false,
+    sortable: false,
+  },
+  {
+    field: "types.type_name",
+    headerName: "Type",
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.pincode",
-    headerName: "Pincode",
-    editable: true,
+    field: "categories.category_name",
+    headerName: "Category",
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.state",
-    headerName: "State",
-    editable: true,
+    field: "products.barcode",
+    headerName: "Bar Code",
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.country",
-    headerName: "Country",
-    editable: true,
+    field: "products.imei",
+    headerName: "IMEI",
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "users_created_by.user_name",
-    headerName: "Created By",
+    field: "vendors.vendor_name",
+    headerName: "Vendor",
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "users_modified_by.user_name",
-    headerName: "Modified By",
+    field: "physical_qc.qc_name",
+    headerName: "Physical QC",
     headerClassName: "grid-header",
     type: "string",
   },
   {
-    field: "locations.created_at",
-    headerName: "Created On",
-    valueFormatter: (params) => getFormattedDate(params.value),
+    field: "screen_qc.qc_name",
+    headerName: "Screen QC",
     headerClassName: "grid-header",
-    type: "date",
+    type: "string",
   },
   {
-    field: "locations.updated_at",
-    headerName: "Updated On",
+    field: "products.ram",
+    headerName: "RAM",
+    headerClassName: "grid-header",
+    type: "string",
+  },
+  {
+    field: "products.storage",
+    headerName: "Storage",
+    headerClassName: "grid-header",
+    type: "string",
+  },
+  {
+    field: "users.user_name",
+    headerName: "Sold By",
+    headerClassName: "grid-header",
+    type: "string",
+  },
+  {
+    field: "orders.created_at",
+    headerName: "Sold On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
     type: "date",
@@ -108,41 +155,36 @@ columns = columns.map((col) => {
 });
 
 const columnVisibilityModel = {
-  "locations.location_name": true,
-  "locations.address": false,
-  "locations.city": true,
-  "locations.pincode": true,
-  "locations.state": true,
-  "locations.country": { xs: false, md: true },
-  "users_created_by.user_name": { xs: false, xl: true },
-  "users_modified_by.user_name": false,
-  "locations.created_at": { xs: false, sm: true },
-  "locations.updated_at": false,
+  "orders.order_id": true,
+  "products.product_name": true,
+  "customers.customer_name": true,
+  "products.cost_price": { xl: true },
+  "products.sell_price": true,
+  "profit.loss.ui.field": true,
+  "types.type_name": false,
+  "categories.category_name": false,
+  "products.barcode": { xs: false, md: true },
+  "products.imei": { xs: false, xl: true },
+  "vendors.vendor_name": false,
+  "physical_qc.qc_name": false,
+  "screen_qc.qc_name": false,
+  "products.ram": false,
+  "products.storage": false,
+  "users.user_name": { xs: false, xl: true },
+  "orders.created_at": { xs: false, sm: true },
 };
 
-const alwaysSelect = ["locations.location_id"];
+const alwaysSelect = ["products.product_id"];
 
-const component = "Locations";
+const component = "Sales";
 
-function LocationsList() {
+function SalesList() {
   const [selectedRows, setSelectedRows] = useState<GridSelectionModel>([]);
   const [cols, setCols] = useState(columns);
   const [currentFilter, setCurrentFilter] = useState<string>("");
   const [currentSorting, setCurrentSorting] = useState<string>("");
 
-  const deleteLocation = async () => {
-    const id = selectedRows as unknown as number;
-    const result = await deleteById("locations", id);
-    if (result?.data?.count === 1) {
-      refreshGrid();
-    }
-  };
-
   const refreshGrid = () => setCols((prev) => [...prev]);
-
-  const saveChanges = async (params: GridRowEditStopParams) => {
-    const { location_id, result, ...location } = params.row;
-  };
 
   const exportToExcel = async () => {
     const result = await downloadToExcel(
@@ -175,25 +217,17 @@ function LocationsList() {
         >
           {selectedRows.length === 0 && (
             <>
-              <span className={styles.options}>
-                <PlusCircleIcon className="w-5" />
-                <AddEditLocation isEdit={false} successCallback={refreshGrid} />
-              </span>
               <span className={styles.options} onClick={exportToExcel}>
                 <ArrowUpOnSquareIcon className="w-5" />
                 Export to Excel
               </span>
             </>
           )}
-          {selectedRows.length === 1 && (
+          {selectedRows.length >= 1 && (
             <>
-              <span className={styles.options}>
-                <PencilSquareIcon className="w-5" />
-                <AddEditLocation isEdit={true} successCallback={refreshGrid} />
-              </span>
-              <span className={styles.options} onClick={deleteLocation}>
-                <TrashIcon className="w-5" />
-                Delete Location
+              <span className={styles.options} onClick={() => {}}>
+                <ArrowUturnLeftIcon className="w-5" />
+                Return {selectedRows.length > 1 ? `Products` : `Product`}
               </span>
             </>
           )}
@@ -229,18 +263,17 @@ function LocationsList() {
   return (
     <CommonDataGrid
       header={component}
-      url={`${ODATA_URL}/locations`}
+      url={`${ODATA_URL}/products/sales`}
       columns={cols}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}
       setSelectedRows={setSelectedRows}
       CustomToolbar={CustomToolbar}
       columnVisibilityModel={columnVisibilityModel}
-      saveChanges={saveChanges}
       onFilterSubmit={onFilterSubmit}
       onSortingChange={onSortingChange}
     />
   );
 }
 
-export default LocationsList;
+export default SalesList;

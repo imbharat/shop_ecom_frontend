@@ -13,11 +13,14 @@ function AddEditProduct({
   isEdit = false,
   initialValues = {
     product_name: "",
-    price: 0,
+    cost_price: 0,
     type: "",
     vendor: "",
     location: "",
-    qc: "",
+    physical_qc: "",
+    screen_qc: "",
+    ram: "",
+    storage: "",
     barcode: "",
   },
 }: {
@@ -61,9 +64,9 @@ function AddEditProduct({
           onChange={handleInputChange}
         />
         <TextField
-          label="Price"
-          name="price"
-          value={values["price"]}
+          label="Cost Price"
+          name="cost_price"
+          value={values["cost_price"]}
           onChange={handleInputChange}
         />
         <TextField
@@ -87,9 +90,9 @@ function AddEditProduct({
           onChange={handleInputChange}
         />
         <TextField
-          label="Vendor"
-          name="qc"
-          value={values["qc"]}
+          label="Physical QC"
+          name="physical_qc"
+          value={values["physical_qc"]}
           onChange={handleInputChange}
         />
         <TextField
