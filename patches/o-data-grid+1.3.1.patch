@@ -1,87 +1,2498 @@
 diff --git a/node_modules/o-data-grid/build/o-data-grid-esm.js b/node_modules/o-data-grid/build/o-data-grid-esm.js
-index b174ce2..112e9a1 100644
+index b174ce2..ffe9d2e 100644
 --- a/node_modules/o-data-grid/build/o-data-grid-esm.js
 +++ b/node_modules/o-data-grid/build/o-data-grid-esm.js
-@@ -262,7 +262,26 @@ const FilterInputs = ({ clauseId, field, onFieldChange, op, onOpChange, value, o
-                 jsx(Grid, Object.assign({ item: true, xs: 12, md: true }, { children: jsx(Autocomplete, Object.assign({ size: "small" }, builderProps.autocompleteProps, { options: (_b = (_a = fieldDef.collectionFields) === null || _a === void 0 ? void 0 : _a.map(c => ({ label: c.label, field: c.field }))) !== null && _b !== void 0 ? _b : [], renderInput: (params) => jsx(TextField, Object.assign({ label: getLocaleText("collectionField", builderProps.localeText) }, builderProps.textFieldProps, params)), value: { label: (_c = fieldDef.colField) === null || _c === void 0 ? void 0 : _c.label, field: collectionField }, onChange: (_, val) => onCollectionFieldChange(field, collectionField, op, val.field), disableClearable: true, isOptionEqualToValue: (option, value) => option.field === value.field })) })), fieldDef.renderCustomFilter ?
-                 fieldDef.renderCustomFilter(value, onValueChange)
-                 :
--                    jsx(Grid, Object.assign({ item: true, xs: 12, md: true }, { children: jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-op` }, { children: "Operation" })), jsxs(Select, Object.assign({}, builderProps.selectProps, { value: op, onChange: (e) => onOpChange(e.target.value), labelId: `${clauseId}_label-op`, label: "Operation" }, { children: [jsx(MenuItem, Object.assign({ value: "eq", disabled: !fieldDef.ops.includes("eq") }, { children: getLocaleText("opEq", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "ne", disabled: !fieldDef.ops.includes("ne") }, { children: getLocaleText("opNe", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "gt", disabled: !fieldDef.ops.includes("gt") }, { children: getLocaleText("opGt", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "lt", disabled: !fieldDef.ops.includes("lt") }, { children: getLocaleText("opLt", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "ge", disabled: !fieldDef.ops.includes("ge") }, { children: getLocaleText("opGe", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "le", disabled: !fieldDef.ops.includes("le") }, { children: getLocaleText("opLe", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "contains", disabled: !fieldDef.ops.includes("contains") }, { children: getLocaleText("opContains", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "null", disabled: !fieldDef.ops.includes("null") }, { children: getLocaleText("opNull", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "notnull", disabled: !fieldDef.ops.includes("notnull") }, { children: getLocaleText("opNotNull", builderProps.localeText) }))] }))] })) })), !fieldDef.renderCustomFilter &&
-+                    jsx(Grid, Object.assign({ item: true, xs: 12, md: true }, { children: jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-op` }, { children: "Operation" })), jsxs(Select, Object.assign({}, builderProps.selectProps, { value: op, onChange: (e) => onOpChange(e.target.value), labelId: `${clauseId}_label-op`, label: "Operation" }, { children: [
-+                        (fieldDef.ops.includes("eq") && jsx(MenuItem, Object.assign({ value: "eq" }, 
-+                            { children: getLocaleText("opEq", builderProps.localeText) }))), 
-+                        (fieldDef.ops.includes("ne") && jsx(MenuItem, Object.assign({ value: "ne" }, 
-+                            { children: getLocaleText("opNe", builderProps.localeText) }))), 
-+                        (fieldDef.ops.includes("gt") && jsx(MenuItem, Object.assign({ value: "gt" }, 
-+                            { children: getLocaleText("opGt", builderProps.localeText) }))), 
-+                        (fieldDef.ops.includes("lt") && jsx(MenuItem, Object.assign({ value: "lt" }, 
-+                            { children: getLocaleText("opLt", builderProps.localeText) }))), 
-+                        (fieldDef.ops.includes("ge") && jsx(MenuItem, Object.assign({ value: "ge" }, 
-+                            { children: getLocaleText("opGe", builderProps.localeText) }))), 
-+                        (fieldDef.ops.includes("le") && jsx(MenuItem, Object.assign({ value: "le" }, 
-+                            { children: getLocaleText("opLe", builderProps.localeText) }))), 
-+                        (fieldDef.ops.includes("contains") && jsx(MenuItem, Object.assign({ value: "contains" }, 
-+                            { children: getLocaleText("opContains", builderProps.localeText) }))), 
-+                        (fieldDef.ops.includes("null") && jsx(MenuItem, Object.assign({ value: "null" }, 
-+                            { children: getLocaleText("opNull", builderProps.localeText) }))), 
-+                        (fieldDef.ops.includes("notnull") && jsx(MenuItem, Object.assign({ value: "notnull" }, 
-+                            { children: getLocaleText("opNotNull", builderProps.localeText) }))),
-+                    ] }))] })) })), !fieldDef.renderCustomFilter &&
-                 jsx(Grid, Object.assign({ item: true, xs: true }, { children: op !== "null" && op !== "notnull" &&
-                         (fieldDef.renderCustomInput ? fieldDef.renderCustomInput(value, onValueChange) :
-                             jsxs(Fragment, { children: [fieldDef.type === "date" &&
-@@ -270,7 +289,7 @@ const FilterInputs = ({ clauseId, field, onFieldChange, op, onOpChange, value, o
-                                         jsx(LocalizationProvider, Object.assign({ dateAdapter: dateAdapter }, builderProps.localizationProviderProps, { children: jsx(DateTimePicker, Object.assign({ label: getLocaleText("value", builderProps.localeText) }, fieldDef.dateTimePickerProps, { value: value !== null && value !== void 0 ? value : "", renderInput: (params) => jsx(TextField, Object.assign({ fullWidth: true, size: "small" }, builderProps.textFieldProps, fieldDef.textFieldProps, params)), onChange: (date) => onValueChange(new dateAdapter().toISO(date)) })) })), fieldDef.type === "boolean" &&
-                                         jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, (_d = fieldDef.selectProps) === null || _d === void 0 ? void 0 : _d.formControlProps, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-bool-value` }, { children: (_f = (_e = fieldDef.selectProps) === null || _e === void 0 ? void 0 : _e.label) !== null && _f !== void 0 ? _f : getLocaleText("value", builderProps.localeText) })), jsxs(Select, Object.assign({ label: (_h = (_g = fieldDef.selectProps) === null || _g === void 0 ? void 0 : _g.label) !== null && _h !== void 0 ? _h : getLocaleText("value", builderProps.localeText) }, builderProps.selectProps, (_j = fieldDef.selectProps) === null || _j === void 0 ? void 0 : _j.selectProps, { value: value !== null && value !== void 0 ? value : true, onChange: (e) => onValueChange(e.target.value), labelId: `${clauseId}_label-bool-value` }, { children: [jsx(MenuItem, Object.assign({ value: "true" }, { children: "Yes" })), jsx(MenuItem, Object.assign({ value: "false" }, { children: "No" })), fieldDef.nullable && jsx(MenuItem, Object.assign({ value: "null" }, { children: "Unknown" }))] }))] })), fieldDef.type === "singleSelect" && fieldDef.valueOptions &&
-                                         jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, (_k = fieldDef.selectProps) === null || _k === void 0 ? void 0 : _k.formControlProps, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-select-value` }, { children: (_m = (_l = fieldDef.selectProps) === null || _l === void 0 ? void 0 : _l.label) !== null && _m !== void 0 ? _m : getLocaleText("value", builderProps.localeText) })), jsx(Select, Object.assign({ label: (_p = (_o = fieldDef.selectProps) === null || _o === void 0 ? void 0 : _o.label) !== null && _p !== void 0 ? _p : getLocaleText("value", builderProps.localeText), value: value !== null && value !== void 0 ? value : "", onChange: (e) => onValueChange(e.target.value), labelId: `${clauseId}_label-select-value` }, { children: fieldDef.valueOptions.map((o, i) => (jsx(MenuItem, Object.assign({ value: o.value }, { children: o.label }), `${clauseId}_${field}_select_${i}`))) }))] })), (!fieldDef.type || fieldDef.type === "string" || fieldDef.type === "number") &&
--                                        jsx(TextField, Object.assign({ size: "small", fullWidth: true, label: getLocaleText("value", builderProps.localeText) }, builderProps.textFieldProps, fieldDef.textFieldProps, { value: value !== null && value !== void 0 ? value : "", onChange: (e) => onValueChange(fieldDef.type === "number" ? parseFloat(e.target.value) : e.target.value), type: fieldDef.type === "number" ? "number" : "text" }))] })) }))] }));
-+                                        jsx(TextField, Object.assign({ required: true, size: "small", fullWidth: true, label: getLocaleText("value", builderProps.localeText) }, builderProps.textFieldProps, fieldDef.textFieldProps, { value: value !== null && value !== void 0 ? value : "", onChange: (e) => onValueChange(fieldDef.type === "number" ? parseFloat(e.target.value) : e.target.value), type: fieldDef.type === "number" ? "number" : "text" }))] })) }))] }));
- };
- var FilterInputs$1 = React.memo(FilterInputs);
+@@ -1,1219 +1,1310 @@
+-import { jsxs, jsx } from 'react/jsx-runtime';
+-import React, { useEffect, useState, useMemo, Fragment, useCallback, useRef } from 'react';
+-import { Box } from '@mui/system';
+-import { useTheme } from '@mui/material/styles';
+-import { atom, useRecoilValue, useRecoilState, useSetRecoilState, waitForAll, RecoilRoot } from 'recoil';
+-import { Remove, Add, ArrowDropDown } from '@mui/icons-material';
+-import { Grid, Autocomplete, TextField, FormControl, InputLabel, Select, MenuItem, IconButton, useTheme as useTheme$1, ToggleButtonGroup, ToggleButton, ButtonGroup, Button, Popover, Paper, MenuList } from '@mui/material';
+-import Immutable from 'immutable';
+-import { LocalizationProvider, DatePicker, DateTimePicker } from '@mui/x-date-pickers';
+-import { v4 } from 'uuid';
+-import { createMakeStyles } from 'tss-react';
+-import { DataGrid } from '@mui/x-data-grid';
++import {
++    jsxs as e,
++    jsx as l
++} from "react/jsx-runtime";
++import t, {
++    useEffect as i,
++    useState as o,
++    useMemo as a,
++    Fragment as n,
++    useCallback as r,
++    useRef as s
++} from "react";
++import {
++    Box as d
++} from "@mui/system";
++import {
++    useTheme as u
++} from "@mui/material/styles";
++import {
++    atom as c,
++    useRecoilValue as p,
++    useRecoilState as g,
++    useSetRecoilState as f,
++    waitForAll as m,
++    RecoilRoot as h
++} from "recoil";
++import {
++    Remove as $,
++    Add as v,
++    ArrowDropDown as y
++} from "@mui/icons-material";
++import {
++    Grid as b,
++    Autocomplete as S,
++    TextField as x,
++    FormControl as T,
++    InputLabel as C,
++    Select as _,
++    MenuItem as O,
++    IconButton as F,
++    useTheme as P,
++    ToggleButtonGroup as M,
++    ToggleButton as G,
++    ButtonGroup as L,
++    Button as B,
++    Popover as k,
++    Paper as I,
++    MenuList as z
++} from "@mui/material";
++import q from "immutable";
++import {
++    LocalizationProvider as w,
++    DatePicker as D,
++    DateTimePicker as E
++} from "@mui/x-date-pickers";
++import {
++    v4 as U
++} from "uuid";
++import {
++    createMakeStyles as A
++} from "tss-react";
++import {
++    DataGrid as N
++} from "@mui/x-data-grid";
++import classNames from "classnames";
  
-@@ -487,11 +506,17 @@ const defaultTranslators = {
-             return `contains(tolower(${field}), tolower('${escapeODataString(value)}'))`;
+-/******************************************************************************
+-Copyright (c) Microsoft Corporation.
+-
+-Permission to use, copy, modify, and/or distribute this software for any
+-purpose with or without fee is hereby granted.
+-
+-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+-PERFORMANCE OF THIS SOFTWARE.
+-***************************************************************************** */
+-
+-function __awaiter(thisArg, _arguments, P, generator) {
+-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+-    return new (P || (P = Promise))(function (resolve, reject) {
+-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+-        step((generator = generator.apply(thisArg, _arguments || [])).next());
+-    });
+-}
+-
+-const useResponsive = () => {
+-    const theme = useTheme();
+-    const matches = useBreakpoints();
+-    return function (responsiveValues) {
+-        let match;
+-        theme.breakpoints.keys.forEach((breakpoint) => {
+-            if (matches[breakpoint] && responsiveValues[breakpoint] != null) {
+-                match = breakpoint;
++function __awaiter(e, l, t, i) {
++    return new(t || (t = Promise))(function(o, a) {
++        function n(e) {
++            try {
++                s(i.next(e))
++            } catch (l) {
++                a(l)
+             }
+-        });
+-        return match && responsiveValues[match];
+-    };
+-};
+-// eslint-disable-next-line react-hooks/exhaustive-deps
+-const useMountEffect = (func) => useEffect(func, []);
+-const useBreakpoints = () => {
+-    const theme = useTheme();
+-    const [matches, setMatches] = useState(getMatches(theme.breakpoints.keys, theme));
+-    useEffect(() => {
+-        const queries = getQueries(theme.breakpoints.keys, theme);
+-        const listeners = {};
+-        const updateMatch = (b) => {
+-            setMatches((oldMatches) => { var _a, _b; return (Object.assign(Object.assign({}, oldMatches), { [b]: (_b = (_a = queries[b]) === null || _a === void 0 ? void 0 : _a.matches) !== null && _b !== void 0 ? _b : false })); });
+-        };
+-        theme.breakpoints.keys.forEach(b => {
+-            listeners[b] = () => updateMatch(b);
+-            queries[b].addEventListener("change", listeners[b]);
+-        });
+-        return () => {
+-            theme.breakpoints.keys.forEach(b => {
+-                queries[b].removeEventListener("change", listeners[b]);
+-            });
+-        };
+-    }, [theme]);
+-    return matches;
+-};
+-const getQueries = (breakpoints, theme) => breakpoints.reduce((acc, b) => (Object.assign(Object.assign({}, acc), { [b]: window.matchMedia(theme.breakpoints.up(b).replace(/^@media( ?)/m, '')) })), {});
+-const getMatches = (breakpoints, theme) => breakpoints.reduce((acc, b) => (Object.assign(Object.assign({}, acc), { [b]: window.matchMedia(theme.breakpoints.up(b).replace(/^@media( ?)/m, '')).matches })), {});
+-
+-const rootGroupUuid = "17c63a07-397b-4f03-a74b-2f935dcc6c8a";
+-const rootConditionUuid = "18c1713a-2480-40c0-b60f-220a3fd4b117";
+-const allOperators = ["eq", "ne", "gt", "lt", "ge", "le", "contains", "null", "notnull"];
+-const numericOperators = ["eq", "ne", "gt", "lt", "ge", "le"];
+-const initialClauses = Immutable.Map({
+-    [rootGroupUuid]: {
+-        id: rootGroupUuid,
+-        connective: "and"
+-    },
+-    [rootConditionUuid]: {
+-        id: rootConditionUuid,
+-        field: "",
+-        op: "eq",
+-        value: null,
+-        default: true
+-    }
+-});
+-const initialTree = Immutable.Map({
+-    [rootGroupUuid]: {
+-        id: rootGroupUuid,
+-        children: Immutable.Map({ [rootConditionUuid]: rootConditionUuid })
+-    }
+-});
+-const defaultLocale = {
+-    and: "And",
+-    or: "Or",
+-    addCondition: "Add Condition",
+-    addGroup: "Add Group",
+-    field: "Field",
+-    operation: "Operation",
+-    value: "Value",
+-    collectionOperation: "Operation",
+-    collectionField: "Field",
+-    search: "Search",
+-    reset: "Reset",
+-    opAny: "Has at least one",
+-    opAll: "All have",
+-    opCount: "Count",
+-    opEq: "=",
+-    opNe: "≠",
+-    opGt: ">",
+-    opLt: "<",
+-    opGe: "≥",
+-    opLe: "≤",
+-    opContains: "Contains",
+-    opNull: "Is Blank",
+-    opNotNull: "Is Not Blank"
+-};
+-
+-const schemaState = atom({
+-    key: "schema",
+-    default: []
+-});
+-const clauseState = atom({
+-    key: "filterClauses",
+-    default: initialClauses
+-});
+-const treeState = atom({
+-    key: "filterTree",
+-    default: initialTree
+-});
+-const propsState = atom({
+-    key: "props",
+-    default: {}
+-});
+-
+-const getDefaultCondition = (field) => ({
+-    field: field,
+-    op: "eq",
+-    value: null,
+-    id: v4()
+-});
+-const getDefaultGroup = () => ({
+-    connective: "and",
+-    id: v4()
+-});
+-const getSelectOption = (option) => {
+-    if (typeof option === "string") {
+-        return { value: option, label: option };
+-    }
+-    else if (typeof option === "number") {
+-        return { value: option.toString(), label: option.toString() };
+-    }
+-    else {
+-        return option;
+-    }
+-};
+-const getLocaleText = (key, locale) => locale !== undefined && locale[key] ? locale[key] : defaultLocale[key];
+-const deserialise = (obj) => {
+-    const [treeGroup, clauses] = groupObjToMap(obj, rootGroupUuid);
+-    return [
+-        Immutable.Map({
+-            [rootGroupUuid]: treeGroup
+-        }),
+-        clauses
+-    ];
+-};
+-const groupObjToMap = (obj, id, clauses) => {
+-    let children = Immutable.Map();
+-    if (!clauses) {
+-        clauses = Immutable.Map();
+-    }
+-    clauses = clauses.set(id, Object.assign({ id: id }, obj));
+-    obj.children.forEach((child) => {
+-        const childId = v4();
+-        clauses = clauses.set(childId, Object.assign({ id: childId }, child));
+-        const g = child;
+-        if (g.connective) {
+-            const result = groupObjToMap(g, childId, clauses);
+-            children = children.set(childId, result[0]);
+-            clauses = clauses.merge(result[1]);
          }
+-        else {
+-            children = children.set(childId, childId);
+-        }
+-    });
+-    return [{ id: id, children: children }, clauses];
+-};
+-const escapeODataString = (val) => val.replace("'", "''");
+ 
+-const FilterInputs = ({ clauseId, field, onFieldChange, op, onOpChange, value, onValueChange, collectionOp, onCollectionOpChange, collectionField, onCollectionFieldChange }) => {
+-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
+-    const schema = useRecoilValue(schemaState);
+-    const builderProps = useRecoilValue(propsState);
+-    const dateAdapter = useMemo(() => { var _a; return (_a = builderProps.localizationProviderProps) === null || _a === void 0 ? void 0 : _a.dateAdapter; }, [builderProps]);
+-    const fieldDef = useMemo(() => {
+-        var _a, _b, _c, _d, _e, _f, _g;
+-        if (!field && schema.length < 1) {
+-            return null;
+-        }
+-        let f;
+-        if (field) {
+-            f = (_a = schema.find(c => c.field === field)) !== null && _a !== void 0 ? _a : schema[0];
+-        }
+-        else {
+-            f = schema[0];
+-        }
+-        if (!f) {
+-            return null;
+-        }
+-        let filterField = field;
+-        let colField;
+-        let type = (_b = f.filterType) !== null && _b !== void 0 ? _b : f.type;
+-        let options = f.valueOptions;
+-        let ops = (_c = f.filterOperators) !== null && _c !== void 0 ? _c : allOperators;
+-        if (f.collection === true && f.collectionFields) {
+-            if (collectionField) {
+-                colField = (_d = f.collectionFields.find(c => c.field === collectionField)) !== null && _d !== void 0 ? _d : f.collectionFields[0];
+-            }
+-            else {
+-                colField = f.collectionFields[0];
+-            }
+-            filterField = colField.field;
+-            type = colField.type;
+-            options = colField.valueOptions;
+-            if (collectionOp !== "count") {
+-                ops = (_e = colField.filterOperators) !== null && _e !== void 0 ? _e : allOperators;
+-            }
+-            else {
+-                ops = numericOperators;
+-                type = "number";
++        function r(e) {
++            try {
++                s(i.throw(e))
++            } catch (l) {
++                a(l)
+             }
+         }
+-        // get value options into a single type
+-        let valueOptions;
+-        if (type === "singleSelect" && typeof options === "function") {
+-            valueOptions = options({ field: filterField }).map((v) => getSelectOption(v));
++
++        function s(e) {
++            var l;
++            e.done ? o(e.value) : ((l = e.value) instanceof t ? l : new t(function(e) {
++                e(l)
++            })).then(n, r)
+         }
+-        else if (type === "singleSelect" && options) {
+-            valueOptions = options.map((v) => getSelectOption(v));
++        s((i = i.apply(e, l || [])).next())
++    })
++}
++let useResponsive = () => {
++        let e = u(),
++            l = useBreakpoints();
++        return function(t) {
++            let i;
++            return e.breakpoints.keys.forEach(e => {
++                l[e] && null != t[e] && (i = e)
++            }), i && t[i]
+         }
+-        return Object.assign(Object.assign({}, f), { fieldLabel: (_g = (_f = f.label) !== null && _f !== void 0 ? _f : f.headerName) !== null && _g !== void 0 ? _g : f.field, type: type, ops: ops, valueOptions: valueOptions, colField: colField });
+-    }, [field, collectionField, collectionOp, schema]);
+-    const fieldOptions = useMemo(() => schema
+-        .filter(c => c.filterable !== false)
+-        .map(c => { var _a, _b, _c; return ({ label: (_b = (_a = c.label) !== null && _a !== void 0 ? _a : c.headerName) !== null && _b !== void 0 ? _b : c.field, field: c.field, group: (_c = c.autocompleteGroup) !== null && _c !== void 0 ? _c : "" }); })
+-        .sort((a, b) => builderProps.autocompleteGroups ?
+-        builderProps.autocompleteGroups.indexOf(a.group) - builderProps.autocompleteGroups.indexOf(b.group)
+-        : a.group.localeCompare(b.group)), [schema, builderProps]);
+-    if (schema.length < 1 || !fieldDef) {
+-        return null;
+-    }
+-    return (jsxs(Fragment, { children: [jsx(Grid, Object.assign({ item: true, xs: 12, md: fieldDef.collection ? true : 4 }, { children: jsx(Autocomplete, Object.assign({ size: "small" }, builderProps.autocompleteProps, { options: fieldOptions, renderInput: (params) => jsx(TextField, Object.assign({ label: getLocaleText("field", builderProps.localeText) }, builderProps.textFieldProps, params)), value: { label: fieldDef.fieldLabel, field: fieldDef.field, group: fieldDef.autocompleteGroup }, onChange: (_, val) => onFieldChange(fieldDef.field, op, val.field), disableClearable: true, isOptionEqualToValue: (option, value) => option.field === value.field, groupBy: (option) => option.group })) })), fieldDef.collection === true &&
+-                jsx(Grid, Object.assign({ item: true, xs: 12, md: true }, { children: jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-collection-op` }, { children: getLocaleText("collectionOperation", builderProps.localeText) })), jsxs(Select, Object.assign({ label: getLocaleText("collectionOperation", builderProps.localeText) }, builderProps.selectProps, { value: collectionOp, onChange: (e) => onCollectionOpChange(e.target.value), labelId: `${clauseId}_label-collection-op` }, { children: [jsx(MenuItem, Object.assign({ value: "any" }, { children: getLocaleText("opAny", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "all" }, { children: getLocaleText("opAll", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "count" }, { children: getLocaleText("opCount", builderProps.localeText) }))] }))] })) })), fieldDef.collection === true && collectionOp !== "count" &&
+-                jsx(Grid, Object.assign({ item: true, xs: 12, md: true }, { children: jsx(Autocomplete, Object.assign({ size: "small" }, builderProps.autocompleteProps, { options: (_b = (_a = fieldDef.collectionFields) === null || _a === void 0 ? void 0 : _a.map(c => ({ label: c.label, field: c.field }))) !== null && _b !== void 0 ? _b : [], renderInput: (params) => jsx(TextField, Object.assign({ label: getLocaleText("collectionField", builderProps.localeText) }, builderProps.textFieldProps, params)), value: { label: (_c = fieldDef.colField) === null || _c === void 0 ? void 0 : _c.label, field: collectionField }, onChange: (_, val) => onCollectionFieldChange(field, collectionField, op, val.field), disableClearable: true, isOptionEqualToValue: (option, value) => option.field === value.field })) })), fieldDef.renderCustomFilter ?
+-                fieldDef.renderCustomFilter(value, onValueChange)
+-                :
+-                    jsx(Grid, Object.assign({ item: true, xs: 12, md: true }, { children: jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-op` }, { children: "Operation" })), jsxs(Select, Object.assign({}, builderProps.selectProps, { value: op, onChange: (e) => onOpChange(e.target.value), labelId: `${clauseId}_label-op`, label: "Operation" }, { children: [jsx(MenuItem, Object.assign({ value: "eq", disabled: !fieldDef.ops.includes("eq") }, { children: getLocaleText("opEq", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "ne", disabled: !fieldDef.ops.includes("ne") }, { children: getLocaleText("opNe", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "gt", disabled: !fieldDef.ops.includes("gt") }, { children: getLocaleText("opGt", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "lt", disabled: !fieldDef.ops.includes("lt") }, { children: getLocaleText("opLt", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "ge", disabled: !fieldDef.ops.includes("ge") }, { children: getLocaleText("opGe", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "le", disabled: !fieldDef.ops.includes("le") }, { children: getLocaleText("opLe", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "contains", disabled: !fieldDef.ops.includes("contains") }, { children: getLocaleText("opContains", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "null", disabled: !fieldDef.ops.includes("null") }, { children: getLocaleText("opNull", builderProps.localeText) })), jsx(MenuItem, Object.assign({ value: "notnull", disabled: !fieldDef.ops.includes("notnull") }, { children: getLocaleText("opNotNull", builderProps.localeText) }))] }))] })) })), !fieldDef.renderCustomFilter &&
+-                jsx(Grid, Object.assign({ item: true, xs: true }, { children: op !== "null" && op !== "notnull" &&
+-                        (fieldDef.renderCustomInput ? fieldDef.renderCustomInput(value, onValueChange) :
+-                            jsxs(Fragment, { children: [fieldDef.type === "date" &&
+-                                        jsx(LocalizationProvider, Object.assign({ dateAdapter: dateAdapter }, builderProps.localizationProviderProps, { children: jsx(DatePicker, Object.assign({ label: getLocaleText("value", builderProps.localeText) }, builderProps.datePickerProps, fieldDef.datePickerProps, { value: value !== null && value !== void 0 ? value : "", renderInput: (params) => jsx(TextField, Object.assign({ fullWidth: true, size: "small" }, builderProps.textFieldProps, fieldDef.textFieldProps, params)), onChange: (date) => onValueChange(new dateAdapter().formatByString(date, "YYYY-MM-DD")) })) })), fieldDef.type === "datetime" &&
+-                                        jsx(LocalizationProvider, Object.assign({ dateAdapter: dateAdapter }, builderProps.localizationProviderProps, { children: jsx(DateTimePicker, Object.assign({ label: getLocaleText("value", builderProps.localeText) }, fieldDef.dateTimePickerProps, { value: value !== null && value !== void 0 ? value : "", renderInput: (params) => jsx(TextField, Object.assign({ fullWidth: true, size: "small" }, builderProps.textFieldProps, fieldDef.textFieldProps, params)), onChange: (date) => onValueChange(new dateAdapter().toISO(date)) })) })), fieldDef.type === "boolean" &&
+-                                        jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, (_d = fieldDef.selectProps) === null || _d === void 0 ? void 0 : _d.formControlProps, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-bool-value` }, { children: (_f = (_e = fieldDef.selectProps) === null || _e === void 0 ? void 0 : _e.label) !== null && _f !== void 0 ? _f : getLocaleText("value", builderProps.localeText) })), jsxs(Select, Object.assign({ label: (_h = (_g = fieldDef.selectProps) === null || _g === void 0 ? void 0 : _g.label) !== null && _h !== void 0 ? _h : getLocaleText("value", builderProps.localeText) }, builderProps.selectProps, (_j = fieldDef.selectProps) === null || _j === void 0 ? void 0 : _j.selectProps, { value: value !== null && value !== void 0 ? value : true, onChange: (e) => onValueChange(e.target.value), labelId: `${clauseId}_label-bool-value` }, { children: [jsx(MenuItem, Object.assign({ value: "true" }, { children: "Yes" })), jsx(MenuItem, Object.assign({ value: "false" }, { children: "No" })), fieldDef.nullable && jsx(MenuItem, Object.assign({ value: "null" }, { children: "Unknown" }))] }))] })), fieldDef.type === "singleSelect" && fieldDef.valueOptions &&
+-                                        jsxs(FormControl, Object.assign({ fullWidth: true, size: "small" }, (_k = fieldDef.selectProps) === null || _k === void 0 ? void 0 : _k.formControlProps, { children: [jsx(InputLabel, Object.assign({ id: `${clauseId}_label-select-value` }, { children: (_m = (_l = fieldDef.selectProps) === null || _l === void 0 ? void 0 : _l.label) !== null && _m !== void 0 ? _m : getLocaleText("value", builderProps.localeText) })), jsx(Select, Object.assign({ label: (_p = (_o = fieldDef.selectProps) === null || _o === void 0 ? void 0 : _o.label) !== null && _p !== void 0 ? _p : getLocaleText("value", builderProps.localeText), value: value !== null && value !== void 0 ? value : "", onChange: (e) => onValueChange(e.target.value), labelId: `${clauseId}_label-select-value` }, { children: fieldDef.valueOptions.map((o, i) => (jsx(MenuItem, Object.assign({ value: o.value }, { children: o.label }), `${clauseId}_${field}_select_${i}`))) }))] })), (!fieldDef.type || fieldDef.type === "string" || fieldDef.type === "number") &&
+-                                        jsx(TextField, Object.assign({ size: "small", fullWidth: true, label: getLocaleText("value", builderProps.localeText) }, builderProps.textFieldProps, fieldDef.textFieldProps, { value: value !== null && value !== void 0 ? value : "", onChange: (e) => onValueChange(fieldDef.type === "number" ? parseFloat(e.target.value) : e.target.value), type: fieldDef.type === "number" ? "number" : "text" }))] })) }))] }));
+-};
+-var FilterInputs$1 = React.memo(FilterInputs);
+-
+-const FilterCondition = ({ clauseId, path }) => {
+-    const [clauses, setClauses] = useRecoilState(clauseState);
+-    const setTree = useSetRecoilState(treeState);
+-    const schema = useRecoilValue(schemaState);
+-    const condition = useMemo(() => clauses.get(clauseId), [clauses, clauseId]);
+-    const changeField = useCallback((oldField, currentOp, newField) => {
+-        const oldFieldDef = schema.find(c => c.field === oldField);
+-        const newFieldDef = schema.find(c => c.field === newField);
+-        setClauses(old => old.update(clauseId, c => {
+-            var _a;
+-            const condition = Object.assign({}, c);
+-            condition.field = newField;
+-            condition.default = false;
+-            if (oldFieldDef && newFieldDef) {
+-                // reset value if fields have different types
+-                if (oldFieldDef.type !== newFieldDef.type) {
+-                    condition.value = "";
+-                }
+-                // reset operator if new field doesn't support current operator
+-                if (newFieldDef.filterOperators && !newFieldDef.filterOperators.includes(currentOp)) {
+-                    condition.op = (_a = newFieldDef.filterOperators[0]) !== null && _a !== void 0 ? _a : "eq";
+-                }
+-                // set collection field if new field is a collection
+-                if (newFieldDef.collection === true && newFieldDef.collectionFields) {
+-                    condition.collectionField = newFieldDef.collectionFields[0].field;
+-                    condition.collectionOp = "any";
+-                    if (newFieldDef.collectionFields[0].filterOperators) {
+-                        condition.op = newFieldDef.collectionFields[0].filterOperators[0];
+-                    }
+-                    else {
+-                        condition.op = "eq";
+-                    }
+-                }
+-                else { // clear collection fields if new field is not a collection
+-                    condition.collectionField = undefined;
+-                    condition.collectionOp = undefined;
+-                }
+-            }
+-            return condition;
+-        }));
+-    }, [schema, setClauses, clauseId]);
+-    const changeOp = useCallback((o) => {
+-        setClauses(old => old.update(clauseId, c => (Object.assign(Object.assign({}, c), { op: o, default: false }))));
+-    }, [setClauses, clauseId]);
+-    const changeValue = useCallback((v) => {
+-        setClauses(old => old.update(clauseId, c => (Object.assign(Object.assign({}, c), { value: v, default: false }))));
+-    }, [setClauses, clauseId]);
+-    const changeCollectionOp = useCallback((o) => {
+-        setClauses(old => old.update(clauseId, c => {
+-            const condition = Object.assign(Object.assign({}, c), { collectionOp: o, default: false });
+-            // reset field operator if switching to count operator and current op is not valid
+-            if (o === "count" && !numericOperators.includes(condition.op)) {
+-                condition.op = "eq";
++    },
++    useMountEffect = e => i(e, []),
++    useBreakpoints = () => {
++        let e = u(),
++            [l, t] = o(getMatches(e.breakpoints.keys, e));
++        return i(() => {
++            let l = getQueries(e.breakpoints.keys, e),
++                i = {},
++                o = e => {
++                    t(t => {
++                        var i, o;
++                        return Object.assign(Object.assign({}, t), {
++                            [e]: null !== (o = null === (i = l[e]) || void 0 === i ? void 0 : i.matches) && void 0 !== o && o
++                        })
++                    })
++                };
++            return e.breakpoints.keys.forEach(e => {
++                i[e] = () => o(e), l[e].addEventListener("change", i[e])
++            }), () => {
++                e.breakpoints.keys.forEach(e => {
++                    l[e].removeEventListener("change", i[e])
++                })
+             }
+-            return condition;
+-        }));
+-    }, [setClauses, clauseId]);
+-    const changeCollectionField = useCallback((field, oldColField, currentOp, newColField) => {
+-        const fieldDef = schema.find(c => c.field === field);
+-        setClauses(old => old.update(clauseId, c => {
+-            var _a;
+-            const condition = Object.assign({}, c);
+-            condition.collectionField = newColField;
+-            condition.default = false;
+-            if (fieldDef && fieldDef.collectionFields && oldColField && newColField) {
+-                const oldColFieldDef = fieldDef.collectionFields.find(c => c.field === oldColField);
+-                const newColFieldDef = fieldDef.collectionFields.find(c => c.field === newColField);
+-                // reset value if fields have different types
+-                if (oldColFieldDef.type !== newColFieldDef.type) {
+-                    condition.value = "";
++        }, [e]), l
++    },
++    getQueries = (e, l) => e.reduce((e, t) => Object.assign(Object.assign({}, e), {
++        [t]: window.matchMedia(l.breakpoints.up(t).replace(/^@media( ?)/m, ""))
++    }), {}),
++    getMatches = (e, l) => e.reduce((e, t) => Object.assign(Object.assign({}, e), {
++        [t]: window.matchMedia(l.breakpoints.up(t).replace(/^@media( ?)/m, "")).matches
++    }), {}),
++    rootGroupUuid = "17c63a07-397b-4f03-a74b-2f935dcc6c8a",
++    rootConditionUuid = "18c1713a-2480-40c0-b60f-220a3fd4b117",
++    allOperators = ["eq", "ne", "gt", "lt", "ge", "le", "contains", "null", "notnull"],
++    numericOperators = ["eq", "ne", "gt", "lt", "ge", "le"],
++    initialClauses = q.Map({
++        [rootGroupUuid]: {
++            id: rootGroupUuid,
++            connective: "and"
++        },
++        [rootConditionUuid]: {
++            id: rootConditionUuid,
++            field: "",
++            op: "eq",
++            value: null,
++            default: !0
++        }
++    }),
++    initialTree = q.Map({
++        [rootGroupUuid]: {
++            id: rootGroupUuid,
++            children: q.Map({
++                [rootConditionUuid]: rootConditionUuid
++            })
++        }
++    }),
++    defaultLocale = {
++        and: "And",
++        or: "Or",
++        addCondition: "Add Condition",
++        addGroup: "Add Group",
++        field: "Field",
++        operation: "Operation",
++        value: "Value",
++        collectionOperation: "Operation",
++        collectionField: "Field",
++        search: "Search",
++        reset: "Reset",
++        opAny: "Has at least one",
++        opAll: "All have",
++        opCount: "Count",
++        opEq: "=",
++        opNe: "≠",
++        opGt: ">",
++        opLt: "<",
++        opGe: "≥",
++        opLe: "≤",
++        opContains: "Contains",
++        opNull: "Is Blank",
++        opNotNull: "Is Not Blank"
++    },
++    schemaState = c({
++        key: "schema",
++        default: []
++    }),
++    clauseState = c({
++        key: "filterClauses",
++        default: initialClauses
++    }),
++    treeState = c({
++        key: "filterTree",
++        default: initialTree
++    }),
++    propsState = c({
++        key: "props",
++        default: {}
++    }),
++    getDefaultCondition = e => ({
++        field: e,
++        op: "eq",
++        value: null,
++        id: U()
++    }),
++    getDefaultGroup = () => ({
++        connective: "and",
++        id: U()
++    }),
++    getSelectOption = e => "string" == typeof e ? {
++        value: e,
++        label: e
++    } : "number" == typeof e ? {
++        value: e.toString(),
++        label: e.toString()
++    } : e,
++    getLocaleText = (e, l) => void 0 !== l && l[e] ? l[e] : defaultLocale[e],
++    deserialise = e => {
++        let [l, t] = groupObjToMap(e, rootGroupUuid);
++        return [q.Map({
++            [rootGroupUuid]: l
++        }), t]
++    },
++    groupObjToMap = (e, l, t) => {
++        let i = q.Map();
++        return t || (t = q.Map()), t = t.set(l, Object.assign({
++            id: l
++        }, e)), e.children.forEach(e => {
++            let l = U();
++            t = t.set(l, Object.assign({
++                id: l
++            }, e));
++            let o = e;
++            if (o.connective) {
++                let a = groupObjToMap(o, l, t);
++                i = i.set(l, a[0]), t = t.merge(a[1])
++            } else i = i.set(l, l)
++        }), [{
++            id: l,
++            children: i
++        }, t]
++    },
++    escapeODataString = e => e.replace("'", "''"),
++    FilterInputs = ({
++        clauseId: t,
++        field: i,
++        onFieldChange: o,
++        op: r,
++        onOpChange: s,
++        value: d,
++        onValueChange: u,
++        collectionOp: c,
++        onCollectionOpChange: g,
++        collectionField: f,
++        onCollectionFieldChange: m
++    }) => {
++        var h, $, v, y, F, P, M, G, L, B, k, I, z, q;
++        let U = p(schemaState),
++            A = p(propsState),
++            N = a(() => {
++                var e;
++                return null === (e = A.localizationProviderProps) || void 0 === e ? void 0 : e.dateAdapter
++            }, [A]),
++            R = a(() => {
++                var e, l, t, o, a, n, r;
++                if (!i && U.length < 1) return null;
++                let s;
++                if (!(s = i && null !== (e = U.find(e => e.field === i)) && void 0 !== e ? e : U[0])) return null;
++                let d = i,
++                    u, p = null !== (l = s.filterType) && void 0 !== l ? l : s.type,
++                    g = s.valueOptions,
++                    m = null !== (t = s.filterOperators) && void 0 !== t ? t : allOperators;
++                !0 === s.collection && s.collectionFields && (d = (u = f && null !== (o = s.collectionFields.find(e => e.field === f)) && void 0 !== o ? o : s.collectionFields[0]).field, p = u.type, g = u.valueOptions, "count" !== c ? m = null !== (a = u.filterOperators) && void 0 !== a ? a : allOperators : (m = numericOperators, p = "number"));
++                let h;
++                return "singleSelect" === p && "function" == typeof g ? h = g({
++                    field: d
++                }).map(e => getSelectOption(e)) : "singleSelect" === p && g && (h = g.map(e => getSelectOption(e))), Object.assign(Object.assign({}, s), {
++                    fieldLabel: null !== (r = null !== (n = s.label) && void 0 !== n ? n : s.headerName) && void 0 !== r ? r : s.field,
++                    type: p,
++                    ops: m,
++                    valueOptions: h,
++                    colField: u
++                })
++            }, [i, f, c, U]),
++            j = a(() => U.filter(e => !1 !== e.filterable).map(e => {
++                var l, t, i;
++                return {
++                    label: null !== (t = null !== (l = e.label) && void 0 !== l ? l : e.headerName) && void 0 !== t ? t : e.field,
++                    field: e.field,
++                    group: null !== (i = e.autocompleteGroup) && void 0 !== i ? i : ""
+                 }
+-                // reset operator if new field doesn't support current operator
+-                if (newColFieldDef.filterOperators && !newColFieldDef.filterOperators.includes(currentOp)) {
+-                    condition.op = (_a = newColFieldDef.filterOperators[0]) !== null && _a !== void 0 ? _a : "eq";
++            }).sort((e, l) => A.autocompleteGroups ? A.autocompleteGroups.indexOf(e.group) - A.autocompleteGroups.indexOf(l.group) : e.group.localeCompare(l.group)), [U, A]);
++        return U.length < 1 || !R ? null : e(n, {
++            children: [l(b, Object.assign({
++                item: !0,
++                xs: 12,
++                md: !!R.collection || 4
++            }, {
++                children: l(S, Object.assign({
++                    size: "small"
++                }, A.autocompleteProps, {
++                    options: j,
++                    renderInput: e => l(x, Object.assign({
++                        label: getLocaleText("field", A.localeText)
++                    }, A.textFieldProps, e)),
++                    value: {
++                        label: R.fieldLabel,
++                        field: R.field,
++                        group: R.autocompleteGroup
++                    },
++                    onChange: (e, l) => o(R.field, r, l.field),
++                    disableClearable: !0,
++                    isOptionEqualToValue: (e, l) => e.field === l.field,
++                    groupBy: e => e.group
++                }))
++            })), !0 === R.collection && l(b, Object.assign({
++                item: !0,
++                xs: 12,
++                md: !0
++            }, {
++                children: e(T, Object.assign({
++                    fullWidth: !0,
++                    size: "small"
++                }, {
++                    children: [l(C, Object.assign({
++                        id: `${t}_label-collection-op`
++                    }, {
++                        children: getLocaleText("collectionOperation", A.localeText)
++                    })), e(_, Object.assign({
++                        label: getLocaleText("collectionOperation", A.localeText)
++                    }, A.selectProps, {
++                        value: c,
++                        onChange: e => g(e.target.value),
++                        labelId: `${t}_label-collection-op`
++                    }, {
++                        children: [l(O, Object.assign({
++                            value: "any"
++                        }, {
++                            children: getLocaleText("opAny", A.localeText)
++                        })), l(O, Object.assign({
++                            value: "all"
++                        }, {
++                            children: getLocaleText("opAll", A.localeText)
++                        })), l(O, Object.assign({
++                            value: "count"
++                        }, {
++                            children: getLocaleText("opCount", A.localeText)
++                        })), ]
++                    })), ]
++                }))
++            })), !0 === R.collection && "count" !== c && l(b, Object.assign({
++                item: !0,
++                xs: 12,
++                md: !0
++            }, {
++                children: l(S, Object.assign({
++                    size: "small"
++                }, A.autocompleteProps, {
++                    options: null !== ($ = null === (h = R.collectionFields) || void 0 === h ? void 0 : h.map(e => ({
++                        label: e.label,
++                        field: e.field
++                    }))) && void 0 !== $ ? $ : [],
++                    renderInput: e => l(x, Object.assign({
++                        label: getLocaleText("collectionField", A.localeText)
++                    }, A.textFieldProps, e)),
++                    value: {
++                        label: null === (v = R.colField) || void 0 === v ? void 0 : v.label,
++                        field: f
++                    },
++                    onChange: (e, l) => m(i, f, r, l.field),
++                    disableClearable: !0,
++                    isOptionEqualToValue: (e, l) => e.field === l.field
++                }))
++            })), R.renderCustomFilter ? R.renderCustomFilter(d, u) : l(b, Object.assign({
++                item: !0,
++                xs: 12,
++                md: !0
++            }, {
++                children: e(T, Object.assign({
++                    fullWidth: !0,
++                    size: "small"
++                }, {
++                    children: [l(C, Object.assign({
++                        id: `${t}_label-op`
++                    }, {
++                        children: "Operation"
++                    })), e(_, Object.assign({}, A.selectProps, {
++                        value: r,
++                        onChange: e => s(e.target.value),
++                        labelId: `${t}_label-op`,
++                        label: "Operation"
++                    }, {
++                        children: [R.ops.includes("eq") && l(O, Object.assign({
++                            value: "eq"
++                        }, {
++                            children: getLocaleText("opEq", A.localeText)
++                        })), R.ops.includes("ne") && l(O, Object.assign({
++                            value: "ne"
++                        }, {
++                            children: getLocaleText("opNe", A.localeText)
++                        })), R.ops.includes("gt") && l(O, Object.assign({
++                            value: "gt"
++                        }, {
++                            children: getLocaleText("opGt", A.localeText)
++                        })), R.ops.includes("lt") && l(O, Object.assign({
++                            value: "lt"
++                        }, {
++                            children: getLocaleText("opLt", A.localeText)
++                        })), R.ops.includes("ge") && l(O, Object.assign({
++                            value: "ge"
++                        }, {
++                            children: getLocaleText("opGe", A.localeText)
++                        })), R.ops.includes("le") && l(O, Object.assign({
++                            value: "le"
++                        }, {
++                            children: getLocaleText("opLe", A.localeText)
++                        })), R.ops.includes("contains") && l(O, Object.assign({
++                            value: "contains"
++                        }, {
++                            children: getLocaleText("opContains", A.localeText)
++                        })), R.ops.includes("null") && l(O, Object.assign({
++                            value: "null"
++                        }, {
++                            children: getLocaleText("opNull", A.localeText)
++                        })), R.ops.includes("notnull") && l(O, Object.assign({
++                            value: "notnull"
++                        }, {
++                            children: getLocaleText("opNotNull", A.localeText)
++                        })), ]
++                    })), ]
++                }))
++            })), !R.renderCustomFilter && l(b, Object.assign({
++                item: !0,
++                xs: !0
++            }, {
++                children: "null" !== r && "notnull" !== r && (R.renderCustomInput ? R.renderCustomInput(d, u) : e(n, {
++                    children: ["date" === R.type && l(w, Object.assign({
++                        dateAdapter: N
++                    }, A.localizationProviderProps, {
++                        children: l(D, Object.assign({
++                            label: getLocaleText("value", A.localeText)
++                        }, A.datePickerProps, R.datePickerProps, {
++                            value: null != d ? d : "",
++                            renderInput: e => l(x, Object.assign({
++                                required: !0,
++                                fullWidth: !0,
++                                size: "small"
++                            }, A.textFieldProps, R.textFieldProps, e)),
++                            onChange: e => u(new N().formatByString(e, "YYYY-MM-DD"))
++                        }))
++                    })), "datetime" === R.type && l(w, Object.assign({
++                        dateAdapter: N
++                    }, A.localizationProviderProps, {
++                        children: l(E, Object.assign({
++                            label: getLocaleText("value", A.localeText)
++                        }, R.dateTimePickerProps, {
++                            value: null != d ? d : "",
++                            renderInput: e => l(x, Object.assign({
++                                required: !0,
++                                fullWidth: !0,
++                                size: "small"
++                            }, A.textFieldProps, R.textFieldProps, e)),
++                            onChange: e => u(new N().toISO(e))
++                        }))
++                    })), "boolean" === R.type && e(T, Object.assign({
++                        fullWidth: !0,
++                        size: "small"
++                    }, null === (y = R.selectProps) || void 0 === y ? void 0 : y.formControlProps, {
++                        children: [l(C, Object.assign({
++                            id: `${t}_label-bool-value`
++                        }, {
++                            children: null !== (P = null === (F = R.selectProps) || void 0 === F ? void 0 : F.label) && void 0 !== P ? P : getLocaleText("value", A.localeText)
++                        })), e(_, Object.assign({
++                            label: null !== (G = null === (M = R.selectProps) || void 0 === M ? void 0 : M.label) && void 0 !== G ? G : getLocaleText("value", A.localeText)
++                        }, A.selectProps, null === (L = R.selectProps) || void 0 === L ? void 0 : L.selectProps, {
++                            value: null == d || d,
++                            onChange: e => u(e.target.value),
++                            labelId: `${t}_label-bool-value`
++                        }, {
++                            children: [l(O, Object.assign({
++                                value: "true"
++                            }, {
++                                children: "Yes"
++                            })), l(O, Object.assign({
++                                value: "false"
++                            }, {
++                                children: "No"
++                            })), R.nullable && l(O, Object.assign({
++                                value: "null"
++                            }, {
++                                children: "Unknown"
++                            })), ]
++                        })), ]
++                    })), "singleSelect" === R.type && R.valueOptions && e(T, Object.assign({
++                        fullWidth: !0,
++                        size: "small"
++                    }, null === (B = R.selectProps) || void 0 === B ? void 0 : B.formControlProps, {
++                        children: [l(C, Object.assign({
++                            id: `${t}_label-select-value`
++                        }, {
++                            children: null !== (I = null === (k = R.selectProps) || void 0 === k ? void 0 : k.label) && void 0 !== I ? I : getLocaleText("value", A.localeText)
++                        })), l(_, Object.assign({
++                            label: null !== (q = null === (z = R.selectProps) || void 0 === z ? void 0 : z.label) && void 0 !== q ? q : getLocaleText("value", A.localeText),
++                            value: null != d ? d : "",
++                            onChange: e => u(e.target.value),
++                            labelId: `${t}_label-select-value`
++                        }, {
++                            children: R.valueOptions.map((e, o) => l(O, Object.assign({
++                                value: e.value
++                            }, {
++                                children: e.label
++                            }), `${t}_${i}_select_${o}`))
++                        })), ]
++                    })), (!R.type || "string" === R.type || "number" === R.type) && l(x, Object.assign({
++                        required: !0,
++                        size: "small",
++                        fullWidth: !0,
++                        label: getLocaleText("value", A.localeText)
++                    }, A.textFieldProps, R.textFieldProps, {
++                        value: null != d ? d : "",
++                        onChange: e => u("number" === R.type ? parseFloat(e.target.value) : e.target.value),
++                        type: "number" === R.type ? "number" : "text"
++                    })), ]
++                }))
++            })), ]
++        })
++    };
++var FilterInputs$1 = t.memo(FilterInputs);
++let FilterCondition = ({
++        clauseId: t,
++        path: i
++    }) => {
++        let [o, n] = g(clauseState), s = f(treeState), d = p(schemaState), u = a(() => o.get(t), [o, t]), c = r((e, l, i) => {
++            let o = d.find(l => l.field === e),
++                a = d.find(e => e.field === i);
++            n(e => e.update(t, e => {
++                var t;
++                let n = Object.assign({}, e);
++                return n.field = i, n.default = !1, o && a && (o.type !== a.type && (n.value = ""), a.filterOperators && !a.filterOperators.includes(l) && (n.op = null !== (t = a.filterOperators[0]) && void 0 !== t ? t : "eq"), !0 === a.collection && a.collectionFields ? (n.collectionField = a.collectionFields[0].field, n.collectionOp = "any", a.collectionFields[0].filterOperators ? n.op = a.collectionFields[0].filterOperators[0] : n.op = "eq") : (n.collectionField = void 0, n.collectionOp = void 0)), n
++            }))
++        }, [d, n, t]), m = r(e => {
++            n(l => l.update(t, l => Object.assign(Object.assign({}, l), {
++                op: e,
++                default: !1
++            })))
++        }, [n, t]), h = r(e => {
++            n(l => l.update(t, l => Object.assign(Object.assign({}, l), {
++                value: e,
++                default: !1
++            })))
++        }, [n, t]), v = r(e => {
++            n(l => l.update(t, l => {
++                let t = Object.assign(Object.assign({}, l), {
++                    collectionOp: e,
++                    default: !1
++                });
++                return "count" !== e || numericOperators.includes(t.op) || (t.op = "eq"), t
++            }))
++        }, [n, t]), y = r((e, l, i, o) => {
++            let a = d.find(l => l.field === e);
++            n(e => e.update(t, e => {
++                var t;
++                let n = Object.assign({}, e);
++                if (n.collectionField = o, n.default = !1, a && a.collectionFields && l && o) {
++                    let r = a.collectionFields.find(e => e.field === l),
++                        s = a.collectionFields.find(e => e.field === o);
++                    r.type !== s.type && (n.value = ""), s.filterOperators && !s.filterOperators.includes(i) && (n.op = null !== (t = s.filterOperators[0]) && void 0 !== t ? t : "eq")
+                 }
+-            }
+-            return condition;
+-        }));
+-    }, [schema, setClauses, clauseId]);
+-    const remove = useCallback(() => {
+-        // if not root group
+-        if (path.length > 2) {
+-            setTree(oldTree => oldTree.withMutations((old) => {
+-                // delete self
+-                old.deleteIn([...path, clauseId]);
+-                // get path to parent node (i.e. remove "children" from end of path)
+-                const parentPath = [...path];
+-                parentPath.splice(-1, 1);
++                return n
++            }))
++        }, [d, n, t]), S = r(() => {
++            i.length > 2 ? s(e => e.withMutations(e => {
++                e.deleteIn([...i, t]);
++                let l = [...i];
++                l.splice(-1, 1);
+                 do {
+-                    const node = old.getIn(parentPath);
+-                    // delete parent if now empty
+-                    if (node && node.children.count() < 1) {
+-                        old.deleteIn(parentPath);
+-                    }
+-                    else { // not the only child, so only remove self and stop
+-                        old.deleteIn([...path, clauseId]);
+-                        break;
++                    let o = e.getIn(l);
++                    if (o && 1 > o.children.count()) e.deleteIn(l);
++                    else {
++                        e.deleteIn([...i, t]);
++                        break
+                     }
+-                    parentPath.splice(-2, 2); // move up in path to next parent
+-                } while (parentPath.length > 2); // keep removing empty groups until root is reached
+-            }));
+-        }
+-        else {
+-            setTree(old => old.deleteIn([...path, clauseId]));
+-        }
+-        setClauses(old => old.remove(clauseId));
+-    }, [setClauses, setTree, clauseId, path]);
+-    if (!condition) {
+-        return null;
+-    }
+-    return (jsxs(Grid, Object.assign({ container: true, spacing: 1 }, { children: [jsx(FilterInputs$1, { clauseId: clauseId, field: condition.field, onFieldChange: changeField, op: condition.op, onOpChange: changeOp, value: condition.value, onValueChange: changeValue, collectionOp: condition.collectionOp, onCollectionOpChange: changeCollectionOp, collectionField: condition.collectionField, onCollectionFieldChange: changeCollectionField }), jsx(Grid, Object.assign({ item: true, xs: "auto" }, { children: jsx(IconButton, Object.assign({ onClick: remove }, { children: jsx(Remove, {}) })) }))] })));
+-};
+-
+-const { makeStyles } = createMakeStyles({ useTheme: useTheme$1 });
+-
+-const useStyles = makeStyles()((theme) => ({
+-    group: {
+-        borderWidth: 1,
+-        borderColor: theme.palette.mode === "dark" ? "rgb(81,81,81)" : "rgb(224,224,224)",
+-        borderRadius: theme.shape.borderRadius,
+-        borderStyle: "solid",
+-        padding: theme.spacing(2),
++                    l.splice(-2, 2)
++                } while (l.length > 2)
++            })) : s(e => e.deleteIn([...i, t])), n(e => e.remove(t))
++        }, [n, s, t, i]);
++        return u ? e(b, Object.assign({
++            container: !0,
++            spacing: 1
++        }, {
++            children: [l(FilterInputs$1, {
++                clauseId: t,
++                field: u.field,
++                onFieldChange: c,
++                op: u.op,
++                onOpChange: m,
++                value: u.value,
++                onValueChange: h,
++                collectionOp: u.collectionOp,
++                onCollectionOpChange: v,
++                collectionField: u.collectionField,
++                onCollectionFieldChange: y
++            }), l(b, Object.assign({
++                item: !0,
++                xs: "auto"
++            }, {
++                children: l(F, Object.assign({
++                    onClick: S
++                }, {
++                    children: l($, {})
++                }))
++            }))]
++        })) : null
+     },
+-    child: {
+-        position: "relative",
+-        "&:not(:last-of-type)::before": {
+-            content: "''",
+-            display: "block",
+-            position: "absolute",
+-            width: 2,
+-            height: "100%",
+-            background: theme.palette.primary.main,
+-            left: theme.spacing(-1),
+-        },
+-        "&:first-of-type::before": {
+-            height: `calc(100% + ${theme.spacing(2)})`,
+-            top: 0
+-        },
+-        "&::after": {
+-            content: "''",
+-            display: "block",
+-            position: "absolute",
+-            left: theme.spacing(-1),
+-            top: `calc(${theme.spacing(1)} + 1px)`,
+-            width: theme.spacing(2),
+-            height: "50%",
+-            borderWidth: 2,
++    {
++        makeStyles: R
++    } = A({
++        useTheme: P
++    }),
++    useStyles = R()(e => ({
++        group: {
++            borderWidth: 1,
++            borderColor: "dark" === e.palette.mode ? "rgb(81,81,81)" : "rgb(224,224,224)",
++            borderRadius: e.shape.borderRadius,
+             borderStyle: "solid",
+-            borderColor: theme.palette.primary.main,
+-            borderRight: "none",
+-            borderTop: "none",
+-            borderBottomLeftRadius: theme.shape.borderRadius
+-        }
+-    }
+-}));
+-const FilterGroup = ({ clauseId, path, root }) => {
+-    const { classes } = useStyles();
+-    const r = useResponsive();
+-    const [tree, clauses] = useRecoilValue(waitForAll([treeState, clauseState]));
+-    const setTree = useSetRecoilState(treeState);
+-    const setClauses = useSetRecoilState(clauseState);
+-    const schema = useRecoilValue(schemaState);
+-    const builderProps = useRecoilValue(propsState);
+-    const group = useMemo(() => clauses.get(clauseId), [clauses, clauseId]);
+-    const treeGroup = useMemo(() => tree.getIn([...path, clauseId]), [tree, path, clauseId]);
+-    const childrenPath = useMemo(() => [...path, clauseId, "children"], [path, clauseId]);
+-    const multiple = useMemo(() => treeGroup.children.count() > 1, [treeGroup]);
+-    const setConnective = useCallback((con) => {
+-        setClauses(clauses.update(clauseId, c => (Object.assign(Object.assign({}, c), { connective: con }))));
+-    }, [clauses, setClauses, clauseId]);
+-    const addGroup = useCallback(() => {
+-        const group = getDefaultGroup();
+-        const condition = getDefaultCondition(schema[0].field);
+-        setClauses(clauses
+-            .set(group.id, group)
+-            .set(condition.id, condition));
+-        setTree(tree
+-            .updateIn(childrenPath, (list) => list.set(group.id, { id: group.id, children: Immutable.Map({ [condition.id]: condition.id }) })));
+-    }, [clauses, setClauses, tree, setTree, childrenPath, schema]);
+-    const addCondition = useCallback(() => {
+-        const condition = getDefaultCondition(schema[0].field);
+-        setClauses(clauses.set(condition.id, condition));
+-        setTree(tree
+-            .updateIn(childrenPath, (list) => list.set(condition.id, condition.id)));
+-    }, [clauses, setClauses, tree, setTree, childrenPath, schema]);
+-    const handleConnective = useCallback((event, val) => {
+-        if (val) {
+-            setConnective(val);
+-        }
+-    }, [setConnective]);
+-    return (jsxs(Grid, Object.assign({ item: !root, container: true, marginBottom: 1, paddingLeft: root ? 0 : 3, className: root ? "" : classes.group }, { children: [jsxs(Grid, Object.assign({ item: true, container: true, spacing: 1, justifyContent: multiple ? "space-between" : "end", alignItems: r({ xs: "flex-start", md: "center" }), marginBottom: 2, direction: r({ xs: "column-reverse", md: "row" }) }, { children: [multiple && (jsx(Grid, Object.assign({ item: true, xs: 12, md: "auto" }, { children: jsxs(ToggleButtonGroup, Object.assign({ value: group.connective, exclusive: true, onChange: handleConnective, color: "primary", "aria-label": `${getLocaleText("and", builderProps.localeText)}/${getLocaleText("or", builderProps.localeText)}`, size: "small" }, { children: [jsx(ToggleButton, Object.assign({ value: "and" }, { children: getLocaleText("and", builderProps.localeText) })), jsx(ToggleButton, Object.assign({ value: "or" }, { children: getLocaleText("or", builderProps.localeText) }))] })) }))), jsx(Grid, Object.assign({ item: true, xs: 12, md: "auto" }, { children: jsxs(ButtonGroup, Object.assign({ variant: "contained", size: "small", color: "secondary" }, { children: [jsx(Button, Object.assign({ startIcon: jsx(Add, {}), onClick: addCondition }, { children: getLocaleText("addCondition", builderProps.localeText) })), jsx(Button, Object.assign({ startIcon: jsx(Add, {}), onClick: addGroup }, { children: getLocaleText("addGroup", builderProps.localeText) }))] })) }))] })), jsx(Grid, Object.assign({ item: true, container: true, xs: true, direction: "column", rowSpacing: 2, columnSpacing: 1, paddingLeft: multiple ? 3 : 0 }, { children: treeGroup.children.toArray().map((c) => {
+-                    if (typeof c[1] === "string") {
+-                        return (jsx(Grid, Object.assign({ item: true, container: true, xs: true, className: multiple ? classes.child : "" }, { children: jsx(FilterCondition, { clauseId: c[0], path: childrenPath }) }), c[0]));
+-                    }
+-                    else {
+-                        return (jsx(Grid, Object.assign({ item: true, container: true, xs: true, className: multiple ? classes.child : "" }, { children: jsx(FilterGroup, { clauseId: c[0], path: childrenPath }) }), c[0]));
+-                    }
+-                }) }))] })));
+-};
+-
+-const defaultTranslators = {
+-    "contains": ({ schema, field, value }) => {
+-        if ((schema.type && schema.type !== "string") || typeof value !== "string") {
+-            console.warn(`Warning: operation "contains" is only supported for fields of type "string"`);
+-            return false;
+-        }
+-        if (schema.caseSensitive === true) {
+-            return `contains(${field}, '${escapeODataString(value)}')`;
+-        }
+-        else {
+-            return `contains(tolower(${field}), tolower('${escapeODataString(value)}'))`;
++            padding: e.spacing(2)
++        },
++        child: {
++            position: "relative",
++            "&:not(:last-of-type)::before": {
++                content: "''",
++                display: "block",
++                position: "absolute",
++                width: 2,
++                height: "100%",
++                background: e.palette.primary.main,
++                left: e.spacing(-1)
++            },
++            "&:first-of-type::before": {
++                height: `calc(100% + ${e.spacing(2)})`,
++                top: 0
++            },
++            "&::after": {
++                content: "''",
++                display: "block",
++                position: "absolute",
++                left: e.spacing(-1),
++                top: `calc(${e.spacing(1)} + 1px)`,
++                width: e.spacing(2),
++                height: "50%",
++                borderWidth: 2,
++                borderStyle: "solid",
++                borderColor: e.palette.primary.main,
++                borderRight: "none",
++                borderTop: "none",
++                borderBottomLeftRadius: e.shape.borderRadius
++            }
+         }
++    })),
++    FilterGroup = ({
++        clauseId: t,
++        path: i,
++        root: o
++    }) => {
++        let {
++            classes: n
++        } = useStyles(), s = useResponsive(), [d, u] = p(m([treeState, clauseState])), c = f(treeState), g = f(clauseState), h = p(schemaState), $ = p(propsState), y = a(() => u.get(t), [u, t]), S = a(() => d.getIn([...i, t]), [d, i, t]), x = a(() => [...i, t, "children"], [i, t]), T = a(() => S.children.count() > 1, [S]), C = r(e => {
++            g(u.update(t, l => Object.assign(Object.assign({}, l), {
++                connective: e
++            })))
++        }, [u, g, t]), _ = r(() => {
++            let e = getDefaultGroup(),
++                l = getDefaultCondition(h[0].field);
++            g(u.set(e.id, e).set(l.id, l)), c(d.updateIn(x, t => t.set(e.id, {
++                id: e.id,
++                children: q.Map({
++                    [l.id]: l.id
++                })
++            })))
++        }, [u, g, d, c, x, h]), O = r(() => {
++            let e = getDefaultCondition(h[0].field);
++            g(u.set(e.id, e)), c(d.updateIn(x, l => l.set(e.id, e.id)))
++        }, [u, g, d, c, x, h]), F = r((e, l) => {
++            l && C(l)
++        }, [C]);
++        return e(b, Object.assign({
++            item: !o,
++            container: !0,
++            marginBottom: 1,
++            paddingLeft: o ? 0 : 3,
++            className: o ? "" : n.group
++        }, {
++            children: [e(b, Object.assign({
++                item: !0,
++                container: !0,
++                spacing: 1,
++                justifyContent: T ? "space-between" : "end",
++                alignItems: s({
++                    xs: "flex-start",
++                    md: "center"
++                }),
++                marginBottom: 2,
++                direction: s({
++                    xs: "column-reverse",
++                    md: "row"
++                })
++            }, {
++                children: [T && l(b, Object.assign({
++                    item: !0,
++                    xs: 12,
++                    md: "auto"
++                }, {
++                    children: e(M, Object.assign({
++                        value: y.connective,
++                        exclusive: !0,
++                        onChange: F,
++                        color: "primary",
++                        "aria-label": `${getLocaleText("and",$.localeText)}/${getLocaleText("or",$.localeText)}`,
++                        size: "small"
++                    }, {
++                        children: [l(G, Object.assign({
++                            value: "and"
++                        }, {
++                            children: getLocaleText("and", $.localeText)
++                        })), l(G, Object.assign({
++                            value: "or"
++                        }, {
++                            children: getLocaleText("or", $.localeText)
++                        }))]
++                    }))
++                })), l(b, Object.assign({
++                    item: !0,
++                    xs: 12,
++                    md: "auto"
++                }, {
++                    children: e(L, Object.assign({
++                        variant: "contained",
++                        size: "small",
++                        color: "secondary",
++                        className: "action-buttons",
++                        id: "filter-add-action-btn"
++                    }, {
++                        children: [l(B, Object.assign({
++                            startIcon: l(v, {}),
++                            onClick: O,
++                            className: "secondary-btn"
++                        }, {
++                            children: getLocaleText("addCondition", $.localeText)
++                        })), l(B, Object.assign({
++                            startIcon: l(v, {}),
++                            onClick: _,
++                            className: "secondary-btn"
++                        }, {
++                            children: getLocaleText("addGroup", $.localeText)
++                        }))]
++                    }))
++                }))]
++            })), l(b, Object.assign({
++                item: !0,
++                container: !0,
++                xs: !0,
++                direction: "column",
++                rowSpacing: 2,
++                columnSpacing: 1,
++                paddingLeft: T ? 3 : 0
++            }, {
++                children: S.children.toArray().map(e => "string" == typeof e[1] ? l(b, Object.assign({
++                    item: !0,
++                    container: !0,
++                    xs: !0,
++                    className: T ? n.child : ""
++                }, {
++                    children: l(FilterCondition, {
++                        clauseId: e[0],
++                        path: x
++                    })
++                }), e[0]) : l(b, Object.assign({
++                    item: !0,
++                    container: !0,
++                    xs: !0,
++                    className: T ? n.child : ""
++                }, {
++                    children: l(FilterGroup, {
++                        clauseId: e[0],
++                        path: x
++                    })
++                }), e[0]))
++            }))]
++        }))
      },
 -    "null": ({ field }) => {
 -        return `${field} eq null`;
-+    "null": ({ schema, field }) => {
-+        if(schema.type === "string")
-+            return `(${field} eq null or ${field} eq '')`;
-+        else
-+            return `${field} eq null`;
++    defaultTranslators = {
++        contains: ({
++            schema: e,
++            field: l,
++            value: t
++        }) => e.type && "string" !== e.type || "string" != typeof t ? (console.warn('Warning: operation "contains" is only supported for fields of type "string"'), !1) : !0 === e.caseSensitive ? `contains(${l}, '${escapeODataString(t)}')` : `contains(tolower(${l}), tolower('${escapeODataString(t)}'))`,
++        null: ({
++            schema: e,
++            field: l
++        }) => "string" === e.type ? `(${l} eq null or ${l} eq '')` : `${l} eq null`,
++        notnull: ({
++            schema: e,
++            field: l
++        }) => "string" === e.type ? `(${l} ne null or ${l} ne '')` : `${l} ne null`,
++        default: ({
++            schema: e,
++            field: l,
++            op: t,
++            value: i
++        }) => "date" === e.type ? `date(${l}) ${t} '${i}'` : "datetime" === e.type ? `${l} ${t} '${i}'` : "boolean" === e.type ? `${l} ${t} ${i}` : e.type && "string" !== e.type && "string" != typeof i ? `${l} ${t} ${i}` : !0 === e.caseSensitive ? `${l} ${t} '${escapeODataString(i)}'` : `tolower(${l}) ${t} tolower('${escapeODataString(i)}')`
      },
 -    "notnull": ({ field }) => {
 -        return `${field} ne null`;
-+    "notnull": ({ schema, field }) => {
-+        if(schema.type === "string")
-+            return `(${field} ne null or ${field} ne '')`;
-+        else
-+            return `${field} ne null`;
++    UseODataFilter = () => {
++        let e = p(schemaState),
++            [l, t] = p(m([clauseState, treeState]));
++        return r(() => buildGroup(e, l, t, rootGroupUuid, []), [e, l, t])
      },
-     "default": ({ schema, field, op, value }) => {
-         if (schema.type === "date") {
-@@ -794,9 +819,9 @@ const FilterRoot = ({ props }) => {
-                     jsx(Popover, Object.assign({ anchorEl: anchor, open: anchor !== null, anchorOrigin: { vertical: "bottom", horizontal: "left" }, onClose: () => setAnchor(null), transitionDuration: 100 }, { children: jsx(Paper, { children: jsx(MenuList, Object.assign({ id: "search-menu" }, { children: props.searchMenuItems.map((item, i) => (jsx(MenuItem, Object.assign({ onClick: item.onClick }, { children: item.label }), `searchMenu_${i}`))) })) }) }))] })) }));
- };
- 
--const FilterBuilder = (props) => {
-+const FilterBuilder = React.memo((props) => {
-     return (jsx(RecoilRoot, Object.assign({ override: true }, { children: jsx(FilterRoot, { props: props }) })));
+-    "default": ({ schema, field, op, value }) => {
+-        if (schema.type === "date") {
+-            return `date(${field}) ${op} ${value}`;
+-        }
+-        else if (schema.type === "datetime") {
+-            return `${field} ${op} ${value}`;
+-        }
+-        else if (schema.type === "boolean") {
+-            return `${field} ${op} ${value}`;
+-        }
+-        else if (!schema.type || schema.type === "string" || typeof value === "string") {
+-            if (schema.caseSensitive === true) {
+-                return `${field} ${op} '${escapeODataString(value)}'`;
+-            }
+-            else {
+-                return `tolower(${field}) ${op} tolower('${escapeODataString(value)}')`;
+-            }
+-        }
+-        else {
+-            return `${field} ${op} ${value}`;
+-        }
+-    }
 -};
-+});
- 
- const defaultPageSize = 10;
- 
-@@ -985,7 +1010,7 @@ const ODataGridBase = (props) => {
-             // i.e. { Person: { name: "John" } } becomes { "Person/name": "John" }
-             // keep the original object in the "result" property so that it can still be accessed via strong typing
-             const rows = data.value.map((v) => (Object.assign({ result: v }, Flatten(v, "/"))));
--            if (data["@odata.count"]) {
-+            if (data["@odata.count"] || data["@odata.count"] === 0) {
-                 setRowCount(data["@odata.count"]);
+-
+-const UseODataFilter = () => {
+-    const schema = useRecoilValue(schemaState);
+-    const [clauses, tree] = useRecoilValue(waitForAll([clauseState, treeState]));
+-    return useCallback(() => {
+-        return buildGroup(schema, clauses, tree, rootGroupUuid, []);
+-    }, [schema, clauses, tree]);
+-};
+-const UseODataFilterWithState = () => {
+-    const schema = useRecoilValue(schemaState);
+-    return useCallback((clauses, tree) => {
+-        return buildGroup(schema, clauses, tree, rootGroupUuid, []);
+-    }, [schema]);
+-};
+-const buildGroup = (schema, clauses, tree, id, path) => {
+-    const clause = clauses.get(id);
+-    const treeNode = tree.getIn([...path, id]);
+-    if (!treeNode) {
+-        console.error(`Tree node ${[...path, id].join("->")} not found`);
+-        return false;
+-    }
+-    const childClauses = treeNode.children
+-        .toArray()
+-        .map((c) => {
+-        if (typeof c[1] === "string") {
+-            return buildCondition(schema, clauses, c[0]);
+-        }
+-        else {
+-            return buildGroup(schema, clauses, tree, c[0], [...path, id, "children"]);
+-        }
+-    })
+-        .filter(c => c !== false);
+-    if (childClauses.length > 1) {
+-        return {
+-            filter: `(${childClauses.filter(c => c.filter).map(c => c.filter).join(` ${clause.connective} `)})`,
+-            compute: `${childClauses.filter(c => c.compute).map(c => c.compute).join(",")}`,
+-            select: childClauses.filter(c => c.select).flatMap(c => c.select),
+-            serialised: { connective: clause.connective, children: childClauses.map(c => c.serialised) },
+-            queryString: childClauses.reduce((x, c) => (Object.assign(Object.assign({}, x), c.queryString)), {})
+-        };
+-    }
+-    else if (childClauses.length === 1) {
+-        return {
+-            filter: childClauses[0].filter,
+-            compute: childClauses[0].compute,
+-            select: childClauses[0].select,
+-            serialised: { connective: clause.connective, children: [childClauses[0].serialised] },
+-            queryString: childClauses[0].queryString
+-        };
+-    }
+-    else {
+-        console.error("Group has no children");
+-        return false;
+-    }
+-};
+-const buildCondition = (schema, clauses, id) => {
+-    var _a;
+-    const clause = clauses.get(id);
+-    let condition = undefined;
+-    if (!clause || clause.default === true) {
+-        console.error(`Clause not found: ${id}`);
+-        return false;
+-    }
+-    else {
+-        condition = {
+-            field: clause.field,
+-            op: clause.op,
+-            collectionOp: clause.collectionOp,
+-            collectionField: clause.collectionField,
+-            value: clause.value
+-        };
+-    }
+-    const def = schema.find(d => d.field === clause.field);
+-    if (!def) {
+-        console.error(`Schema entry not found for field "${clause.field}"`);
+-        return false;
+-    }
+-    const filterField = (_a = def.filterField) !== null && _a !== void 0 ? _a : def.field;
+-    let innerResult;
+-    if (clause.collectionOp) {
+-        if (clause.collectionOp === "count") {
+-            innerResult = {
+-                filter: `${filterField}/$count ${clause.op} ${clause.value}`
+-            };
+-        }
+-        else {
+-            const collectionDef = def.collectionFields.find(d => d.field === clause.collectionField);
+-            innerResult = buildInnerCondition(collectionDef, "x/" + clause.collectionField, clause.op, clause.value);
+-        }
+-    }
+-    else {
+-        innerResult = buildInnerCondition(def, filterField, clause.op, clause.value);
+-    }
+-    if (typeof innerResult !== "boolean") {
+-        if (innerResult.filter) {
+-            return {
+-                filter: innerResult.filter,
+-                compute: innerResult.compute,
+-                select: innerResult.select,
+-                serialised: condition
+-            };
+-        }
+-        else {
+-            return {
+-                serialised: condition,
+-                queryString: innerResult.queryString
+-            };
+-        }
+-    }
+-    else {
+-        return false;
+-    }
+-};
+-const buildInnerCondition = (schema, field, op, value) => {
+-    if (schema.getCustomQueryString) {
+-        return {
+-            queryString: schema.getCustomQueryString(op, value)
++    UseODataFilterWithState = () => {
++        let e = p(schemaState);
++        return r((l, t) => buildGroup(e, l, t, rootGroupUuid, []), [e])
++    },
++    buildGroup = (e, l, t, i, o) => {
++        let a = l.get(i),
++            n = t.getIn([...o, i]);
++        if (!n) return console.error(`Tree node ${[...o,i].join("->")} not found`), !1;
++        let r = n.children.toArray().map(a => "string" == typeof a[1] ? buildCondition(e, l, a[0]) : buildGroup(e, l, t, a[0], [...o, i, "children"])).filter(e => !1 !== e);
++        return r.length > 1 ? {
++            filter: `(${r.filter(e=>e.filter).map(e=>e.filter).join(` ${a.connective} `)})`,
++            compute: `${r.filter(e=>e.compute).map(e=>e.compute).join(",")}`,
++            select: r.filter(e => e.select).flatMap(e => e.select),
++            serialised: {
++                connective: a.connective,
++                children: r.map(e => e.serialised)
++            },
++            queryString: r.reduce((e, l) => Object.assign(Object.assign({}, e), l.queryString), {})
++        } : 1 === r.length ? {
++            filter: r[0].filter,
++            compute: r[0].compute,
++            select: r[0].select,
++            serialised: {
++                connective: a.connective,
++                children: [r[0].serialised]
++            },
++            queryString: r[0].queryString
++        } : (console.error("Group has no children"), !1)
++    },
++    buildCondition = (e, l, t) => {
++        var i;
++        let o = l.get(t),
++            a;
++        if (!o || !0 === o.default) return console.error(`Clause not found: ${t}`), !1;
++        a = {
++            field: o.field,
++            op: o.op,
++            collectionOp: o.collectionOp,
++            collectionField: o.collectionField,
++            value: o.value
+         };
+-    }
+-    if (schema.getCustomFilterString) {
+-        const result = schema.getCustomFilterString(op, value);
+-        if (typeof result === "string") {
+-            return {
+-                filter: result
++        let n = e.find(e => e.field === o.field);
++        if (!n) return console.error(`Schema entry not found for field "${o.field}"`), !1;
++        let r = null !== (i = n.filterField) && void 0 !== i ? i : n.field,
++            s;
++        if (o.collectionOp) {
++            if ("count" === o.collectionOp) s = {
++                filter: `${r}/$count ${o.op} ${o.value}`
+             };
+-        }
+-        else if (typeof result !== "boolean") {
+-            const compute = result.compute;
+-            if (typeof compute === "string") {
+-                return {
+-                    filter: result.filter,
+-                    compute: compute
+-                };
+-            }
+             else {
+-                return {
+-                    filter: result.filter,
+-                    compute: compute.compute,
+-                    select: compute.select
+-                };
++                let d = n.collectionFields.find(e => e.field === o.collectionField);
++                s = buildInnerCondition(d, "x/" + o.collectionField, o.op, o.value)
              }
-             setRows(rows);
+-        }
+-        else {
+-            return result;
+-        }
+-    }
+-    let translator;
+-    if (op in defaultTranslators) {
+-        translator = defaultTranslators[op];
+-    }
+-    else {
+-        translator = defaultTranslators["default"];
+-    }
+-    const result = translator({ schema, field, op, value });
+-    if (typeof result === "string") {
+-        return {
+-            filter: result
++        } else s = buildInnerCondition(n, r, o.op, o.value);
++        return "boolean" != typeof s && (s.filter ? {
++            filter: s.filter,
++            compute: s.compute,
++            select: s.select,
++            serialised: a
++        } : {
++            serialised: a,
++            queryString: s.queryString
++        })
++    },
++    buildInnerCondition = (e, l, t, i) => {
++        if (e.getCustomQueryString) return {
++            queryString: e.getCustomQueryString(t, i)
+         };
+-    }
+-    else {
+-        return result;
+-    }
+-};
+-
+-const FilterRoot = ({ props }) => {
+-    const setClauses = useSetRecoilState(clauseState);
+-    const setProps = useSetRecoilState(propsState);
+-    const setSchema = useSetRecoilState(schemaState);
+-    const setTree = useSetRecoilState(treeState);
+-    const odataFilter = UseODataFilter();
+-    const odataFilterWithState = UseODataFilterWithState();
+-    const [anchor, setAnchor] = useState(null);
+-    const { onSubmit, onRestoreState, disableHistory, filter: propsFilter } = props;
+-    const submit = useCallback((e) => {
+-        e.preventDefault();
+-        if (onSubmit) {
+-            const result = odataFilter();
+-            if (result.filter) {
+-                const returned = onSubmit(Object.assign(Object.assign({}, result), { filter: result.filter }));
+-                if (disableHistory !== true) {
+-                    window.history.pushState(Object.assign(Object.assign(Object.assign({}, window.history.state), returned), { filterBuilder: {
+-                            filter: result.filter,
+-                            compute: result.compute,
+-                            select: result.select,
+-                            serialised: result.serialised,
+-                            queryString: result.queryString
+-                        } }), "");
++        if (e.getCustomFilterString) {
++            let o = e.getCustomFilterString(t, i);
++            if ("string" == typeof o) return {
++                filter: o
++            };
++            if ("boolean" == typeof o) return o;
++            {
++                let a = o.compute;
++                return "string" == typeof a ? {
++                    filter: o.filter,
++                    compute: a
++                } : {
++                    filter: o.filter,
++                    compute: a.compute,
++                    select: a.select
+                 }
+             }
+         }
+-    }, [onSubmit, odataFilter, disableHistory]);
+-    const reset = useCallback(() => {
+-        setClauses(initialClauses.update(rootConditionUuid, (c) => (Object.assign(Object.assign({}, c), { field: props.schema[0].field }))));
+-        setTree(initialTree);
+-        if (onSubmit) {
+-            onSubmit({ filter: "" });
+-        }
+-        if (disableHistory !== true) {
+-            window.history.pushState(Object.assign(Object.assign({}, window.history.state), { filterBuilder: {
+-                    reset: true
+-                } }), "");
+-        }
+-    }, [setClauses, setTree, onSubmit, props.schema, disableHistory]);
+-    const handleReset = useCallback(() => reset(), [reset]);
+-    useEffect(() => {
+-        setSchema(props.schema);
+-    }, [props.schema, setSchema]);
+-    const restoreDefault = useCallback(() => {
+-        setClauses(initialClauses.update(rootConditionUuid, (c) => (Object.assign(Object.assign({}, c), { field: props.schema[0].field }))));
+-        setTree(initialTree);
+-    }, [props.schema, setClauses, setTree]);
+-    const restoreState = useCallback((state, isPopstate) => {
+-        let filter = "", serialised, queryString, compute, select;
+-        if (state === null || state === void 0 ? void 0 : state.filterBuilder) {
+-            if (state.filterBuilder.reset === true && isPopstate === true) {
+-                restoreDefault();
+-            }
+-            compute = state.filterBuilder.compute;
+-            filter = state.filterBuilder.filter;
+-            select = state.filterBuilder.select;
+-            serialised = state.filterBuilder.serialised;
+-            queryString = state.filterBuilder.queryString;
+-        }
+-        else {
+-            restoreDefault();
+-        }
+-        if (filter && serialised) {
+-            const [tree, clauses] = deserialise(serialised);
+-            setClauses(clauses);
+-            setTree(tree);
+-        }
+-        if (onRestoreState) {
+-            onRestoreState({ compute, filter, queryString, select, serialised }, state);
+-        }
+-    }, [onRestoreState, restoreDefault, setClauses, setTree]);
+-    const restoreFilter = useCallback((serialised) => {
+-        var _a;
+-        const [tree, clauses] = deserialise(serialised);
+-        setClauses(clauses);
+-        setTree(tree);
+-        if (onRestoreState) {
+-            const result = odataFilterWithState(clauses, tree);
+-            onRestoreState(Object.assign(Object.assign({}, result), { filter: (_a = result.filter) !== null && _a !== void 0 ? _a : "" }));
+-        }
+-    }, [setClauses, setTree, onRestoreState, odataFilterWithState]);
+-    useEffect(() => {
+-        if (disableHistory !== true) {
+-            const handlePopState = (e) => { restoreState(e.state, true); };
+-            window.addEventListener("popstate", handlePopState);
+-            return () => window.removeEventListener("popstate", handlePopState);
+-        }
+-    }, [disableHistory, restoreState]);
+-    useEffect(() => {
+-        if (propsFilter) {
+-            restoreFilter(propsFilter);
+-        }
+-        else {
+-            restoreDefault();
+-        }
+-    }, [propsFilter, restoreFilter, restoreDefault]);
+-    useMountEffect(() => {
+-        setProps(props);
+-        // restore query from history state if enabled
+-        if (disableHistory !== true && window.history.state && window.history.state.filterBuilder) {
+-            restoreState(window.history.state, false);
+-        }
+-        else if (propsFilter) {
+-            restoreFilter(propsFilter);
+-        }
+-        else {
+-            restoreDefault();
+-        }
+-    });
+-    return (jsx(Fragment, { children: jsxs("form", Object.assign({ onSubmit: submit }, { children: [jsx(FilterGroup, { clauseId: rootGroupUuid, path: [], root: true }), jsxs(Grid, Object.assign({ container: true, spacing: 1 }, { children: [jsx(Grid, Object.assign({ item: true }, { children: jsxs(ButtonGroup, Object.assign({ variant: "contained", color: "primary" }, { children: [jsx(Button, Object.assign({ type: "submit" }, { children: "Search" })), props.searchMenuItems &&
+-                                        jsx(Button, Object.assign({ size: "small", onClick: (e) => setAnchor(e.currentTarget), "aria-controls": anchor !== null ? "search-menu" : undefined, "aria-expanded": anchor !== null ? "true" : undefined, "aria-haspopup": "menu" }, { children: jsx(ArrowDropDown, {}) }))] })) })), jsx(Grid, Object.assign({ item: true }, { children: jsx(Button, Object.assign({ variant: "outlined", onClick: handleReset }, { children: "Reset" })) }))] })), props.searchMenuItems &&
+-                    jsx(Popover, Object.assign({ anchorEl: anchor, open: anchor !== null, anchorOrigin: { vertical: "bottom", horizontal: "left" }, onClose: () => setAnchor(null), transitionDuration: 100 }, { children: jsx(Paper, { children: jsx(MenuList, Object.assign({ id: "search-menu" }, { children: props.searchMenuItems.map((item, i) => (jsx(MenuItem, Object.assign({ onClick: item.onClick }, { children: item.label }), `searchMenu_${i}`))) })) }) }))] })) }));
+-};
+-
+-const FilterBuilder = (props) => {
+-    return (jsx(RecoilRoot, Object.assign({ override: true }, { children: jsx(FilterRoot, { props: props }) })));
+-};
+-
+-const defaultPageSize = 10;
+-
+-/**
+- * Convert an Expand object (or array of objects) to a clause to use in an OData $expand query parameter
+- * @param e Expand(s) to convert
+- * @returns OData expand clause string
+- */
+-const ExpandToQuery = (expand) => {
+-    if (expand === undefined) {
+-        return "";
+-    }
+-    if (!Array.isArray(expand)) {
+-        return ExpandToQuery([expand]);
+-    }
+-    // group all expands by the navigation field
+-    const groupedExpands = GroupArrayBy(expand, (e) => e.navigationField);
+-    // construct a single expand for each navigation field, combining nested query options (where possible)
+-    const expands = [];
+-    groupedExpands.forEach((e, k) => {
+-        var _a, _b;
+-        expands.push({
+-            navigationField: k,
+-            top: (_a = e.find(e2 => e2.top)) === null || _a === void 0 ? void 0 : _a.top,
+-            orderBy: (_b = e.find(e2 => e2.orderBy)) === null || _b === void 0 ? void 0 : _b.orderBy,
+-            count: e.some(e2 => e2.count),
+-            select: Array.from(new Set(e.filter(e2 => e2.select).map(e2 => e2.select))).join(","),
+-            expand: e.filter(e2 => e2.expand)
+-                .map(e2 => e2.expand)
+-                .reduce((a, b) => Array.isArray(b) ? a.concat(b) : [...a, b], [])
++        let n;
++        n = t in defaultTranslators ? defaultTranslators[t] : defaultTranslators.default;
++        let r = n({
++            schema: e,
++            field: l,
++            op: t,
++            value: i
+         });
+-    });
+-    return expands.map(e => {
+-        let result = `${e.navigationField}`;
+-        const options = [
+-            { type: "select", value: e.select },
+-            { type: "expand", value: ExpandToQuery(e.expand) },
+-            { type: "orderby", value: e.orderBy },
+-            { type: "top", value: e.top },
+-            { type: "count", value: e.count }
+-        ];
+-        if (options.some(o => o.value)) {
+-            result += `(${options.filter(o => o.value).map(o => `$${o.type}=${o.value}`).join(";")})`;
+-        }
+-        return result;
+-    }).join(",");
+-};
+-/**
+- * Group an array into multiple arrays linked by a common key value
+- * @param arr Array to group
+- * @param keySelector Function to select property to group by
+- * @returns ES6 Map of keys to arrays of values
+- */
+-const GroupArrayBy = (arr, keySelector) => arr
+-    .reduce((m, e) => m.set(keySelector(e), [...m.get(keySelector(e)) || [], e]), new Map());
+-/**
+- * Flatten an object to a single level, i.e. { Person: { Name: "John" } } becomes { "Person.Name": "John" }.
+- * Arrays are kept as arrays, with their elements flattened.
+- * @param obj Object to flatten
+- * @param sep Level separator (default ".")
+- * @returns Flattened object
+- */
+-const Flatten = (obj, sep = ".") => _flatten(obj, sep, "");
+-const _flatten = (obj, sep, prefix) => Object.keys(obj).reduce((x, k) => {
+-    if (obj[k] !== null) {
+-        const pre = prefix.length ? prefix + sep : "";
+-        if (Array.isArray(obj[k])) {
+-            x[pre + k] = obj[k].map(i => Flatten(i, sep));
+-        }
+-        else if (typeof obj[k] === "object") {
+-            Object.assign(x, _flatten(obj[k], sep, pre + k));
+-        }
+-        else {
+-            x[pre + k] = obj[k];
+-        }
+-    }
+-    return x;
+-}, {});
+-const GetPageNumber = () => {
+-    const params = new URLSearchParams(window.location.search);
+-    if (params.has("page")) {
+-        const pageVal = params.get("page");
+-        if (pageVal) {
+-            return parseInt(pageVal, 10) - 1;
+-        }
+-    }
+-    return 0;
+-};
+-const GetPageSizeOrDefault = (defaultSize) => {
+-    const params = new URLSearchParams(window.location.search);
+-    if (params.has("page-size")) {
+-        const sizeVal = params.get("page-size");
+-        if (sizeVal) {
+-            return parseInt(sizeVal, 10);
+-        }
+-    }
+-    return defaultSize !== null && defaultSize !== void 0 ? defaultSize : defaultPageSize;
+-};
+-
+-const ODataGridBase = (props) => {
+-    var _a;
+-    const [pageNumber, setPageNumber] = useState(GetPageNumber());
+-    const [pageSize, setPageSize] = useState(GetPageSizeOrDefault(props.defaultPageSize));
+-    const [rows, setRows] = useState([]);
+-    const [rowCount, setRowCount] = useState(0);
+-    const [loading, setLoading] = useState(true);
+-    const [sortModel, setSortModel] = useState(props.defaultSortModel);
+-    const [filter, setFilter] = useState("");
+-    const [filterSelects, setFilterSelects] = useState();
+-    const [compute, setCompute] = useState();
+-    const [queryString, setQueryString] = useState();
+-    const [visibleColumns, setVisibleColumns] = useState(props.columns
+-        .filter(c => (props.columnVisibilityModel && props.columnVisibilityModel[c.field] !== false) || c.hide !== true)
+-        .map(c => c.field));
+-    const [columnVisibilityOverride, setColumnVisibilityOverride] = useState({});
+-    const firstLoad = useRef(true);
+-    const fetchCount = useRef(true);
+-    const pendingFilter = useRef(false);
+-    const r = useResponsive();
+-    const fetchData = useCallback(() => __awaiter(void 0, void 0, void 0, function* () {
+-        var _b;
+-        if (!filter
+-            && props.disableFilterBuilder !== true
+-            && ((_b = props.filterBuilderProps) === null || _b === void 0 ? void 0 : _b.disableHistory) !== true
+-            && window.history.state
+-            && window.history.state.filterBuilder
+-            && window.history.state.filterBuilder.reset !== true) {
+-            // stop fetch if there is no filter but there is one in history which will be/has been restored
+-            // this prevents a race condition between the initial data load and the query being restored
+-            return;
+-        }
+-        setLoading(true);
+-        // select all fields for visible columns
+-        const fields = new Set(props.columns
+-            .filter(c => visibleColumns.includes(c.field) && c.expand === undefined && c.filterOnly !== true && c.type !== "actions")
+-            .map(c => { var _a; return (_a = c.select) !== null && _a !== void 0 ? _a : c.field; }));
+-        if (props.alwaysSelect) {
+-            props.alwaysSelect.forEach((c) => fields.add(c));
+-        }
+-        if (filterSelects) {
+-            filterSelects.forEach((s) => fields.add(s));
+-        }
+-        const expands = props.columns
+-            .filter(c => visibleColumns.includes(c.field) && c.expand)
+-            .map(c => c.expand)
+-            .reduce((a, b) => Array.isArray(b) ? a.concat(b) : [...a, b], []);
+-        const query = new URLSearchParams();
+-        if (fields.size > 0) {
+-            query.append("$select", Array.from(fields).join(","));
+-        }
+-        if (expands.length > 0) {
+-            query.append("$expand", ExpandToQuery(expands));
+-        }
+-        query.append("$top", pageSize.toString());
+-        query.append("$skip", (pageNumber * pageSize).toString());
+-        if (fetchCount.current) {
+-            query.append("$count", "true");
+-        }
+-        if (queryString) {
+-            for (const key in queryString) {
+-                query.append(key, queryString[key]);
+-            }
+-        }
+-        if (filter) {
+-            query.append("$filter", filter);
+-        }
+-        else if (props.$filter) {
+-            query.append("$filter", props.$filter);
+-        }
+-        if (compute) {
+-            query.append("$compute", compute);
+-        }
+-        if (sortModel && sortModel.length > 0) {
+-            const sortCols = sortModel
+-                .map(s => ({ col: props.columns.find(c => c.field === s.field), sort: s.sort }))
+-                .filter(c => c.col)
+-                .map(c => { var _a; return `${(_a = c.col.sortField) !== null && _a !== void 0 ? _a : c.col.field}${c.sort === "desc" ? " desc" : ""}`; });
+-            if (sortCols.length > 0) {
+-                query.append("$orderby", sortCols.join(","));
+-            }
+-        }
+-        const response = yield fetch(props.url + "?" + query.toString(), props.requestOptions);
+-        if (response.ok) {
+-            const data = yield response.json();
+-            // flatten object so that the DataGrid can access all the properties
+-            // i.e. { Person: { name: "John" } } becomes { "Person/name": "John" }
+-            // keep the original object in the "result" property so that it can still be accessed via strong typing
+-            const rows = data.value.map((v) => (Object.assign({ result: v }, Flatten(v, "/"))));
+-            if (data["@odata.count"]) {
+-                setRowCount(data["@odata.count"]);
+-            }
+-            setRows(rows);
+-            setLoading(false);
+-            firstLoad.current = false;
+-            pendingFilter.current = false;
+-            fetchCount.current = false;
+-        }
+-        else {
+-            console.error(`API request failed: ${response.url}, HTTP ${response.status}`);
+-        }
+-    }), [
+-        pageNumber,
+-        pageSize,
+-        visibleColumns,
+-        sortModel,
+-        filter,
+-        filterSelects,
+-        compute,
+-        queryString,
+-        props.url,
+-        props.alwaysSelect,
+-        props.columns,
+-        props.$filter,
+-        props.disableFilterBuilder,
+-        (_a = props.filterBuilderProps) === null || _a === void 0 ? void 0 : _a.disableHistory,
+-        props.requestOptions
+-    ]);
+-    const handleBuilderSubmit = useCallback((params) => {
+-        var _a;
+-        pendingFilter.current = true;
+-        fetchCount.current = true;
+-        if ((_a = props.filterBuilderProps) === null || _a === void 0 ? void 0 : _a.onSubmit) {
+-            props.filterBuilderProps.onSubmit(params);
+-        }
+-        setCompute(params.compute);
+-        setFilter(params.filter);
+-        setFilterSelects(params.select);
+-        setQueryString(params.queryString);
+-        setPageNumber(0);
+-        return { oDataGrid: { sortModel: sortModel } };
+-    }, [props.filterBuilderProps, sortModel]);
+-    const handleBuilderRestore = useCallback((params, state) => {
+-        var _a, _b;
+-        fetchCount.current = true;
+-        if ((_a = props.filterBuilderProps) === null || _a === void 0 ? void 0 : _a.onRestoreState) {
+-            props.filterBuilderProps.onRestoreState(params, state);
+-        }
+-        if (props.disableHistory !== true) {
+-            if ((_b = state === null || state === void 0 ? void 0 : state.oDataGrid) === null || _b === void 0 ? void 0 : _b.sortModel) {
+-                setSortModel(state.oDataGrid.sortModel);
+-            }
+-            else {
+-                setSortModel(props.defaultSortModel);
+-            }
+-        }
+-        setCompute(params.compute);
+-        setFilter(params.filter);
+-        setFilterSelects(params.select);
+-        setQueryString(params.queryString);
+-    }, [props.filterBuilderProps, props.disableHistory, props.defaultSortModel]);
+-    useEffect(() => {
+-        fetchData();
+-    }, [fetchData]);
+-    const { onColumnVisibilityModelChange, onSortModelChange } = props;
+-    const handleSortModelChange = useCallback((model, details) => {
+-        if (onSortModelChange) {
+-            onSortModelChange(model, details);
+-        }
+-        setSortModel(model);
+-        if (props.disableHistory !== true) {
+-            window.history.pushState(Object.assign(Object.assign({}, window.history.state), { oDataGrid: { sortModel: model } }), "");
+-        }
+-    }, [onSortModelChange, props.disableHistory]);
+-    useEffect(() => {
+-        var _a, _b;
+-        let changed = false;
+-        const params = new URLSearchParams(window.location.search);
+-        // update page query string parameter
+-        const pageStr = params.get("page");
+-        if (pageStr) {
+-            const page = parseInt(pageStr, 10) - 1;
+-            // update if already exists and is different to settings
+-            if (page !== pageNumber) {
+-                if (pageNumber !== 0) {
+-                    params.set("page", (pageNumber + 1).toString());
+-                }
+-                else {
+-                    // remove if first page
+-                    params.delete("page");
++        return "string" == typeof r ? {
++            filter: r
++        } : r
++    },
++    FilterRoot = ({
++        props: t
++    }) => {
++        let a = f(clauseState),
++            s = f(propsState),
++            d = f(schemaState),
++            u = f(treeState),
++            c = UseODataFilter(),
++            p = UseODataFilterWithState(),
++            [g, m] = o(null),
++            {
++                onSubmit: h,
++                onRestoreState: $,
++                disableHistory: v,
++                filter: S
++            } = t,
++            x = r(e => {
++                if (e.preventDefault(), h) {
++                    let l = c();
++                    if (l.filter) {
++                        let t = h(Object.assign(Object.assign({}, l), {
++                            filter: l.filter
++                        }));
++                        !0 !== v && window.history.pushState(Object.assign(Object.assign(Object.assign({}, window.history.state), t), {
++                            filterBuilder: {
++                                filter: l.filter,
++                                compute: l.compute,
++                                select: l.select,
++                                serialised: l.serialised,
++                                queryString: l.queryString
++                            }
++                        }), "")
++                    }
+                 }
+-                changed = true;
+-            }
+-        }
+-        else if (pageNumber !== 0) {
+-            // add if doesn't already exist and not on first page
+-            params.set("page", (pageNumber + 1).toString());
+-            changed = true;
+-        }
+-        // update page-size query string parameter
+-        const sizeStr = params.get("page-size");
+-        if (sizeStr) {
+-            const size = parseInt(sizeStr, 10);
+-            if (size !== pageSize) {
+-                if (pageSize !== ((_a = props.defaultPageSize) !== null && _a !== void 0 ? _a : defaultPageSize)) {
+-                    params.set("page-size", pageSize.toString());
++            }, [h, c, v]),
++            T = r(() => {
++                a(initialClauses.update(rootConditionUuid, e => Object.assign(Object.assign({}, e), {
++                    field: t.schema[0].field
++                }))), u(initialTree), h && h({
++                    filter: ""
++                }), !0 !== v && window.history.pushState(Object.assign(Object.assign({}, window.history.state), {
++                    filterBuilder: {
++                        reset: !0
++                    }
++                }), "")
++            }, [a, u, h, t.schema, v]),
++            C = r(() => T(), [T]);
++        i(() => {
++            d(t.schema)
++        }, [t.schema, d]);
++        let _ = r(() => {
++                a(initialClauses.update(rootConditionUuid, e => Object.assign(Object.assign({}, e), {
++                    field: t.schema[0].field
++                }))), u(initialTree)
++            }, [t.schema, a, u]),
++            F = r((e, l) => {
++                let t = "",
++                    i, o, n, r;
++                if ((null == e ? void 0 : e.filterBuilder) ? (!0 === e.filterBuilder.reset && !0 === l && _(), n = e.filterBuilder.compute, t = e.filterBuilder.filter, r = e.filterBuilder.select, i = e.filterBuilder.serialised, o = e.filterBuilder.queryString) : _(), t && i) {
++                    let [s, d] = deserialise(i);
++                    a(d), u(s)
+                 }
+-                else {
+-                    params.delete("page-size");
++                $ && $({
++                    compute: n,
++                    filter: t,
++                    queryString: o,
++                    select: r,
++                    serialised: i
++                }, e)
++            }, [$, _, a, u]),
++            P = r(e => {
++                var l;
++                let [t, i] = deserialise(e);
++                if (a(i), u(t), $) {
++                    let o = p(i, t);
++                    $(Object.assign(Object.assign({}, o), {
++                        filter: null !== (l = o.filter) && void 0 !== l ? l : ""
++                    }))
+                 }
+-                changed = true;
+-            }
+-        }
+-        else if (pageSize !== ((_b = props.defaultPageSize) !== null && _b !== void 0 ? _b : defaultPageSize)) {
+-            params.set("page-size", pageSize.toString());
+-            changed = true;
+-        }
+-        // only run if modified and not the first load
+-        if (changed && !firstLoad.current) {
+-            const search = params.toString();
+-            const url = search ? `${window.location.pathname}?${search}${window.location.hash}` : `${window.location.pathname}${window.location.hash}`;
+-            // replace the state instead of pushing if a state has already been pushed by a filter
+-            if (pendingFilter.current) {
+-                window.history.replaceState(window.history.state, "", url);
+-            }
+-            else {
+-                window.history.pushState(window.history.state, "", url);
++            }, [a, u, $, p]);
++        return i(() => {
++            if (!0 !== v) {
++                let e = e => {
++                    F(e.state, !0)
++                };
++                return window.addEventListener("popstate", e), () => window.removeEventListener("popstate", e)
+             }
++        }, [v, F]), i(() => {
++            S ? P(S) : _()
++        }, [S, P, _]), useMountEffect(() => {
++            s(t), !0 !== v && window.history.state && window.history.state.filterBuilder ? F(window.history.state, !1) : S ? P(S) : _()
++        }), l(n, {
++            children: e("form", Object.assign({
++                onSubmit: x
++            }, {
++                children: [l(FilterGroup, {
++                    clauseId: rootGroupUuid,
++                    path: [],
++                    root: !0
++                }), e(b, Object.assign({
++                    container: !0,
++                    spacing: 1
++                }, {
++                    children: [l(b, Object.assign({
++                        item: !0,
++                    }, {
++                        children: e(L, Object.assign({
++                            variant: "contained",
++                            color: "primary"
++                        }, {
++                            children: [l(B, Object.assign({
++                                type: "submit"
++                            }, {
++                                children: "Search"
++                            })), t.searchMenuItems && l(B, Object.assign({
++                                size: "small",
++                                onClick: e => m(e.currentTarget),
++                                "aria-controls": null !== g ? "search-menu" : void 0,
++                                "aria-expanded": null !== g ? "true" : void 0,
++                                "aria-haspopup": "menu"
++                            }, {
++                                children: l(y, {})
++                            }))]
++                        }))
++                    })), l(b, Object.assign({
++                        item: !0,
++						id: "filter-action-btn",
++						className: "action-buttons"
++                    }, {
++                        children: l(B, Object.assign({
++                            variant: "outlined",
++                            onClick: C,
++							className: "secondary-btn"
++                        }, {
++                            children: "Reset"
++                        }))
++                    }))]
++                })), t.searchMenuItems && l(k, Object.assign({
++                    anchorEl: g,
++                    open: null !== g,
++                    anchorOrigin: {
++                        vertical: "bottom",
++                        horizontal: "left"
++                    },
++                    onClose: () => m(null),
++                    transitionDuration: 100
++                }, {
++                    children: l(I, {
++                        children: l(z, Object.assign({
++                            id: "search-menu"
++                        }, {
++                            children: t.searchMenuItems.map((e, t) => l(O, Object.assign({
++                                onClick: e.onClick
++                            }, {
++                                children: e.label
++                            }), `searchMenu_${t}`))
++                        }))
++                    })
++                }))]
++            }))
++        })
++    },
++    FilterBuilder = t.memo(e => l(h, Object.assign({
++        override: !0
++    }, {
++        children: l(FilterRoot, {
++            props: e
++        })
++    }))),
++    defaultPageSize = 10,
++    ExpandToQuery = e => {
++        if (void 0 === e) return "";
++        if (!Array.isArray(e)) return ExpandToQuery([e]);
++        let l = GroupArrayBy(e, e => e.navigationField),
++            t = [];
++        return l.forEach((e, l) => {
++            var i, o;
++            t.push({
++                navigationField: l,
++                top: null === (i = e.find(e => e.top)) || void 0 === i ? void 0 : i.top,
++                orderBy: null === (o = e.find(e => e.orderBy)) || void 0 === o ? void 0 : o.orderBy,
++                count: e.some(e => e.count),
++                select: Array.from(new Set(e.filter(e => e.select).map(e => e.select))).join(","),
++                expand: e.filter(e => e.expand).map(e => e.expand).reduce((e, l) => Array.isArray(l) ? e.concat(l) : [...e, l], [])
++            })
++        }), t.map(e => {
++            let l = `${e.navigationField}`,
++                t = [{
++                    type: "select",
++                    value: e.select
++                }, {
++                    type: "expand",
++                    value: ExpandToQuery(e.expand)
++                }, {
++                    type: "orderby",
++                    value: e.orderBy
++                }, {
++                    type: "top",
++                    value: e.top
++                }, {
++                    type: "count",
++                    value: e.count
++                }];
++            return t.some(e => e.value) && (l += `(${t.filter(e=>e.value).map(e=>`$${e.type}=${e.value}`).join(";")})`), l
++        }).join(",")
++    },
++    GroupArrayBy = (e, l) => e.reduce((e, t) => e.set(l(t), [...e.get(l(t)) || [], t]), new Map),
++    Flatten = (e, l = ".") => _flatten(e, l, ""),
++    _flatten = (e, l, t) => Object.keys(e).reduce((i, o) => {
++        if (null !== e[o]) {
++            let a = t.length ? t + l : "";
++            Array.isArray(e[o]) ? i[a + o] = e[o].map(e => Flatten(e, l)) : "object" == typeof e[o] ? Object.assign(i, _flatten(e[o], l, a + o)) : i[a + o] = e[o]
++        }
++        return i
++    }, {}),
++    GetPageNumber = () => {
++        let e = new URLSearchParams(window.location.search);
++        if (e.has("page")) {
++            let l = e.get("page");
++            if (l) return parseInt(l, 10) - 1
++        }
++        return 0
++    },
++    GetPageSizeOrDefault = e => {
++        let l = new URLSearchParams(window.location.search);
++        if (l.has("page-size")) {
++            let t = l.get("page-size");
++            if (t) return parseInt(t, 10)
+         }
+-    }, [pageNumber, pageSize, props.defaultPageSize]);
+-    useEffect(() => {
+-        const handlePopState = (e) => {
+-            var _a, _b, _c, _d;
+-            const params = new URLSearchParams(window.location.search);
+-            const pageVal = params.get("page");
+-            if (pageVal) {
+-                const page = parseInt(pageVal, 10) - 1;
+-                setPageNumber(page);
+-            }
+-            else if (pageNumber !== 0) {
+-                // reset to first page if not provided and not already on first page
+-                setPageNumber(0);
+-            }
+-            const sizeVal = params.get("page-size");
+-            if (sizeVal) {
+-                const size = parseInt(sizeVal, 10) - 1;
+-                setPageSize(size);
+-            }
+-            else if ((_a = pageSize !== props.defaultPageSize) !== null && _a !== void 0 ? _a : defaultPageSize) {
+-                // reset to default if not provided and not already default
+-                setPageSize((_b = props.defaultPageSize) !== null && _b !== void 0 ? _b : defaultPageSize);
++        return null != e ? e : 10
++    },
++    ODataGridBase = u => {
++        var c;
++        let [p, g] = o(GetPageNumber()), [f, m] = o(GetPageSizeOrDefault(u.defaultPageSize)), [h, $] = o([]), [v, y] = o(0), [b, S] = o(!0), [x, T] = o(u.defaultSortModel), [C, _] = o(""), [O, F] = o(), [P, M] = o(), [G, L] = o(), [B, k] = o(u.columns.filter(e => u.columnVisibilityModel && !1 !== u.columnVisibilityModel[e.field] || !0 !== e.hide).map(e => e.field)), [I, z] = o({}), q = s(!0), w = s(!0), D = s(!1), E = useResponsive(), U = r(() => __awaiter(void 0, void 0, void 0, function*() {
++            var e;
++            if (!C && !0 !== u.disableFilterBuilder && (null === (e = u.filterBuilderProps) || void 0 === e ? void 0 : e.disableHistory) !== !0 && window.history.state && window.history.state.filterBuilder && !0 !== window.history.state.filterBuilder.reset) return;
++            S(!0);
++            let l = new Set(u.columns.filter(e => B.includes(e.field) && void 0 === e.expand && !0 !== e.filterOnly && "actions" !== e.type).map(e => {
++                var l;
++                return null !== (l = e.select) && void 0 !== l ? l : e.field
++            }));
++            u.alwaysSelect && u.alwaysSelect.forEach(e => l.add(e)), O && O.forEach(e => l.add(e));
++            let t = u.columns.filter(e => B.includes(e.field) && e.expand).map(e => e.expand).reduce((e, l) => Array.isArray(l) ? e.concat(l) : [...e, l], []),
++                i = new URLSearchParams;
++            if (l.size > 0 && i.append("$select", Array.from(l).join(",")), t.length > 0 && i.append("$expand", ExpandToQuery(t)), i.append("$top", f.toString()), i.append("$skip", (p * f).toString()), w.current && i.append("$count", "true"), G)
++                for (let o in G) i.append(o, G[o]);
++            if (C ? i.append("$filter", C) : u.$filter && i.append("$filter", u.$filter), P && i.append("$compute", P), x && x.length > 0) {
++                let a = x.map(e => ({
++                    col: u.columns.find(l => l.field === e.field),
++                    sort: e.sort
++                })).filter(e => e.col).map(e => {
++                    var l;
++                    return `${null!==(l=e.col.sortField)&&void 0!==l?l:e.col.field}${"desc"===e.sort?" desc":""}`
++                });
++                a.length > 0 && i.append("$orderby", a.join(","))
+             }
+-            if (props.disableHistory !== true && props.disableFilterBuilder === true) {
+-                // only restore sort model from history if history is enabled and FilterBuilder is disabled
+-                // if FilterBuilder is enabled sort model restoration is handled in handleBuilderRestore
+-                if ((_d = (_c = e.state) === null || _c === void 0 ? void 0 : _c.oDataGrid) === null || _d === void 0 ? void 0 : _d.sortModel) {
+-                    setSortModel(e.state.oDataGrid.sortModel);
+-                }
+-                else {
+-                    setSortModel(props.defaultSortModel);
++            let n = yield fetch(u.url + "?" + i.toString(), u.requestOptions);
++            if (n.ok) {
++                let r = yield n.json(), s = r.value.map(e => Object.assign({
++                    result: e
++                }, Flatten(e, "/")));
++                (r["@odata.count"] || 0 === r["@odata.count"]) && y(r["@odata.count"]), $(s), S(!1), q.current = !1, D.current = !1, w.current = !1
++            } else console.error(`API request failed: ${n.url}, HTTP ${n.status}`)
++        }), [p, f, B, x, C, O, P, G, u.url, u.alwaysSelect, u.columns, u.$filter, u.disableFilterBuilder, null === (c = u.filterBuilderProps) || void 0 === c ? void 0 : c.disableHistory, u.requestOptions]), A = r(e => {
++            var l;
++            return D.current = !0, w.current = !0, (null === (l = u.filterBuilderProps) || void 0 === l ? void 0 : l.onSubmit) && u.filterBuilderProps.onSubmit(e), M(e.compute), _(e.filter), F(e.select), L(e.queryString), g(0), {
++                oDataGrid: {
++                    sortModel: x
+                 }
+             }
+-        };
+-        window.addEventListener("popstate", handlePopState);
+-        return () => window.removeEventListener("popstate", handlePopState);
+-    }, [pageNumber, pageSize, props.defaultPageSize, props.defaultSortModel, props.disableHistory, props.disableFilterBuilder]);
+-    const handlePageChange = useCallback((page) => {
+-        setPageNumber(page);
+-    }, []);
+-    const handlePageSizeChange = useCallback((size) => {
+-        setPageSize(size);
+-    }, []);
+-    const visibility = useMemo(() => {
+-        const v = {};
+-        if (props.columnVisibilityModel) {
+-            for (const field in props.columnVisibilityModel) {
+-                if (field in columnVisibilityOverride) {
+-                    v[field] = columnVisibilityOverride[field];
+-                }
+-                else if (typeof props.columnVisibilityModel[field] === "boolean") {
+-                    v[field] = props.columnVisibilityModel[field];
+-                }
+-                else {
+-                    v[field] = r(props.columnVisibilityModel[field]);
++        }, [u.filterBuilderProps, x]), N = r((e, l) => {
++            var t, i;
++            w.current = !0, (null === (t = u.filterBuilderProps) || void 0 === t ? void 0 : t.onRestoreState) && u.filterBuilderProps.onRestoreState(e, l), !0 !== u.disableHistory && ((null === (i = null == l ? void 0 : l.oDataGrid) || void 0 === i ? void 0 : i.sortModel) ? T(l.oDataGrid.sortModel) : T(u.defaultSortModel)), M(e.compute), _(e.filter), F(e.select), L(e.queryString)
++        }, [u.filterBuilderProps, u.disableHistory, u.defaultSortModel]);
++        i(() => {
++            U()
++        }, [U]);
++        let {
++            onColumnVisibilityModelChange: R,
++            onSortModelChange: j
++        } = u, V = r((e, l) => {
++            j && j(e, l), T(e), !0 !== u.disableHistory && window.history.pushState(Object.assign(Object.assign({}, window.history.state), {
++                oDataGrid: {
++                    sortModel: e
+                 }
++            }), "")
++        }, [j, u.disableHistory]);
++        i(() => {
++            var e, l;
++            let t = !1,
++                i = new URLSearchParams(window.location.search),
++                o = i.get("page");
++            if (o) {
++                let a = parseInt(o, 10) - 1;
++                a !== p && (0 !== p ? i.set("page", (p + 1).toString()) : i.delete("page"), t = !0)
++            } else 0 !== p && (i.set("page", (p + 1).toString()), t = !0);
++            let n = i.get("page-size");
++            if (n) {
++                let r = parseInt(n, 10);
++                r !== f && (f !== (null !== (e = u.defaultPageSize) && void 0 !== e ? e : 10) ? i.set("page-size", f.toString()) : i.delete("page-size"), t = !0)
++            } else f !== (null !== (l = u.defaultPageSize) && void 0 !== l ? l : 10) && (i.set("page-size", f.toString()), t = !0);
++            if (t && !q.current) {
++                let s = i.toString(),
++                    d = s ? `${window.location.pathname}?${s}${window.location.hash}` : `${window.location.pathname}${window.location.hash}`;
++                D.current ? window.history.replaceState(window.history.state, "", d) : window.history.pushState(window.history.state, "", d)
+             }
+-        }
+-        else {
+-            props.columns.filter(c => c.filterOnly !== true).forEach(c => {
+-                if (c.field in columnVisibilityOverride) {
+-                    v[c.field] = columnVisibilityOverride[c.field];
+-                }
+-                else if (typeof c.hide === "boolean") {
+-                    v[c.field] = !c.hide;
+-                }
+-                else if (c.hide) {
+-                    v[c.field] = !r(c.hide);
++        }, [p, f, u.defaultPageSize]), i(() => {
++            let e = e => {
++                var l, t, i, o;
++                let a = new URLSearchParams(window.location.search),
++                    n = a.get("page");
++                if (n) {
++                    let r = parseInt(n, 10) - 1;
++                    g(r)
++                } else 0 !== p && g(0);
++                let s = a.get("page-size");
++                if (s) {
++                    let d = parseInt(s, 10) - 1;
++                    m(d)
++                } else(l = f !== u.defaultPageSize) && m(null !== (t = u.defaultPageSize) && void 0 !== t ? t : 10);
++                !0 !== u.disableHistory && !0 === u.disableFilterBuilder && ((null === (o = null === (i = e.state) || void 0 === i ? void 0 : i.oDataGrid) || void 0 === o ? void 0 : o.sortModel) ? T(e.state.oDataGrid.sortModel) : T(u.defaultSortModel))
++            };
++            return window.addEventListener("popstate", e), () => window.removeEventListener("popstate", e)
++        }, [p, f, u.defaultPageSize, u.defaultSortModel, u.disableHistory, u.disableFilterBuilder]);
++        let W = r(e => {
++                g(e)
++            }, []),
++            H = r(e => {
++                m(e)
++            }, []),
++            Q = a(() => {
++                let e = {};
++                if (u.columnVisibilityModel)
++                    for (let l in u.columnVisibilityModel) l in I ? e[l] = I[l] : "boolean" == typeof u.columnVisibilityModel[l] ? e[l] = u.columnVisibilityModel[l] : e[l] = E(u.columnVisibilityModel[l]);
++                else u.columns.filter(e => !0 !== e.filterOnly).forEach(l => {
++                    l.field in I ? e[l.field] = I[l.field] : "boolean" == typeof l.hide ? e[l.field] = !l.hide : l.hide && (e[l.field] = !E(l.hide))
++                });
++                return u.columns.filter(e => !0 === e.filterOnly).forEach(l => {
++                    e[l.field] = !1
++                }), e
++            }, [u.columnVisibilityModel, E, u.columns, I]),
++            Y = r((e, l) => {
++                R && R(e, l);
++                let t = Object.keys(e).find(l => Q[l] !== e[l]);
++                if (t) {
++                    let i = e[t];
++                    z(e => Object.assign(Object.assign({}, e), {
++                        [t]: i
++                    })), i ? k(e => [...e, t]) : k(e => e.filter(e => e !== t))
+                 }
+-            });
+-        }
+-        props.columns.filter(c => c.filterOnly === true).forEach(c => {
+-            v[c.field] = false;
+-        });
+-        return v;
+-    }, [props.columnVisibilityModel, r, props.columns, columnVisibilityOverride]);
+-    const handleColumnVisibilityModelChange = useCallback((model, details) => {
+-        if (onColumnVisibilityModelChange) {
+-            onColumnVisibilityModelChange(model, details);
+-        }
+-        // find the field which has been changed
+-        const column = Object.keys(model).find((key) => visibility[key] !== model[key]);
+-        if (column) {
+-            const visible = model[column];
+-            setColumnVisibilityOverride((v) => (Object.assign(Object.assign({}, v), { [column]: visible })));
+-            if (visible) {
+-                setVisibleColumns((v) => [...v, column]);
+-            }
+-            else {
+-                setVisibleColumns((v) => v.filter(c => c !== column));
+-            }
+-        }
+-    }, [onColumnVisibilityModelChange, visibility]);
+-    const gridColumns = useMemo(() => props.columns.filter(c => c.filterOnly !== true), [props.columns]);
+-    const GridComponent = props.component;
+-    return (jsxs(Fragment, { children: [props.$filter === undefined && props.disableFilterBuilder !== true &&
+-                jsx(Box, Object.assign({ mb: 2 }, { children: jsx(FilterBuilder, Object.assign({}, props.filterBuilderProps, { schema: props.columns, onSubmit: handleBuilderSubmit, onRestoreState: handleBuilderRestore })) })), jsx(GridComponent, Object.assign({ autoHeight: true, ref: React.createRef() }, props, { columns: gridColumns, rows: rows, rowCount: rowCount, pagination: true, paginationMode: "server", page: pageNumber, pageSize: pageSize, onPageChange: handlePageChange, onPageSizeChange: handlePageSizeChange, disableColumnFilter: true, loading: loading, columnVisibilityModel: visibility, onColumnVisibilityModelChange: handleColumnVisibilityModelChange, sortingMode: "server", sortModel: sortModel, onSortModelChange: handleSortModelChange }))] }));
++            }, [R, Q]),
++            J = a(() => u.columns.filter(e => !0 !== e.filterOnly), [u.columns]),
++            K = u.component;
++        return e(n, {
++            children: [void 0 === u.$filter && !0 !== u.disableFilterBuilder && l(d, Object.assign({
++                mb: 2
++            }, {
++                children: l(FilterBuilder, Object.assign({}, u.filterBuilderProps, {
++                    schema: u.columns,
++                    onSubmit: A,
++                    onRestoreState: N
++                }))
++            })), l(K, Object.assign({
++                autoHeight: !0,
++                ref: t.createRef()
++            }, u, {
++                columns: J,
++                rows: h,
++                rowCount: v,
++                pagination: !0,
++                paginationMode: "server",
++                page: p,
++                pageSize: f,
++                onPageChange: W,
++                onPageSizeChange: H,
++                disableColumnFilter: !0,
++                loading: b,
++                columnVisibilityModel: Q,
++                onColumnVisibilityModelChange: Y,
++                sortingMode: "server",
++                sortModel: x,
++                onSortModelChange: V
++            }))]
++        })
++    },
++    ODataGrid = e => l(ODataGridBase, Object.assign({}, e, {
++        component: N
++    }));
++export {
++    FilterBuilder,
++    ODataGrid,
++    allOperators,
++    defaultTranslators,
++    escapeODataString,
++    numericOperators
+ };
+\ No newline at end of file
+-
+-const ODataGrid = (props) => (jsx(ODataGridBase, Object.assign({}, props, { component: DataGrid })));
+-
+-export { FilterBuilder, ODataGrid, allOperators, defaultTranslators, escapeODataString, numericOperators };
 diff --git a/node_modules/o-data-grid/build/o-data-grid.d.ts b/node_modules/o-data-grid/build/o-data-grid.d.ts
 index dfbec7e..99c537a 100644
 --- a/node_modules/o-data-grid/build/o-data-grid.d.ts
