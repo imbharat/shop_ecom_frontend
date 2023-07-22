@@ -22,7 +22,11 @@ import AddEditLocation from "@/dialogs/Location/AddEditLocation";
 import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import { ODATA_URL } from "@/custom-hooks/useAxios";
 import { deleteById, downloadToExcel } from "@/services/shared.service";
-import { ExportToExcel } from "@/utils/UtilFunctions";
+import {
+  ExportToExcel,
+  NumberOrDateFilterOperators,
+  saveGrid,
+} from "@/utils/UtilFunctions";
 
 const getFormattedDate = (date: string) => new Date(date).toDateString();
 
@@ -86,14 +90,16 @@ let columns: ODataGridColDef[] = [
     headerName: "Created On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "locations.updated_at",
     headerName: "Updated On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
 ];
 
@@ -141,7 +147,7 @@ function LocationsList() {
   const refreshGrid = () => setCols((prev) => [...prev]);
 
   const saveChanges = async (params: GridRowEditStopParams) => {
-    const { location_id, result, ...location } = params.row;
+    saveGrid(params, "/locations", refreshGrid);
   };
 
   const exportToExcel = async () => {

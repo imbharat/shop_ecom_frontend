@@ -20,9 +20,10 @@ import { ODATA_URL } from "@/custom-hooks/useAxios";
 import { useRouter } from "next/router";
 import {
   ExportToExcel,
-  NumberFieldFilterOperators,
+  NumberOrDateFilterOperators,
 } from "@/utils/UtilFunctions";
 import { downloadToExcel } from "@/services/shared.service";
+import { returnProductsById } from "@/services/products.services";
 
 let columns: ODataGridColDef[] = [
   {
@@ -36,14 +37,14 @@ let columns: ODataGridColDef[] = [
     headerName: "Cost Price",
     headerClassName: "grid-header",
     type: "number",
-    filterOperators: NumberFieldFilterOperators(),
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "products.sell_price",
     headerName: "Sell Price",
     headerClassName: "grid-header",
     type: "number",
-    filterOperators: NumberFieldFilterOperators(),
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "profit.loss.ui.field",
@@ -152,6 +153,8 @@ function OrderDetailsList() {
 
   const router = useRouter();
 
+  const refreshGrid = () => setCols((prev) => [...prev]);
+
   const exportToExcel = async () => {
     const result = await downloadToExcel(
       `${router.asPath}/products`,
@@ -160,6 +163,19 @@ function OrderDetailsList() {
     );
     if (result?.data?.value?.length) {
       ExportToExcel(component, "xlsx", result.data.value);
+    }
+  };
+
+  const returnProducts = async () => {
+    const ids = selectedRows as unknown as number[];
+    const result = await returnProductsById(
+      {
+        product_id: [...ids],
+      },
+      "/products/return"
+    );
+    if (result?.data) {
+      refreshGrid();
     }
   };
 
@@ -191,7 +207,7 @@ function OrderDetailsList() {
           )}
           {selectedRows.length >= 1 && (
             <>
-              <span className={styles.options} onClick={() => {}}>
+              <span className={styles.options} onClick={returnProducts}>
                 <ArrowUturnLeftIcon className="w-5" />
                 Return {selectedRows.length > 1 ? `Products` : `Product`}
               </span>

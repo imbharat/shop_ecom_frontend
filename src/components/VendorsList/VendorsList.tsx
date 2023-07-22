@@ -22,7 +22,11 @@ import AddEditVendor from "@/dialogs/Vendor/AddEditVendor";
 import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import { ODATA_URL } from "@/custom-hooks/useAxios";
 import { deleteById, downloadToExcel } from "@/services/shared.service";
-import { ExportToExcel } from "@/utils/UtilFunctions";
+import {
+  ExportToExcel,
+  NumberOrDateFilterOperators,
+  saveGrid,
+} from "@/utils/UtilFunctions";
 
 const getFormattedDate = (date: string) => new Date(date).toDateString();
 
@@ -100,14 +104,16 @@ let columns: ODataGridColDef[] = [
     headerName: "Created On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "vendors.updated_at",
     headerName: "Updated On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
 ];
 
@@ -157,7 +163,7 @@ function VendorsList() {
   const refreshGrid = () => setCols((prev) => [...prev]);
 
   const saveChanges = async (params: GridRowEditStopParams) => {
-    const { vendor_id, result, ...vendor } = params.row;
+    saveGrid(params, "/vendors", refreshGrid);
   };
 
   const exportToExcel = async () => {

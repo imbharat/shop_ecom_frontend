@@ -28,7 +28,7 @@ import { deleteById, downloadToExcel } from "@/services/shared.service";
 import SellProduct from "@/dialogs/Product/SellProducts";
 import {
   ExportToExcel,
-  NumberFieldFilterOperators,
+  NumberOrDateFilterOperators,
 } from "@/utils/UtilFunctions";
 import { Button, Fade, Menu, MenuItem } from "@mui/material";
 import {
@@ -55,7 +55,7 @@ let columns: ODataGridColDef[] = [
     editable: true,
     headerClassName: "grid-header",
     type: "number",
-    filterOperators: NumberFieldFilterOperators(),
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "types.type_name",
@@ -140,14 +140,16 @@ let columns: ODataGridColDef[] = [
     headerName: "Created On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "products.updated_at",
     headerName: "Updated On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
 ];
 

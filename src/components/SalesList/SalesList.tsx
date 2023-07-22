@@ -19,8 +19,9 @@ import { ODATA_URL } from "@/custom-hooks/useAxios";
 import { downloadToExcel } from "@/services/shared.service";
 import {
   ExportToExcel,
-  NumberFieldFilterOperators,
+  NumberOrDateFilterOperators,
 } from "@/utils/UtilFunctions";
+import { returnProductsById } from "@/services/products.services";
 
 const getFormattedDate = (date: string) => new Date(date).toDateString();
 
@@ -32,7 +33,7 @@ let columns: ODataGridColDef[] = [
       `IN${"0".repeat(10 - params.value.toString().length)}${params.value}`,
     headerClassName: "grid-header",
     type: "number",
-    filterOperators: NumberFieldFilterOperators(),
+    filterOperators: NumberOrDateFilterOperators(),
     align: "left",
     headerAlign: "left",
   },
@@ -53,14 +54,14 @@ let columns: ODataGridColDef[] = [
     headerName: "Cost Price",
     headerClassName: "grid-header",
     type: "number",
-    filterOperators: NumberFieldFilterOperators(),
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "products.sell_price",
     headerName: "Sell Price",
     headerClassName: "grid-header",
     type: "number",
-    filterOperators: NumberFieldFilterOperators(),
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "profit.loss.ui.field",
@@ -140,7 +141,8 @@ let columns: ODataGridColDef[] = [
     headerName: "Sold On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
 ];
 
@@ -197,6 +199,19 @@ function SalesList() {
     }
   };
 
+  const returnProducts = async () => {
+    const ids = selectedRows as unknown as number[];
+    const result = await returnProductsById(
+      {
+        product_id: [...ids],
+      },
+      "/products/return"
+    );
+    if (result?.data) {
+      refreshGrid();
+    }
+  };
+
   const CustomToolbar = () => {
     return (
       <GridToolbarContainer
@@ -225,7 +240,7 @@ function SalesList() {
           )}
           {selectedRows.length >= 1 && (
             <>
-              <span className={styles.options} onClick={() => {}}>
+              <span className={styles.options} onClick={returnProducts}>
                 <ArrowUturnLeftIcon className="w-5" />
                 Return {selectedRows.length > 1 ? `Products` : `Product`}
               </span>

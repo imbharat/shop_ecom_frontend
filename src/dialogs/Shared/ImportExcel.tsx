@@ -252,7 +252,6 @@ function ImportExcel<T = BulkAddProducts | BulkSellProducts>({
               // step: verifyValidCSV,
             }}
             onUploadAccepted={(results: any) => {
-              debugger;
               setValueExplicitly("data", results?.data);
               setZoneHover(false);
             }}

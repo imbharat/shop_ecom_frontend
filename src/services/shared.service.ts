@@ -5,6 +5,10 @@ export const postFormData = async (payload: any, uri: string) => {
   return await axios.post(`${API_URL}${uri}`, payload);
 };
 
+export const updateById = async (id: number, payload: Object, uri: string) => {
+  return await axios.put(`${API_URL}${uri}/${id}`, payload);
+};
+
 export const deleteById = async (resource: string, id: number) => {
   return await axios.delete(`${API_URL}/${resource}/${id}`);
 };

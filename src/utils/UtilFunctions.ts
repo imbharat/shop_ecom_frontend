@@ -1,7 +1,9 @@
+import { updateById } from "@/services/shared.service";
+import { GridRowEditStopParams } from "@mui/x-data-grid";
 import { saveAs } from "file-saver";
 import { Operation } from "o-data-grid";
 
-export const NumberFieldFilterOperators = () =>
+export const NumberOrDateFilterOperators = () =>
   ["eq", "ne", "lt", "gt", "le", "ge", "null", "notnull"] as Operation[];
 
 export const ExportToExcel = (
@@ -31,4 +33,26 @@ export const ExportToExcel = (
     }
     exportToExcel.terminate();
   };
+};
+
+export const saveGrid = async (
+  params: GridRowEditStopParams,
+  resource: string,
+  refreshGrid: () => void
+) => {
+  const { id } = params;
+  const { result: existing, ...updated } = params.row;
+  const updatedValues: any = {};
+  for (let field in updated) {
+    if (existing[field] !== updated[field]) {
+      const dbField = field.substring(field.indexOf(".") + 1);
+      updatedValues[dbField] = updated[field];
+    }
+  }
+  if (Object.keys(updatedValues)) {
+    const result = await updateById(id as number, updatedValues, resource);
+    if (!result?.data?.[0]) {
+      refreshGrid();
+    }
+  }
 };

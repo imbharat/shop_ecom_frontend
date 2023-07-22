@@ -30,6 +30,7 @@ const filterBuilderProps: ExternalBuilderProps<any> = {
     InputLabelProps: {
       style: {
         fontFamily: "system-ui",
+        color: "var(--form-placeholder-color)",
       },
     },
   },
@@ -51,7 +52,7 @@ const filterBuilderProps: ExternalBuilderProps<any> = {
   },
   localizationProviderProps: {
     dateAdapter: AdapterDayjs,
-    adapterLocale: "en-gb",
+    adapterLocale: "en",
   },
   onSubmit: (params: FilterParameters) => {},
 };
@@ -83,7 +84,7 @@ function CommonDataGrid({
   onSortingChange,
   columnVisibilityModel,
 }: Props) {
-  const rowSelection = (selectionModel: GridSelectionModel) => {
+  const rowSelection = (selectionModel: GridSelectionModel, data: any) => {
     setSelectedRows(selectionModel);
   };
 
@@ -106,7 +107,18 @@ function CommonDataGrid({
           checkboxSelection
           disableColumnMenu
           editMode="row"
-          sx={{ overflowX: "auto" }}
+          sx={{
+            overflowX: "auto",
+            "& .MuiDataGrid-row:hover": {
+              backgroundColor: "var(--secondary-color)",
+            },
+            "& .MuiDataGrid-row.Mui-selected": {
+              backgroundColor: "white",
+            },
+            "& .MuiDataGrid-row.Mui-selected:hover": {
+              backgroundColor: "var(--secondary-color)",
+            },
+          }}
           getRowId={(row) => row[alwaysSelect[0]]}
           columns={columns}
           defaultPageSize={10}

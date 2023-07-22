@@ -5,6 +5,7 @@
   --primary-color: rgb(52 0 118);
   --secondary-color: rgb(234 219 255); 
   --form-input-color: rgb(211 211 211 / 25%);
+  --form-placeholder-color: rgb(0 0 0 / 60%);
   --max-width: 1100px;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
@@ -114,6 +115,7 @@ header {
   padding: 0.75rem;
   display: flex;
   justify-content: right;
+  z-index: 2000;
 }
 article {
   grid-area: content;
@@ -139,22 +141,18 @@ button[type='submit'], button[type='submit']:hover{
   color: #ffffff;
 }
 
-button[type='button'].MuiButton-root:not([aria-label="Export"]):not([aria-label="Density"]):not([aria-label="Select columns"]),
-button[type='button'].MuiButton-root:hover:not([aria-label="Export"]):not([aria-label="Density"]):not([aria-label="Select columns"])
-{
+#action-btn.action-buttons > .secondary-btn,
+#filter-action-btn.action-buttons > .secondary-btn,
+#filter-add-action-btn.action-buttons > .secondary-btn {
+  background: white;
+  border: 0.12rem solid var(--primary-color);
   border-radius: 1rem;
   color: black;
 }
 
-button[type='button'].MuiButton-root:not([aria-label="Export"]):not([aria-label="Density"]):not([aria-label="Select columns"]),
-button[type='button'].MuiButton-root.MuiButtonGroup-grouped:not([aria-label="Export"]):not([aria-label="Density"]):not([aria-label="Select columns"]){
-  background: white;
-  border: 0.12rem solid var(--primary-color);
-  border-radius: 1rem;
-}
-
-button[type='button'].MuiButton-root:hover:not([aria-label="Export"]):not([aria-label="Density"]):not([aria-label="Select columns"]),
-button[type='button'].MuiButton-root.MuiButtonGroup-grouped:hover:not([aria-label="Export"]):not([aria-label="Density"]):not([aria-label="Select columns"]){
+#action-btn.action-buttons > .secondary-btn:hover,
+#filter-action-btn.action-buttons > .secondary-btn:hover,
+#filter-add-action-btn.action-buttons > .secondary-btn:hover {
   background-color: var(--secondary-color);
   border:0.12rem solid var(--primary-color);
   border-radius: 1rem;
@@ -166,18 +164,18 @@ div[role='group'] {
   box-shadow: none;
 }
 
-div[role='group'].action-buttons {
+div[role='group']#action-btn.action-buttons {
   justify-content: flex-end;
   margin-top: 2rem;
 }
 
-.action-buttons > button,
-.action-buttons > button.MuiButtonGroup-grouped:not(:first-of-type) {
+#action-btn.action-buttons > button,
+#action-btn.action-buttons > button.MuiButtonGroup-grouped:not(:first-of-type) {
   margin: auto 0.5rem;
   border-radius: 1rem;
 }
 
-div[role='group']:not(.action-buttons) {
+div[role='group']:not(#action-btn.action-buttons) {
   justify-content: space-between;
 }
 
@@ -284,6 +282,10 @@ h2 {
   padding: 0;
   border: none;
   text-transform: none;
+}
+
+button:not([type='submit']) {
+  color: black;
 }
 
 .hiddenOperator {

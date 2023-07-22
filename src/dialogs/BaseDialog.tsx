@@ -99,9 +99,15 @@ export default function BaseDialog({
         >
           <Grid container>
             {children}
-            <ButtonGroup className="action-buttons">
-              <Button onClick={() => setOpen(false)}>Cancel</Button>
-              {!!resetForm && <Button onClick={resetForm}>Reset</Button>}
+            <ButtonGroup id="action-btn" className="action-buttons">
+              <Button onClick={() => setOpen(false)} className="secondary-btn">
+                Cancel
+              </Button>
+              {!!resetForm && (
+                <Button onClick={resetForm} className="secondary-btn">
+                  Reset
+                </Button>
+              )}
               <Button type="submit">Submit</Button>
             </ButtonGroup>
           </Grid>

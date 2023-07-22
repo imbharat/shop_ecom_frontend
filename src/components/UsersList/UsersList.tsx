@@ -7,7 +7,6 @@ import {
 } from "@heroicons/react/24/solid";
 
 import styles from "./UsersList.module.css";
-import { useRouter } from "next/router";
 import {
   GridRowEditStopParams,
   GridSelectionModel,
@@ -22,8 +21,16 @@ import { ODataGridColDef, FilterParameters } from "o-data-grid";
 import AddEditUser from "@/dialogs/User/AddEditUser";
 import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import { ODATA_URL } from "@/custom-hooks/useAxios";
-import { deleteById, downloadToExcel } from "@/services/shared.service";
-import { ExportToExcel } from "@/utils/UtilFunctions";
+import {
+  deleteById,
+  downloadToExcel,
+  updateById,
+} from "@/services/shared.service";
+import {
+  ExportToExcel,
+  NumberOrDateFilterOperators,
+  saveGrid,
+} from "@/utils/UtilFunctions";
 
 const getFormattedDate = (date: string) => new Date(date).toDateString();
 
@@ -87,14 +94,16 @@ let columns: ODataGridColDef[] = [
     headerName: "Created On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "users.updated_at",
     headerName: "Updated On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
 ];
 
@@ -142,7 +151,7 @@ function UsersList() {
   const refreshGrid = () => setCols((prev) => [...prev]);
 
   const saveChanges = async (params: GridRowEditStopParams) => {
-    const { user_id, result, ...user } = params.row;
+    saveGrid(params, "/users", refreshGrid);
   };
 
   const exportToExcel = async () => {

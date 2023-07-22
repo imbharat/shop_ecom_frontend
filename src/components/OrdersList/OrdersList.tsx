@@ -20,7 +20,7 @@ import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import { ODATA_URL } from "@/custom-hooks/useAxios";
 import {
   ExportToExcel,
-  NumberFieldFilterOperators,
+  NumberOrDateFilterOperators,
 } from "@/utils/UtilFunctions";
 import { downloadToExcel } from "@/services/shared.service";
 
@@ -34,7 +34,7 @@ let columns: ODataGridColDef[] = [
       `IN${"0".repeat(10 - params.value.toString().length)}${params.value}`,
     headerClassName: "grid-header",
     type: "number",
-    filterOperators: NumberFieldFilterOperators(),
+    filterOperators: NumberOrDateFilterOperators(),
     align: "left",
     headerAlign: "left",
   },
@@ -51,20 +51,14 @@ let columns: ODataGridColDef[] = [
     headerClassName: "grid-header",
     cellClassName: (params) => (params.value > 0 ? "profit" : "loss"),
     type: "number",
-    filterOperators: NumberFieldFilterOperators(),
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "orders.quantity",
     headerName: "Quantity",
     headerClassName: "grid-header",
     type: "number",
-    filterOperators: NumberFieldFilterOperators(),
-  },
-  {
-    field: "orders.type",
-    headerName: "Type",
-    headerClassName: "grid-header",
-    type: "string",
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "users_created_by.user_name",
@@ -83,14 +77,16 @@ let columns: ODataGridColDef[] = [
     headerName: "Created On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
   {
     field: "orders.updated_at",
     headerName: "Updated On",
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
-    type: "date",
+    type: "datetime",
+    filterOperators: NumberOrDateFilterOperators(),
   },
 ];
 
@@ -108,8 +104,7 @@ const columnVisibilityModel = {
   "orders.order_id": true,
   "customers.customer_name": true,
   "orders.net": true,
-  "orders.quantity": false,
-  "orders.type": { xs: false, md: true },
+  "orders.quantity": true,
   "users_created_by.user_name": { xs: false, xl: true },
   "users_modified_by.user_name": false,
   "orders.created_at": { xs: false, sm: true },
