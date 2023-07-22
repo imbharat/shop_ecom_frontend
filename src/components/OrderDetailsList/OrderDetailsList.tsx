@@ -247,6 +247,7 @@ function OrderDetailsList() {
       header={component}
       url={`${ODATA_URL}${router.asPath}/products`}
       columns={cols}
+      fixedColumns={columns}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}
       setSelectedRows={setSelectedRows}

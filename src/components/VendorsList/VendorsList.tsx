@@ -17,7 +17,7 @@ import {
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import { ODataGridColDef, FilterParameters } from "o-data-grid";
+import { ODataGridColDef, FilterParameters, ODataRowModel } from "o-data-grid";
 import AddEditVendor from "@/dialogs/Vendor/AddEditVendor";
 import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import { ODATA_URL } from "@/custom-hooks/useAxios";
@@ -162,8 +162,14 @@ function VendorsList() {
 
   const refreshGrid = () => setCols((prev) => [...prev]);
 
-  const saveChanges = async (params: GridRowEditStopParams) => {
-    saveGrid(params, "/vendors", refreshGrid);
+  const saveChanges = async (
+    newRow: ODataRowModel<any>,
+    oldRow: ODataRowModel<any>
+  ) => {
+    const { result: n, ...nextData } = newRow;
+    const { "vendors.vendor_id": id } = oldRow;
+    const updated = await saveGrid(id, nextData, "/vendors");
+    return updated ? newRow : oldRow;
   };
 
   const exportToExcel = async () => {
@@ -253,6 +259,7 @@ function VendorsList() {
       header={component}
       url={`${ODATA_URL}/vendors`}
       columns={cols}
+      fixedColumns={columns}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}
       setSelectedRows={setSelectedRows}

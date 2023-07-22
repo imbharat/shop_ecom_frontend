@@ -1,5 +1,5 @@
 diff --git a/node_modules/o-data-grid/build/o-data-grid-esm.js b/node_modules/o-data-grid/build/o-data-grid-esm.js
-index b174ce2..ffe9d2e 100644
+index b174ce2..a200dce 100644
 --- a/node_modules/o-data-grid/build/o-data-grid-esm.js
 +++ b/node_modules/o-data-grid/build/o-data-grid-esm.js
 @@ -1,1219 +1,1310 @@
@@ -2450,7 +2450,7 @@ index b174ce2..ffe9d2e 100644
 +                mb: 2
 +            }, {
 +                children: l(FilterBuilder, Object.assign({}, u.filterBuilderProps, {
-+                    schema: u.columns,
++                    schema: u.fixedColumns,
 +                    onSubmit: A,
 +                    onRestoreState: N
 +                }))
@@ -2488,13 +2488,12 @@ index b174ce2..ffe9d2e 100644
 +    escapeODataString,
 +    numericOperators
  };
-\ No newline at end of file
 -
 -const ODataGrid = (props) => (jsx(ODataGridBase, Object.assign({}, props, { component: DataGrid })));
 -
 -export { FilterBuilder, ODataGrid, allOperators, defaultTranslators, escapeODataString, numericOperators };
 diff --git a/node_modules/o-data-grid/build/o-data-grid.d.ts b/node_modules/o-data-grid/build/o-data-grid.d.ts
-index dfbec7e..99c537a 100644
+index dfbec7e..5ca1588 100644
 --- a/node_modules/o-data-grid/build/o-data-grid.d.ts
 +++ b/node_modules/o-data-grid/build/o-data-grid.d.ts
 @@ -111,7 +111,7 @@ declare type FilterTranslatorParams<TDate> = {
@@ -2506,3 +2505,17 @@ index dfbec7e..99c537a 100644
  declare type CollectionOperation = "any" | "all" | "count";
  declare type Clause = {
      id: string;
+@@ -136,6 +136,7 @@ declare type ODataGridBaseProps<ComponentProps extends IGridProps, SortModel ext
+     url: string;
+     alwaysSelect?: string[];
+     columns: ODataGridBaseColDef<ColDef, TDate>[];
++    fixedColumns: ODataGridBaseColDef<ColDef, TDate>[];
+     columnVisibilityModel?: ODataColumnVisibilityModel;
+     component: React.ElementType;
+     defaultPageSize?: number;
+@@ -205,4 +206,4 @@ declare type ODataGridColDef<TRow = any, TDate = any> = ODataGridBaseColDef<Grid
+ declare type ODataGridEnrichedColDef<TRow = any, V = any, F = any, TDate = any> = ODataGridBaseEnrichedColDef<GridColDef<ODataRowModel<TRow>, V, F>, GridActionsColDef<ODataRowModel<TRow>>, TDate>;
+ declare type ODataGridColumns<TRow = any, TDate = any> = ODataBaseGridColumns<GridEnrichedColDef<ODataRowModel<TRow>>, GridActionsColDef<ODataRowModel<TRow>>, TDate>;
+ 
+-export { CollectionFieldDef, CollectionOperation, ComputeSelect, Connective, ExternalBuilderProps, FieldDef, FilterBuilder, FilterBuilderLocaleText, FilterBuilderProps, FilterCompute, FilterParameters, ODataColumnVisibilityModel, ODataGrid, ODataGridColDef, ODataGridColumns, ODataGridEnrichedColDef, ODataGridProps, QueryStringCollection, SelectOption, SerialisedCondition, SerialisedGroup, ValueOption, allOperators, defaultTranslators, escapeODataString, numericOperators };
++export { CollectionFieldDef, CollectionOperation, ComputeSelect, Connective, ExternalBuilderProps, FieldDef, FilterBuilder, FilterBuilderLocaleText, FilterBuilderProps, FilterCompute, FilterParameters, ODataColumnVisibilityModel, ODataGrid, ODataGridColDef, ODataGridColumns, ODataGridEnrichedColDef, ODataGridProps, ODataRowModel, QueryStringCollection, SelectOption, SerialisedCondition, SerialisedGroup, ValueOption, allOperators, defaultTranslators, escapeODataString, numericOperators };

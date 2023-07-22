@@ -17,15 +17,11 @@ import {
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import { ODataGridColDef, FilterParameters } from "o-data-grid";
+import { ODataGridColDef, FilterParameters, ODataRowModel } from "o-data-grid";
 import AddEditCustomer from "@/dialogs/Customer/AddEditCustomer";
 import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import { ODATA_URL } from "@/custom-hooks/useAxios";
-import {
-  deleteById,
-  downloadToExcel,
-  updateById,
-} from "@/services/shared.service";
+import { deleteById, downloadToExcel } from "@/services/shared.service";
 import {
   ExportToExcel,
   NumberOrDateFilterOperators,
@@ -166,8 +162,14 @@ function CustomersList() {
 
   const refreshGrid = () => setCols((prev) => [...prev]);
 
-  const saveChanges = async (params: GridRowEditStopParams) => {
-    saveGrid(params, "/customers", refreshGrid);
+  const saveChanges = async (
+    newRow: ODataRowModel<any>,
+    oldRow: ODataRowModel<any>
+  ) => {
+    const { result: n, ...nextData } = newRow;
+    const { "customers.customer_id": id } = oldRow;
+    const updated = await saveGrid(id, nextData, "/customers");
+    return updated ? newRow : oldRow;
   };
 
   const exportToExcel = async () => {
@@ -257,6 +259,7 @@ function CustomersList() {
       header={component}
       url={`${ODATA_URL}/customers`}
       columns={cols}
+      fixedColumns={columns}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}
       setSelectedRows={setSelectedRows}

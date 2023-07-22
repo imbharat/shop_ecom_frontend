@@ -4,16 +4,16 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   ODataGrid,
   ODataGridColDef,
+  ODataRowModel,
   ODataColumnVisibilityModel,
   FilterParameters,
   ExternalBuilderProps,
 } from "o-data-grid";
 import PreventSSR from "../PreventSSR/PreventSSR";
 import {
-  GridCallbackDetails,
-  GridRowEditStopParams,
   GridSelectionModel,
   GridSortModel,
+  GridValidRowModel,
 } from "@mui/x-data-grid";
 
 const filterBuilderProps: ExternalBuilderProps<any> = {
@@ -60,6 +60,7 @@ const filterBuilderProps: ExternalBuilderProps<any> = {
 type Props = {
   url: string;
   columns: ODataGridColDef[];
+  fixedColumns: ODataGridColDef[];
   header: string;
   selectedRows: GridSelectionModel;
   alwaysSelect: string[];
@@ -68,12 +69,18 @@ type Props = {
   CustomToolbar: () => JSX.Element;
   columnVisibilityModel: ODataColumnVisibilityModel;
   onSortingChange: (model: GridSortModel) => void;
-  saveChanges?: (params: GridRowEditStopParams) => void;
+  saveChanges?:
+    | ((
+        newRow: ODataRowModel<any>,
+        oldRow: ODataRowModel<any>
+      ) => ODataRowModel<any> | Promise<ODataRowModel<any>>)
+    | undefined;
 };
 
 function CommonDataGrid({
   url,
   columns,
+  fixedColumns,
   header,
   alwaysSelect,
   saveChanges,
@@ -84,7 +91,7 @@ function CommonDataGrid({
   onSortingChange,
   columnVisibilityModel,
 }: Props) {
-  const rowSelection = (selectionModel: GridSelectionModel, data: any) => {
+  const rowSelection = (selectionModel: GridSelectionModel) => {
     setSelectedRows(selectionModel);
   };
 
@@ -121,13 +128,15 @@ function CommonDataGrid({
           }}
           getRowId={(row) => row[alwaysSelect[0]]}
           columns={columns}
+          fixedColumns={fixedColumns}
           defaultPageSize={10}
           rowsPerPageOptions={[10, 25, 50, 100]}
           onSelectionModelChange={rowSelection}
           selectionModel={selectedRows}
           alwaysSelect={alwaysSelect}
           columnVisibilityModel={columnVisibilityModel}
-          onRowEditStop={saveChanges}
+          processRowUpdate={saveChanges}
+          experimentalFeatures={{ newEditingApi: true }}
           onSortModelChange={onSortingChange}
           components={{
             Toolbar: CustomToolbar,

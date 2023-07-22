@@ -36,23 +36,20 @@ export const ExportToExcel = (
 };
 
 export const saveGrid = async (
-  params: GridRowEditStopParams,
-  resource: string,
-  refreshGrid: () => void
+  id: number,
+  nextData: {
+    [key: string]: any;
+  },
+  resource: string
 ) => {
-  const { id } = params;
-  const { result: existing, ...updated } = params.row;
   const updatedValues: any = {};
-  for (let field in updated) {
-    if (existing[field] !== updated[field]) {
-      const dbField = field.substring(field.indexOf(".") + 1);
-      updatedValues[dbField] = updated[field];
-    }
+  for (let field in nextData) {
+    const dbField = field.substring(field.indexOf(".") + 1);
+    updatedValues[dbField] = nextData[field];
   }
   if (Object.keys(updatedValues)) {
     const result = await updateById(id as number, updatedValues, resource);
-    if (!result?.data?.[0]) {
-      refreshGrid();
-    }
+    if (result?.data?.[0]) return true;
+    return false;
   }
 };

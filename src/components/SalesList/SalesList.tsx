@@ -280,6 +280,7 @@ function SalesList() {
       header={component}
       url={`${ODATA_URL}/products/sales`}
       columns={cols}
+      fixedColumns={columns}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}
       setSelectedRows={setSelectedRows}

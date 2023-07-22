@@ -19,7 +19,7 @@ import {
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import { ODataGridColDef, FilterParameters } from "o-data-grid";
+import { ODataGridColDef, FilterParameters, ODataRowModel } from "o-data-grid";
 import AddEditProduct from "@/dialogs/Product/AddEditProduct";
 import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import ImportExcel from "@/dialogs/Shared/ImportExcel";
@@ -29,6 +29,7 @@ import SellProduct from "@/dialogs/Product/SellProducts";
 import {
   ExportToExcel,
   NumberOrDateFilterOperators,
+  saveGrid,
 } from "@/utils/UtilFunctions";
 import { Button, Fade, Menu, MenuItem } from "@mui/material";
 import {
@@ -202,8 +203,14 @@ function ProductsList() {
 
   const refreshGrid = () => setCols((prev) => [...prev]);
 
-  const saveChanges = async (params: GridRowEditStopParams) => {
-    const { product_id, result, ...product } = params.row;
+  const saveChanges = async (
+    newRow: ODataRowModel<any>,
+    oldRow: ODataRowModel<any>
+  ) => {
+    const { result: n, ...nextData } = newRow;
+    const { "products.product_id": id } = oldRow;
+    const updated = await saveGrid(id, nextData, "/products");
+    return updated ? newRow : oldRow;
   };
 
   const exportToExcel = async () => {
@@ -404,6 +411,7 @@ function ProductsList() {
       header={component}
       url={`${ODATA_URL}/products`}
       columns={cols}
+      fixedColumns={columns}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}
       setSelectedRows={setSelectedRows}
