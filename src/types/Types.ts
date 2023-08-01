@@ -11,29 +11,19 @@ type VendorCustomerCommon = VendorCustomerLocationCommon & {
   phone: string;
 };
 
-export type User = {
-  user_id: number;
-  user_name: string;
-  first_name: string;
-  last_name: string;
-  display_name: string;
-  email: string;
-  phone: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
 export type ProductInputFields = {
   product_name: string;
   cost_price: number;
   type: string;
+  category: string;
   vendor: string;
   location: string;
   physical_qc: string;
   screen_qc: string;
-  ram: string;
-  storage: string;
+  ram: number;
+  storage: number;
   barcode: string;
+  imei: string;
 };
 
 export type ImportExcelData<T> = {

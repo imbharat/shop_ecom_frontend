@@ -11,9 +11,11 @@ import {
 } from "o-data-grid";
 import PreventSSR from "../PreventSSR/PreventSSR";
 import {
+  GridCallbackDetails,
+  GridRowParams,
   GridSelectionModel,
   GridSortModel,
-  GridValidRowModel,
+  MuiEvent,
 } from "@mui/x-data-grid";
 
 const filterBuilderProps: ExternalBuilderProps<any> = {
@@ -69,6 +71,7 @@ type Props = {
   CustomToolbar: () => JSX.Element;
   columnVisibilityModel: ODataColumnVisibilityModel;
   onSortingChange: (model: GridSortModel) => void;
+  onRowEditStart?: () => void;
   saveChanges?:
     | ((
         newRow: ODataRowModel<any>,
@@ -89,6 +92,7 @@ function CommonDataGrid({
   CustomToolbar,
   setSelectedRows,
   onSortingChange,
+  onRowEditStart,
   columnVisibilityModel,
 }: Props) {
   const rowSelection = (selectionModel: GridSelectionModel) => {
@@ -138,6 +142,7 @@ function CommonDataGrid({
           processRowUpdate={saveChanges}
           experimentalFeatures={{ newEditingApi: true }}
           onSortModelChange={onSortingChange}
+          onRowEditStart={onRowEditStart}
           components={{
             Toolbar: CustomToolbar,
           }}

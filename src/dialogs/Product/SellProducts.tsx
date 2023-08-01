@@ -1,51 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { useForm } from "@/custom-hooks/useForm";
 import TextField from "@/controls/TextField";
 import { SellProducts } from "@/types/Types";
 import BaseDialog from "../BaseDialog";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store/Store";
+import { getById } from "@/services/shared.service";
 
 function SellProduct({
+  resetDialogs,
   successCallback,
+  idArray = [],
   initialValues = {
     customer_name: "",
     products: [],
   },
 }: {
+  idArray?: number[];
   initialValues: SellProducts;
+  resetDialogs: () => void;
   successCallback: () => void;
 }) {
-  const submitUrl = `/products/sell`;
+  const submitUrl = "/products/sell";
   const {
     values,
     errors,
     setErrors,
+    updateFullForm,
     handleInputChange,
     resetForm,
+    setId,
+    setIsEdit,
     submitForm,
   } = useForm(initialValues, submitUrl);
 
-  const app_data = useSelector((state: RootState) => state.app_data);
+  const [alreadyFetched, setAlreadyFetched] = useState(false);
 
-  const fetchData = async () => {
-    // const vendors = await axios.get(`${url}/vendors/top`);
-    // const types = await axios.get(`${url}/types/top`);
-    // const locations = await axios.get(`${url}/locations/top`);
-    // const categories = await axios.get(`${url}/categories/top`)
-    // const qcs = await axios.get(`${url}/qcs/top`);
-  };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (!alreadyFetched) {
+        const result = await getById(
+          "/products?",
+          encodeURI(
+            `$filter=includes(products.product_id, '${idArray.join(",")}')`
+          )
+        );
+        const product = result?.data?.value?.[0];
+        if (product) {
+          updateFullForm(product);
+          setId(product.product_id);
+          setIsEdit(true);
+        }
+        setAlreadyFetched(true);
+      }
+    };
+    fetchProducts();
+  }, [idArray, alreadyFetched, setId, setIsEdit, updateFullForm]);
 
   return (
     <BaseDialog
       resetForm={resetForm}
       submitForm={submitForm}
-      fetchData={fetchData}
-      name={`Sell ${
-        initialValues.products.length > 1 ? "Products" : "Product"
-      }`}
+      name={`Sell ${idArray.length > 1 ? "Products" : "Product"}`}
       successCallback={successCallback}
+      resetDialogs={resetDialogs}
     >
       <div>
         <TextField

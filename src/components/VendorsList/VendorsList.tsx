@@ -8,7 +8,6 @@ import {
 
 import styles from "./VendorsList.module.css";
 import {
-  GridRowEditStopParams,
   GridSelectionModel,
   GridSortModel,
   GridToolbarColumnsButton,
@@ -147,6 +146,10 @@ const alwaysSelect = ["vendors.vendor_id"];
 const component = "Vendors";
 
 function VendorsList() {
+  const [dialogs, setDialogs] = useState({
+    addDialog: false,
+    editDialog: false,
+  });
   const [selectedRows, setSelectedRows] = useState<GridSelectionModel>([]);
   const [cols, setCols] = useState(columns);
   const [currentFilter, setCurrentFilter] = useState<string>("");
@@ -158,6 +161,13 @@ function VendorsList() {
     if (result?.data?.count === 1) {
       refreshGrid();
     }
+  };
+
+  const resetDialogs = () => {
+    setDialogs({
+      addDialog: false,
+      editDialog: false,
+    });
   };
 
   const refreshGrid = () => setCols((prev) => [...prev]);
@@ -205,7 +215,27 @@ function VendorsList() {
             <>
               <span className={styles.options}>
                 <PlusCircleIcon className="w-5" />
-                <AddEditVendor isEdit={false} successCallback={refreshGrid} />
+                <>
+                  {!dialogs.addDialog && (
+                    <span
+                      onClick={() =>
+                        setDialogs((prev) => ({
+                          ...prev,
+                          addDialog: true,
+                        }))
+                      }
+                    >
+                      Add Vendor
+                    </span>
+                  )}
+                  {dialogs.addDialog && (
+                    <AddEditVendor
+                      isEdit={false}
+                      successCallback={refreshGrid}
+                      resetDialogs={resetDialogs}
+                    />
+                  )}
+                </>
               </span>
               <span className={styles.options} onClick={exportToExcel}>
                 <ArrowUpOnSquareIcon className="w-5" />
@@ -217,7 +247,28 @@ function VendorsList() {
             <>
               <span className={styles.options}>
                 <PencilSquareIcon className="w-5" />
-                <AddEditVendor isEdit={true} successCallback={refreshGrid} />
+                <>
+                  {!dialogs.editDialog && (
+                    <span
+                      onClick={() =>
+                        setDialogs((prev) => ({
+                          ...prev,
+                          editDialog: true,
+                        }))
+                      }
+                    >
+                      Edit Vendor
+                    </span>
+                  )}
+                  {dialogs.editDialog && (
+                    <AddEditVendor
+                      isEdit={true}
+                      successCallback={refreshGrid}
+                      resetDialogs={resetDialogs}
+                      idArray={selectedRows as unknown as number[]}
+                    />
+                  )}
+                </>
               </span>
               <span className={styles.options} onClick={deleteVendor}>
                 <TrashIcon className="w-5" />

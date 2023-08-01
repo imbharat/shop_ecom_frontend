@@ -28,16 +28,18 @@ export default function BaseDialog({
   submitForm,
   children,
   fetchData,
+  resetDialogs,
   successCallback,
 }: {
   name: string;
   resetForm?: () => void;
   submitForm: (e: SubmitEvent, callback: (isSuccess: boolean) => void) => void;
+  resetDialogs: () => void;
   successCallback: () => void;
   fetchData?: () => void;
   children: JSX.Element | JSX.Element[];
 }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -48,11 +50,12 @@ export default function BaseDialog({
 
   const handleClose = () => {
     setOpen(false);
+    resetDialogs();
   };
 
   const callback = (isSuccess: boolean) => {
     if (isSuccess) {
-      setOpen(false);
+      handleClose();
       successCallback();
     } else {
       //show snackbar
@@ -86,7 +89,7 @@ export default function BaseDialog({
           >
             {name}
           </span>
-          <IconButton onClick={() => setOpen(false)}>
+          <IconButton onClick={handleClose}>
             <CloseIcon></CloseIcon>
           </IconButton>
         </h3>
@@ -95,12 +98,24 @@ export default function BaseDialog({
           className="p-4"
           style={{
             border: "0.8rem solid var(--form-input-color)",
+            overflowY: "auto",
           }}
         >
           <Grid container>
-            {children}
+            <Grid
+              style={
+                !fullScreen
+                  ? {
+                      overflowY: "auto",
+                      maxHeight: "50vh",
+                    }
+                  : {}
+              }
+            >
+              {children}
+            </Grid>
             <ButtonGroup id="action-btn" className="action-buttons">
-              <Button onClick={() => setOpen(false)} className="secondary-btn">
+              <Button onClick={handleClose} className="secondary-btn">
                 Cancel
               </Button>
               {!!resetForm && (

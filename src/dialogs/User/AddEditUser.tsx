@@ -1,13 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { useForm } from "@/custom-hooks/useForm";
 import TextField from "@/controls/TextField";
 import { UserInputFields } from "@/types/Types";
 import BaseDialog from "../BaseDialog";
+import { getById } from "@/services/shared.service";
 
 function AddEditUser({
+  resetDialogs,
   successCallback,
   isEdit = false,
+  idArray = [],
   initialValues = {
     user_name: "",
     first_name: "",
@@ -18,18 +21,44 @@ function AddEditUser({
   },
 }: {
   isEdit?: boolean;
+  idArray?: number[];
   initialValues?: UserInputFields;
+  resetDialogs: () => void;
   successCallback: () => void;
 }) {
-  const submitUrl = !isEdit ? `/users` : `/users`;
+  const submitUrl = "/users";
   const {
     values,
     errors,
     setErrors,
+    updateFullForm,
     handleInputChange,
     resetForm,
+    setId,
+    setIsEdit,
     submitForm,
   } = useForm(initialValues, submitUrl);
+
+  const [alreadyFetched, setAlreadyFetched] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (isEdit && !alreadyFetched) {
+        const result = await getById(
+          "/users?",
+          encodeURI(`$filter=includes(users.user_id, '${idArray.join(",")}')`)
+        );
+        const user = result?.data?.value?.[0];
+        if (user) {
+          updateFullForm(user);
+          setId(user.user_id);
+          setIsEdit(true);
+        }
+        setAlreadyFetched(true);
+      }
+    };
+    fetchUser();
+  }, [isEdit, idArray, alreadyFetched, setId, setIsEdit, updateFullForm]);
 
   return (
     <BaseDialog
@@ -37,6 +66,7 @@ function AddEditUser({
       submitForm={submitForm}
       name={isEdit ? `Edit User` : `Add User`}
       successCallback={successCallback}
+      resetDialogs={resetDialogs}
     >
       <Grid item container direction="row">
         <Grid item xs={12} sm={6} direction={"row"}>

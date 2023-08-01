@@ -1,6 +1,12 @@
 import { API_URL, ODATA_URL } from "@/custom-hooks/useAxios";
 import axios from "axios";
 
+export const getById = async (uri: string, filter?: string) => {
+  return await axios.get(
+    `${ODATA_URL}${uri}${filter ? `${filter}&` : "?"}$count=false`
+  );
+};
+
 export const postFormData = async (payload: any, uri: string) => {
   return await axios.post(`${API_URL}${uri}`, payload);
 };

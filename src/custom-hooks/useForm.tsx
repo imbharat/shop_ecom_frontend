@@ -1,8 +1,9 @@
-import { postFormData } from "@/services/shared.service";
-import axios from "axios";
+import { postFormData, updateById } from "@/services/shared.service";
 import React, { useState } from "react";
 
 export function useForm<T>(initialFieldValues: T, submitUrl: string) {
+  const [id, setId] = useState(0);
+  const [isEdit, setIsEdit] = useState(false);
   const [values, setValues] = useState<T>(initialFieldValues);
   const [errors, setErrors] = useState<any>({});
   const handleInputChange = (e: any) => {
@@ -20,6 +21,10 @@ export function useForm<T>(initialFieldValues: T, submitUrl: string) {
     });
   };
 
+  const updateFullForm = (formValues: T) => {
+    setValues(formValues);
+  };
+
   const resetForm = () => {
     setValues(initialFieldValues);
     setErrors({});
@@ -30,8 +35,13 @@ export function useForm<T>(initialFieldValues: T, submitUrl: string) {
     callback: (isSuccess: boolean) => void
   ) => {
     e.preventDefault();
-    const response = await postFormData(values, submitUrl);
-    callback(response?.data);
+    if (isEdit) {
+      const response = await updateById(id, values as Object, submitUrl);
+      callback(response?.data);
+    } else {
+      const response = await postFormData(values, submitUrl);
+      callback(response?.data);
+    }
   };
 
   return {
@@ -41,6 +51,9 @@ export function useForm<T>(initialFieldValues: T, submitUrl: string) {
     setValueExplicitly,
     handleInputChange,
     resetForm,
+    setId,
+    setIsEdit,
+    updateFullForm,
     submitForm,
   };
 }

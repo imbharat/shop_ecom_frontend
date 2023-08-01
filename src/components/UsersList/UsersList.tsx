@@ -131,6 +131,10 @@ const alwaysSelect = ["users.user_id"];
 const component = "Users";
 
 function UsersList() {
+  const [dialogs, setDialogs] = useState({
+    addDialog: false,
+    editDialog: false,
+  });
   const [selectedRows, setSelectedRows] = useState<GridSelectionModel>([]);
   const [cols, setCols] = useState(columns);
   const [currentFilter, setCurrentFilter] = useState<string>("");
@@ -142,6 +146,13 @@ function UsersList() {
     if (result?.data?.count === 1) {
       refreshGrid();
     }
+  };
+
+  const resetDialogs = () => {
+    setDialogs({
+      addDialog: false,
+      editDialog: false,
+    });
   };
 
   const refreshGrid = () => setCols((prev) => [...prev]);
@@ -189,9 +200,28 @@ function UsersList() {
             <>
               <span className={styles.options}>
                 <PlusCircleIcon className="w-5" />
-                <AddEditUser isEdit={false} successCallback={refreshGrid} />
+                <>
+                  {!dialogs.addDialog && (
+                    <span
+                      onClick={() =>
+                        setDialogs((prev) => ({
+                          ...prev,
+                          addDialog: true,
+                        }))
+                      }
+                    >
+                      Add User
+                    </span>
+                  )}
+                  {dialogs.addDialog && (
+                    <AddEditUser
+                      isEdit={false}
+                      successCallback={refreshGrid}
+                      resetDialogs={resetDialogs}
+                    />
+                  )}
+                </>
               </span>
-
               <span className={styles.options} onClick={exportToExcel}>
                 <ArrowUpOnSquareIcon className="w-5" />
                 Export to Excel
@@ -202,7 +232,28 @@ function UsersList() {
             <>
               <span className={styles.options}>
                 <PencilSquareIcon className="w-5" />
-                <AddEditUser isEdit={true} successCallback={refreshGrid} />
+                <>
+                  {!dialogs.editDialog && (
+                    <span
+                      onClick={() =>
+                        setDialogs((prev) => ({
+                          ...prev,
+                          editDialog: true,
+                        }))
+                      }
+                    >
+                      Edit User
+                    </span>
+                  )}
+                  {dialogs.editDialog && (
+                    <AddEditUser
+                      isEdit={true}
+                      successCallback={refreshGrid}
+                      resetDialogs={resetDialogs}
+                      idArray={selectedRows as unknown as number[]}
+                    />
+                  )}
+                </>
               </span>
               <span className={styles.options} onClick={deleteUser}>
                 <TrashIcon className="w-5" />

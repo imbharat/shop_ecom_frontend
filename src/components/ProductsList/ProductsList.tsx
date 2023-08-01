@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import {
   PlusCircleIcon,
   PencilSquareIcon,
@@ -10,7 +10,7 @@ import {
 import styles from "./ProductsList.module.css";
 import {
   GridCallbackDetails,
-  GridRowEditStopParams,
+  GridRowParams,
   GridSelectionModel,
   GridSortModel,
   GridToolbarColumnsButton,
@@ -18,27 +18,41 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
+  GridValueOptionsParams,
+  MuiEvent,
+  ValueOptions,
 } from "@mui/x-data-grid";
 import { ODataGridColDef, FilterParameters, ODataRowModel } from "o-data-grid";
 import AddEditProduct from "@/dialogs/Product/AddEditProduct";
 import CommonDataGrid from "../CommonDataGrid/CommonDataGrid";
 import ImportExcel from "@/dialogs/Shared/ImportExcel";
 import { ODATA_URL } from "@/custom-hooks/useAxios";
-import { deleteById, downloadToExcel } from "@/services/shared.service";
+import {
+  deleteById,
+  downloadToExcel,
+  getById,
+} from "@/services/shared.service";
 import SellProduct from "@/dialogs/Product/SellProducts";
 import {
   ExportToExcel,
   NumberOrDateFilterOperators,
   saveGrid,
 } from "@/utils/UtilFunctions";
-import { Button, Fade, Menu, MenuItem } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  Fade,
+  Grid,
+  Menu,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 import {
   BulkAddProducts,
   BulkMoveProducts,
   BulkSellProducts,
-  ImportExcelData,
 } from "@/types/Types";
-import { error } from "console";
+import CustomAutocompleteCell from "../CustomAutocompleteCell/CustomAutocompleteCell";
 
 const getFormattedDate = (date: string) => new Date(date).toDateString();
 
@@ -187,11 +201,33 @@ const alwaysSelect = ["products.product_id"];
 
 const component = "Products";
 
+const getData = async (uri: string) => {
+  const response = await getById(uri);
+  return response?.data?.value;
+};
+
+const exportToExcel = async (currentFilter: string, currentSorting: string) => {
+  const result = await downloadToExcel(
+    component.toLowerCase(),
+    currentFilter,
+    currentSorting
+  );
+  if (result?.data?.value?.length) {
+    ExportToExcel(component, "xlsx", result.data.value);
+  }
+};
+
 function ProductsList() {
+  const [dialogs, setDialogs] = useState({
+    addDialog: false,
+    editDialog: false,
+    sellDialog: false,
+  });
   const [selectedRows, setSelectedRows] = useState<GridSelectionModel>([]);
-  const [cols, setCols] = useState(columns);
   const [currentFilter, setCurrentFilter] = useState<string>("");
   const [currentSorting, setCurrentSorting] = useState<string>("");
+  const [cols, setCols] = useState(columns);
+  const [fixedCols] = useState(columns);
 
   const deleteProduct = async () => {
     const id = selectedRows as unknown as number;
@@ -199,6 +235,14 @@ function ProductsList() {
     if (result?.data?.count === 1) {
       refreshGrid();
     }
+  };
+
+  const resetDialogs = () => {
+    setDialogs({
+      addDialog: false,
+      editDialog: false,
+      sellDialog: false,
+    });
   };
 
   const refreshGrid = () => setCols((prev) => [...prev]);
@@ -213,19 +257,8 @@ function ProductsList() {
     return updated ? newRow : oldRow;
   };
 
-  const exportToExcel = async () => {
-    const result = await downloadToExcel(
-      component.toLowerCase(),
-      currentFilter,
-      currentSorting
-    );
-    if (result?.data?.value?.length) {
-      ExportToExcel(component, "xlsx", result.data.value);
-    }
-  };
-
   const CustomToolbar = () => {
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
@@ -255,7 +288,27 @@ function ProductsList() {
             <>
               <span className={styles.options}>
                 <PlusCircleIcon className="w-5" />
-                <AddEditProduct isEdit={false} successCallback={refreshGrid} />
+                <>
+                  {!dialogs.addDialog && (
+                    <span
+                      onClick={() =>
+                        setDialogs((prev) => ({
+                          ...prev,
+                          addDialog: true,
+                        }))
+                      }
+                    >
+                      Add Product
+                    </span>
+                  )}
+                  {dialogs.addDialog && (
+                    <AddEditProduct
+                      isEdit={false}
+                      successCallback={refreshGrid}
+                      resetDialogs={resetDialogs}
+                    />
+                  )}
+                </>
               </span>
               <span className={styles.options}>
                 <Bars4Icon className="w-5" />
@@ -345,7 +398,10 @@ function ProductsList() {
                 </Menu>
               </span>
 
-              <span className={styles.options} onClick={exportToExcel}>
+              <span
+                className={styles.options}
+                onClick={() => exportToExcel(currentFilter, currentSorting)}
+              >
                 <ArrowUpOnSquareIcon className="w-5" />
                 Export to Excel
               </span>
@@ -355,7 +411,28 @@ function ProductsList() {
             <>
               <span className={styles.options}>
                 <PencilSquareIcon className="w-5" />
-                <AddEditProduct isEdit={true} successCallback={refreshGrid} />
+                <>
+                  {!dialogs.editDialog && (
+                    <span
+                      onClick={() =>
+                        setDialogs((prev) => ({
+                          ...prev,
+                          editDialog: true,
+                        }))
+                      }
+                    >
+                      Edit Product
+                    </span>
+                  )}
+                  {dialogs.editDialog && (
+                    <AddEditProduct
+                      isEdit={true}
+                      successCallback={refreshGrid}
+                      resetDialogs={resetDialogs}
+                      idArray={selectedRows as unknown as number[]}
+                    />
+                  )}
+                </>
               </span>
               <span className={styles.options} onClick={deleteProduct}>
                 <TrashIcon className="w-5" />
@@ -367,13 +444,33 @@ function ProductsList() {
             <>
               <span className={styles.options} onClick={() => {}}>
                 <CreditCardIcon className="w-5" />
-                <SellProduct
-                  successCallback={refreshGrid}
-                  initialValues={{
-                    customer_name: "",
-                    products: [],
-                  }}
-                />
+                <>
+                  {!dialogs.sellDialog && (
+                    <span
+                      onClick={() =>
+                        setDialogs((prev) => ({
+                          ...prev,
+                          sellDialog: true,
+                        }))
+                      }
+                    >
+                      {`Sell ${
+                        selectedRows.length > 1 ? "Products" : "Product"
+                      }`}
+                    </span>
+                  )}
+                  {dialogs.sellDialog && (
+                    <SellProduct
+                      initialValues={{
+                        customer_name: "",
+                        products: [],
+                      }}
+                      successCallback={refreshGrid}
+                      resetDialogs={resetDialogs}
+                      idArray={selectedRows as unknown as number[]}
+                    />
+                  )}
+                </>
               </span>
             </>
           )}
@@ -405,6 +502,28 @@ function ProductsList() {
   const onFilterSubmit = useCallback((params: FilterParameters) => {
     setCurrentFilter(params.filter);
   }, []);
+
+  // useEffect(() => {
+  //   const loadLocations = async () => {
+  //     const locations = await getData("/locations");
+  //     setMasterData((prev) => ({
+  //       ...prev,
+  //       locations,
+  //     }));
+  //   };
+  //   loadLocations();
+  // }, []);
+
+  // useEffect(() => {
+  //   const loadVendors = async () => {
+  //     const vendors = await getData("/vendors");
+  //     setMasterData((prev) => ({
+  //       ...prev,
+  //       vendors,
+  //     }));
+  //   };
+  //   loadVendors();
+  // }, []);
 
   return (
     <CommonDataGrid

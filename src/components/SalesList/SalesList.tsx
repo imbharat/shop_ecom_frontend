@@ -190,7 +190,7 @@ function SalesList() {
 
   const exportToExcel = async () => {
     const result = await downloadToExcel(
-      component.toLowerCase(),
+      `products/${component.toLowerCase()}`,
       currentFilter,
       currentSorting
     );
