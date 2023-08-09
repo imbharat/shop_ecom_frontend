@@ -131,6 +131,7 @@ const alwaysSelect = ["users.user_id"];
 const component = "Users";
 
 function UsersList() {
+  const [refreshData, setRefreshData] = useState(false);
   const [dialogs, setDialogs] = useState({
     addDialog: false,
     editDialog: false,
@@ -155,7 +156,10 @@ function UsersList() {
     });
   };
 
-  const refreshGrid = () => setCols((prev) => [...prev]);
+  const refreshGrid = () => {
+    setCols((prev) => [...prev]);
+    setRefreshData(true);
+  };
 
   const saveChanges = async (
     newRow: ODataRowModel<any>,
@@ -295,6 +299,7 @@ function UsersList() {
       header={component}
       url={`${ODATA_URL}/users`}
       columns={cols}
+      refreshData={refreshData}
       fixedColumns={columns}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}

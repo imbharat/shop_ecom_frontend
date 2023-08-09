@@ -7,6 +7,7 @@ import BaseDialog from "../BaseDialog";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/Store";
 import { getById } from "@/services/shared.service";
+import AutoComplete from "@/controls/AutoComplete";
 
 function AddEditProduct({
   resetDialogs,
@@ -52,6 +53,7 @@ function AddEditProduct({
   useEffect(() => {
     const fetchProduct = async () => {
       if (isEdit && !alreadyFetched) {
+        setAlreadyFetched(true);
         const result = await getById(
           "/products?",
           encodeURI(
@@ -64,11 +66,10 @@ function AddEditProduct({
           setId(product.product_id);
           setIsEdit(true);
         }
-        setAlreadyFetched(true);
       }
     };
     fetchProduct();
-  }, [isEdit, idArray, alreadyFetched, setId, setIsEdit, updateFullForm]);
+  }, []);
 
   const app_data = useSelector((state: RootState) => state.app_data);
 
@@ -118,51 +119,85 @@ function AddEditProduct({
           />
         </Grid>
         <Grid item xs={12} sm={6} direction={"row"}>
-          <TextField
+          <AutoComplete
             label="Type"
             name="type"
-            value={values["type"]}
-            onChange={handleInputChange}
+            freeSolo={false}
+            initValue={values["type"]}
+            options={[
+              { value: 1, label: "SmartPhone" },
+              { value: 2, label: "KeyPad Phone" },
+            ]}
+            onValueChange={handleInputChange}
           />
         </Grid>
         <Grid item xs={12} sm={6} direction={"row"}>
-          <TextField
+          <AutoComplete
             label="Category"
             name="category"
-            value={values["category"]}
-            onChange={handleInputChange}
+            freeSolo={false}
+            initValue={values["category"]}
+            options={[
+              { value: 0, label: "" },
+              { value: 1, label: "Electronics" },
+            ]}
+            onValueChange={handleInputChange}
           />
         </Grid>
         <Grid item xs={12} sm={6} direction={"row"}>
-          <TextField
+          <AutoComplete
             label="Vendor"
             name="vendor"
-            value={values["vendor"]}
-            onChange={handleInputChange}
+            freeSolo={true}
+            initValue={values["vendor"]}
+            options={[
+              { value: "apple", label: "Apple" },
+              { value: "banana", label: "Banana" },
+              { value: "cherry", label: "Cherry" },
+            ]}
+            onValueChange={handleInputChange}
           />
         </Grid>
         <Grid item xs={12} sm={6} direction={"row"}>
-          <TextField
+          <AutoComplete
             label="Location"
             name="location"
-            value={values["location"]}
-            onChange={handleInputChange}
+            freeSolo={false}
+            initValue={values["location"]}
+            options={[
+              { value: 1, label: "l1" },
+              { value: 2, label: "l2" },
+              { value: 3, label: "l3" },
+            ]}
+            onValueChange={handleInputChange}
           />
         </Grid>
         <Grid item xs={12} sm={6} direction={"row"}>
-          <TextField
+          <AutoComplete
             label="Physical QC"
             name="physical_qc"
-            value={values["physical_qc"]}
-            onChange={handleInputChange}
+            freeSolo={false}
+            initValue={values["physical_qc"]}
+            options={[
+              { value: 1, label: "Pending" },
+              { value: 2, label: "OK" },
+              { value: 3, label: "Rejected" },
+            ]}
+            onValueChange={handleInputChange}
           />
         </Grid>
         <Grid item xs={12} sm={6} direction={"row"}>
-          <TextField
+          <AutoComplete
             label="Screen QC"
             name="screen_qc"
-            value={values["screen_qc"]}
-            onChange={handleInputChange}
+            freeSolo={false}
+            initValue={values["screen_qc"]}
+            options={[
+              { value: 1, label: "Pending" },
+              { value: 2, label: "OK" },
+              { value: 3, label: "Rejected" },
+            ]}
+            onValueChange={handleInputChange}
           />
         </Grid>
         <Grid item xs={12} sm={6} direction={"row"}>

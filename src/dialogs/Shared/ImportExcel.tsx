@@ -107,11 +107,13 @@ function ImportExcel<T = BulkAddProducts | BulkSellProducts>({
     data: [],
     errors: [],
   },
+  resetDialogs,
   successCallback,
 }: {
   name: string;
   submitUrl: string;
   initialValues?: ImportExcelData<T>;
+  resetDialogs: () => void;
   successCallback: () => void;
 }) {
   let allKeyPresent = false;
@@ -161,6 +163,7 @@ function ImportExcel<T = BulkAddProducts | BulkSellProducts>({
     <BaseDialog
       submitForm={submitForm}
       name={name}
+      resetDialogs={resetDialogs}
       successCallback={successCallback}
     >
       <Grid

@@ -146,6 +146,7 @@ const alwaysSelect = ["products.product_id"];
 const component = "Order Details";
 
 function OrderDetailsList() {
+  const [refreshData, setRefreshData] = useState(false);
   const [selectedRows, setSelectedRows] = useState<GridSelectionModel>([]);
   const [cols, setCols] = useState(columns);
   const [currentFilter, setCurrentFilter] = useState<string>("");
@@ -153,7 +154,10 @@ function OrderDetailsList() {
 
   const router = useRouter();
 
-  const refreshGrid = () => setCols((prev) => [...prev]);
+  const refreshGrid = () => {
+    setCols((prev) => [...prev]);
+    setRefreshData(true);
+  };
 
   const exportToExcel = async () => {
     const result = await downloadToExcel(
@@ -247,6 +251,7 @@ function OrderDetailsList() {
       header={component}
       url={`${ODATA_URL}${router.asPath}/products`}
       columns={cols}
+      refreshData={refreshData}
       fixedColumns={columns}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}

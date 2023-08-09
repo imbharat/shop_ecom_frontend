@@ -146,6 +146,7 @@ const alwaysSelect = ["vendors.vendor_id"];
 const component = "Vendors";
 
 function VendorsList() {
+  const [refreshData, setRefreshData] = useState(false);
   const [dialogs, setDialogs] = useState({
     addDialog: false,
     editDialog: false,
@@ -170,7 +171,10 @@ function VendorsList() {
     });
   };
 
-  const refreshGrid = () => setCols((prev) => [...prev]);
+  const refreshGrid = () => {
+    setCols((prev) => [...prev]);
+    setRefreshData(true);
+  };
 
   const saveChanges = async (
     newRow: ODataRowModel<any>,
@@ -310,6 +314,7 @@ function VendorsList() {
       header={component}
       url={`${ODATA_URL}/vendors`}
       columns={cols}
+      refreshData={refreshData}
       fixedColumns={columns}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}

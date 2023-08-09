@@ -19,9 +19,6 @@ function TextField(props: MuiTextFieldProps) {
         inputProps={{
           sx: {
             fontSize: "0.9rem",
-            "&::after": {
-              borderBottom: "0.1rem solid var(--primary-color)",
-            },
           },
         }}
         InputLabelProps={{ style: { fontSize: "0.9rem" } }}

@@ -130,6 +130,7 @@ const alwaysSelect = ["locations.location_id"];
 const component = "Locations";
 
 function LocationsList() {
+  const [refreshData, setRefreshData] = useState(false);
   const [dialogs, setDialogs] = useState({
     addDialog: false,
     editDialog: false,
@@ -154,7 +155,10 @@ function LocationsList() {
     });
   };
 
-  const refreshGrid = () => setCols((prev) => [...prev]);
+  const refreshGrid = () => {
+    setCols((prev) => [...prev]);
+    setRefreshData(true);
+  };
 
   const saveChanges = async (
     newRow: ODataRowModel<any>,
@@ -294,6 +298,7 @@ function LocationsList() {
       header={component}
       url={`${ODATA_URL}/locations`}
       columns={cols}
+      refreshData={refreshData}
       fixedColumns={columns}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}

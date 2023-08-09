@@ -62,6 +62,7 @@ const filterBuilderProps: ExternalBuilderProps<any> = {
 type Props = {
   url: string;
   columns: ODataGridColDef[];
+  refreshData: boolean;
   fixedColumns: ODataGridColDef[];
   header: string;
   selectedRows: GridSelectionModel;
@@ -71,7 +72,6 @@ type Props = {
   CustomToolbar: () => JSX.Element;
   columnVisibilityModel: ODataColumnVisibilityModel;
   onSortingChange: (model: GridSortModel) => void;
-  onRowEditStart?: () => void;
   saveChanges?:
     | ((
         newRow: ODataRowModel<any>,
@@ -83,6 +83,7 @@ type Props = {
 function CommonDataGrid({
   url,
   columns,
+  refreshData,
   fixedColumns,
   header,
   alwaysSelect,
@@ -92,7 +93,6 @@ function CommonDataGrid({
   CustomToolbar,
   setSelectedRows,
   onSortingChange,
-  onRowEditStart,
   columnVisibilityModel,
 }: Props) {
   const rowSelection = (selectionModel: GridSelectionModel) => {
@@ -115,6 +115,7 @@ function CommonDataGrid({
       <PreventSSR>
         <ODataGrid
           url={url}
+          refreshData={refreshData}
           checkboxSelection
           disableColumnMenu
           editMode="row"
@@ -142,7 +143,6 @@ function CommonDataGrid({
           processRowUpdate={saveChanges}
           experimentalFeatures={{ newEditingApi: true }}
           onSortModelChange={onSortingChange}
-          onRowEditStart={onRowEditStart}
           components={{
             Toolbar: CustomToolbar,
           }}

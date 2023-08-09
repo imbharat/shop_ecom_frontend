@@ -1,4 +1,11 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import {
   PlusCircleIcon,
   PencilSquareIcon,
@@ -56,13 +63,15 @@ import CustomAutocompleteCell from "../CustomAutocompleteCell/CustomAutocomplete
 
 const getFormattedDate = (date: string) => new Date(date).toDateString();
 
-let columns: ODataGridColDef[] = [
+const columns: ODataGridColDef[] = [
   {
     field: "products.product_name",
     headerName: "Name",
     editable: true,
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "products.cost_price",
@@ -70,6 +79,8 @@ let columns: ODataGridColDef[] = [
     editable: true,
     headerClassName: "grid-header",
     type: "number",
+    flex: 1,
+    caseSensitive: true,
     filterOperators: NumberOrDateFilterOperators(),
   },
   {
@@ -78,6 +89,8 @@ let columns: ODataGridColDef[] = [
     editable: true,
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "categories.category_name",
@@ -85,6 +98,8 @@ let columns: ODataGridColDef[] = [
     editable: true,
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "products.barcode",
@@ -92,6 +107,8 @@ let columns: ODataGridColDef[] = [
     editable: true,
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "products.imei",
@@ -99,56 +116,74 @@ let columns: ODataGridColDef[] = [
     editable: true,
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "vendors.vendor_name",
     headerName: "Vendor",
     editable: true,
     headerClassName: "grid-header",
-    type: "string",
+    type: "singleSelect",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "physical_qc.qc_name",
     headerName: "Physical QC",
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "screen_qc.qc_name",
     headerName: "Screen QC",
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "products.ram",
-    headerName: "RAM",
+    headerName: "RAM (GB)",
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "products.storage",
-    headerName: "Storage",
+    headerName: "Storage (GB)",
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "locations.location_name",
     headerName: "Location",
     editable: true,
     headerClassName: "grid-header",
-    type: "string",
+    type: "singleSelect",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "users_created_by.user_name",
     headerName: "Created By",
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "users_modified_by.user_name",
     headerName: "Modified By",
     headerClassName: "grid-header",
     type: "string",
+    flex: 1,
+    caseSensitive: true,
   },
   {
     field: "products.created_at",
@@ -156,6 +191,8 @@ let columns: ODataGridColDef[] = [
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
     type: "datetime",
+    flex: 1,
+    caseSensitive: true,
     filterOperators: NumberOrDateFilterOperators(),
   },
   {
@@ -164,36 +201,28 @@ let columns: ODataGridColDef[] = [
     valueFormatter: (params) => getFormattedDate(params.value),
     headerClassName: "grid-header",
     type: "datetime",
+    flex: 1,
+    caseSensitive: true,
     filterOperators: NumberOrDateFilterOperators(),
   },
 ];
 
-columns = columns.map((col) => {
-  return {
-    flex: 1,
-    caseSensitive: true,
-    // minWidth: "4rem",
-    // maxWidth: "6rem",
-    ...col,
-  };
-});
-
 const columnVisibilityModel = {
   "products.product_name": true,
-  "products.cost_price": true,
+  "products.cost_price": false,
   "types.type_name": false,
   "categories.category_name": false,
-  "products.barcode": { xs: false, md: true },
-  "products.imei": { xs: false, xl: true },
+  "products.barcode": { xs: false, md: false },
+  "products.imei": { xs: false, xl: false },
   "vendors.vendor_name": { xs: false, md: true },
-  "physical_qc.qc_name": { xs: false, xl: true },
-  "screen_qc.qc_name": { xs: false, xl: true },
-  "products.ram": { xs: false, xl: true },
-  "products.storage": { xs: false, xl: true },
+  "physical_qc.qc_name": { xs: false, xl: false },
+  "screen_qc.qc_name": { xs: false, xl: false },
+  "products.ram": { xs: false, xl: false },
+  "products.storage": { xs: false, xl: false },
   "locations.location_name": true,
-  "users_created_by.user_name": { xs: false, xl: true },
-  "users_modified_by.user_name": false,
-  "products.created_at": { xs: false, sm: true },
+  "users_created_by.user_name": { xs: false, xl: false },
+  "users_modified_by.user_name": true,
+  "products.created_at": { xs: false, sm: false },
   "products.updated_at": false,
 };
 
@@ -217,17 +246,79 @@ const exportToExcel = async (currentFilter: string, currentSorting: string) => {
   }
 };
 
+const updateSelectColumns = (
+  colOptions: {
+    [field: string]: {
+      dbField: string;
+      data: {
+        [dbField: string]: string;
+      }[];
+    };
+  },
+  setCols: Dispatch<SetStateAction<ODataGridColDef[]>>,
+  setFilterBuilderCols: Dispatch<SetStateAction<ODataGridColDef[]>>
+) => {
+  const updatedColumns = columns.reduce(
+    (columnsDef: ODataGridColDef[], col: ODataGridColDef) => {
+      const colDef = { ...col };
+      if (col.field in colOptions) {
+        const colOptionsMap = colOptions[col.field];
+        colDef.valueOptions = colOptions[col.field].data.map(
+          (row) => row[colOptionsMap.dbField]
+        );
+      }
+      return [...columnsDef, colDef];
+    },
+    []
+  );
+  setCols(updatedColumns);
+  setFilterBuilderCols(updatedColumns);
+};
+
 function ProductsList() {
+  const [refreshData, setRefreshData] = useState(false);
   const [dialogs, setDialogs] = useState({
     addDialog: false,
     editDialog: false,
     sellDialog: false,
+    bulkAddDialog: false,
+    bulkMoveDialog: false,
+    bulkSellDialog: false,
+  });
+  const [dataLoaded, setDataLoaded] = useState({
+    locations: false,
+    vendors: false,
+  });
+  const [masterData, setMasterData] = useState({
+    locations: [],
+    vendors: [],
   });
   const [selectedRows, setSelectedRows] = useState<GridSelectionModel>([]);
   const [currentFilter, setCurrentFilter] = useState<string>("");
   const [currentSorting, setCurrentSorting] = useState<string>("");
+
   const [cols, setCols] = useState(columns);
-  const [fixedCols] = useState(columns);
+  const [filterBuilderCols, setFilterBuilderCols] = useState(columns);
+
+  useEffect(() => {
+    const isReady = dataLoaded.locations && dataLoaded.vendors;
+    if (isReady) {
+      updateSelectColumns(
+        {
+          "locations.location_name": {
+            dbField: "location_name",
+            data: masterData.locations,
+          },
+          "vendors.vendor_name": {
+            dbField: "vendor_name",
+            data: masterData.vendors,
+          },
+        },
+        setCols,
+        setFilterBuilderCols
+      );
+    }
+  }, [dataLoaded, masterData]);
 
   const deleteProduct = async () => {
     const id = selectedRows as unknown as number;
@@ -242,10 +333,16 @@ function ProductsList() {
       addDialog: false,
       editDialog: false,
       sellDialog: false,
+      bulkAddDialog: false,
+      bulkMoveDialog: false,
+      bulkSellDialog: false,
     });
   };
 
-  const refreshGrid = () => setCols((prev) => [...prev]);
+  const refreshGrid = () => {
+    setCols((prev) => [...prev]);
+    setRefreshData(true);
+  };
 
   const saveChanges = async (
     newRow: ODataRowModel<any>,
@@ -336,64 +433,109 @@ function ProductsList() {
                   TransitionComponent={Fade}
                 >
                   <MenuItem>
-                    <ImportExcel<BulkAddProducts>
-                      name="Add"
-                      submitUrl="/products/import"
-                      successCallback={refreshGrid}
-                      initialValues={{
-                        data: [
-                          {
-                            product_name: "",
-                            cost_price: 0,
-                            barcode: "",
-                            imei: "",
-                            vendor: "",
-                          },
-                        ],
-                        errors: [],
-                      }}
-                    />
+                    {!dialogs.bulkAddDialog && (
+                      <span
+                        onClick={() =>
+                          setDialogs((prev) => ({
+                            ...prev,
+                            bulkAddDialog: true,
+                          }))
+                        }
+                      >
+                        Add
+                      </span>
+                    )}
+                    {dialogs.bulkAddDialog && (
+                      <ImportExcel<BulkAddProducts>
+                        name="Add"
+                        submitUrl="/products/import"
+                        successCallback={refreshGrid}
+                        resetDialogs={resetDialogs}
+                        initialValues={{
+                          data: [
+                            {
+                              product_name: "",
+                              cost_price: 0,
+                              barcode: "",
+                              imei: "",
+                              vendor: "",
+                            },
+                          ],
+                          errors: [],
+                        }}
+                      />
+                    )}
                   </MenuItem>
                   <MenuItem>
-                    <ImportExcel<BulkMoveProducts>
-                      name="Move"
-                      submitUrl="/products/bulkmove"
-                      successCallback={refreshGrid}
-                      initialValues={{
-                        data: [
-                          {
-                            product_id: 0,
-                            product_name: "",
-                            barcode: "",
-                            imei: "",
-                            location: "",
-                          },
-                        ],
-                        errors: [],
-                      }}
-                    />
+                    {!dialogs.bulkMoveDialog && (
+                      <span
+                        onClick={() =>
+                          setDialogs((prev) => ({
+                            ...prev,
+                            bulkMoveDialog: true,
+                          }))
+                        }
+                      >
+                        Move
+                      </span>
+                    )}
+                    {dialogs.bulkMoveDialog && (
+                      <ImportExcel<BulkMoveProducts>
+                        name="Move"
+                        submitUrl="/products/bulkmove"
+                        successCallback={refreshGrid}
+                        resetDialogs={resetDialogs}
+                        initialValues={{
+                          data: [
+                            {
+                              product_id: 0,
+                              product_name: "",
+                              barcode: "",
+                              imei: "",
+                              location: "",
+                            },
+                          ],
+                          errors: [],
+                        }}
+                      />
+                    )}
                   </MenuItem>
                   <MenuItem>
-                    <ImportExcel<BulkSellProducts>
-                      name="Sell"
-                      submitUrl="/products/bulksell"
-                      successCallback={refreshGrid}
-                      initialValues={{
-                        data: [
-                          {
-                            product_id: 0,
-                            product_name: "",
-                            barcode: "",
-                            imei: "",
-                            cost_price: 0,
-                            sell_price: 0,
-                            customer_name: "",
-                            location: "",
-                          },
-                        ],
-                        errors: [],
-                      }}
-                    />
+                    {!dialogs.bulkSellDialog && (
+                      <span
+                        onClick={() =>
+                          setDialogs((prev) => ({
+                            ...prev,
+                            bulkSellDialog: true,
+                          }))
+                        }
+                      >
+                        Sell
+                      </span>
+                    )}
+                    {dialogs.bulkSellDialog && (
+                      <ImportExcel<BulkSellProducts>
+                        name="Sell"
+                        submitUrl="/products/bulksell"
+                        successCallback={refreshGrid}
+                        resetDialogs={resetDialogs}
+                        initialValues={{
+                          data: [
+                            {
+                              product_id: 0,
+                              product_name: "",
+                              barcode: "",
+                              imei: "",
+                              cost_price: 0,
+                              sell_price: 0,
+                              customer_name: "",
+                              location: "",
+                            },
+                          ],
+                          errors: [],
+                        }}
+                      />
+                    )}
                   </MenuItem>
                 </Menu>
               </span>
@@ -503,34 +645,43 @@ function ProductsList() {
     setCurrentFilter(params.filter);
   }, []);
 
-  // useEffect(() => {
-  //   const loadLocations = async () => {
-  //     const locations = await getData("/locations");
-  //     setMasterData((prev) => ({
-  //       ...prev,
-  //       locations,
-  //     }));
-  //   };
-  //   loadLocations();
-  // }, []);
+  useEffect(() => {
+    const loadLocations = async () => {
+      const locations = await getData("/locations");
+      setMasterData((prev) => ({
+        ...prev,
+        locations,
+      }));
+      setDataLoaded((prev) => ({
+        ...prev,
+        locations: true,
+      }));
+    };
+    loadLocations();
+  }, []);
 
-  // useEffect(() => {
-  //   const loadVendors = async () => {
-  //     const vendors = await getData("/vendors");
-  //     setMasterData((prev) => ({
-  //       ...prev,
-  //       vendors,
-  //     }));
-  //   };
-  //   loadVendors();
-  // }, []);
+  useEffect(() => {
+    const loadVendors = async () => {
+      const vendors = await getData("/vendors");
+      setMasterData((prev) => ({
+        ...prev,
+        vendors,
+      }));
+      setDataLoaded((prev) => ({
+        ...prev,
+        vendors: true,
+      }));
+    };
+    loadVendors();
+  }, []);
 
   return (
     <CommonDataGrid
       header={component}
       url={`${ODATA_URL}/products`}
       columns={cols}
-      fixedColumns={columns}
+      refreshData={refreshData}
+      fixedColumns={filterBuilderCols}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}
       setSelectedRows={setSelectedRows}

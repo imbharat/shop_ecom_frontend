@@ -208,6 +208,7 @@ function OrdersList() {
       header={component}
       url={`${ODATA_URL}/orders`}
       columns={cols}
+      refreshData={false}
       fixedColumns={columns}
       selectedRows={selectedRows}
       alwaysSelect={alwaysSelect}

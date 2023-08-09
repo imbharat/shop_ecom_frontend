@@ -15,6 +15,11 @@ export function useForm<T>(initialFieldValues: T, submitUrl: string) {
   };
 
   const setValueExplicitly = (fieldName: string, value: any) => {
+    console.table(values);
+    console.table({
+      fieldName,
+      value,
+    });
     setValues({
       ...values,
       [fieldName]: value,
